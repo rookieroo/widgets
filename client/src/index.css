@@ -1,0 +1,200 @@
+@import "./base.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* cantarell-latin-400-normal */
+@font-face {
+  font-family: "Cantarell";
+  font-style: normal;
+  font-display: auto;
+  font-weight: 400;
+  src: url(/cantarell_5.0.12_latin-400-normal.woff2) format("woff2"),
+    url(/cantarell_5.0.13_latin-400-normal.woff) format("woff");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+body {
+  @apply bg-background-light dark:bg-background-dark text-gray-800;
+  font-family: Cantarell, "Source Han Serif CN VF" !important;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+.wmde-markdown {
+  @apply bg-w;
+  font-family: Cantarell, "Source Han Serif CN VF" !important;
+}
+
+.w-md-editor {
+  @apply bg-w;
+}
+
+.wmde-markdown img {
+  @apply rounded-lg;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ol {
+  list-style: decimal;
+}
+
+ul {
+  list-style: initial;
+}
+
+.link-line a {
+  @apply hover:underline;
+}
+
+.wmde-markdown code {
+  @apply text-theme bg-secondary;
+}
+
+.markdown-alert {
+  @apply !border-l-2 border-2 rounded-lg !py-4 my-4 !px-4 !leading-snug space-y-0;
+}
+
+.markdown-alert-note {
+  @apply !border-indigo-300 bg-indigo-100 !text-indigo-400 dark:!bg-indigo-900 dark:!text-indigo-300 dark:!border-indigo-900;
+}
+
+.markdown-alert-warning {
+  @apply !border-yellow-300 bg-yellow-100 !text-yellow-400 dark:!bg-yellow-900 dark:!text-yellow-300 dark:!border-yellow-900;
+}
+
+.markdown-alert-tip {
+  @apply !border-green-300 bg-green-100 !text-green-400 dark:!bg-green-900 dark:!text-green-300 dark:!border-green-900;
+}
+
+.markdown-alert-important {
+  @apply !border-purple-300 bg-purple-100 !text-purple-400 dark:!bg-purple-900 dark:!text-purple-300 dark:!border-purple-900;
+}
+
+.markdown-alert-caution {
+  @apply !border-red-300 bg-red-100 !text-red-400 dark:!bg-red-900 dark:!text-red-300 dark:!border-red-900;
+}
+
+.markdown-alert-title {
+  @apply flex flex-row items-center !mb-0 !text-inherit !font-bold fill-current;
+}
+
+.p-inputtext {
+  @apply bg-secondary text-end px-2 py-2;
+}
+
+.octicon {
+  @apply mr-1 w-3;
+}
+/* animation */
+
+@keyframes anvil {
+  0% {
+    transform: scale(1) translateY(0px);
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+  }
+
+  1% {
+    transform: scale(0.96) translateY(10px);
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+  }
+
+  100% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+    box-shadow: 0 0 500px rgba(241, 241, 241, 0);
+  }
+}
+
+.popup-content {
+  animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+}
+
+.ani-show {
+  animation: anvil 0.5s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+}
+
+.ani-show-fast {
+  animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+}
+
+.table {
+  @apply w-full border-collapse my-4;
+}
+
+.table th,
+.table td {
+  @apply border border-slate-500 dark:border-slate-300 px-4 py-2;
+}
+
+.table th {
+  @apply bg-slate-200 dark:bg-slate-700;
+}
+
+/* TOC Style */
+
+.toc {
+  overflow-y: auto;
+}
+
+.toc>.toc-list {
+  overflow: hidden;
+  position: relative;
+}
+
+.toc>.toc-list li {
+  list-style: none;
+}
+
+.toc-list {
+  margin: 0;
+  padding-left: 10px;
+}
+
+a.toc-link {
+  color: currentColor;
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.is-collapsible {
+  max-height: 1000px;
+  overflow: hidden;
+  transition: all 300ms ease-in-out;
+}
+
+.is-collapsed {
+  max-height: 0;
+}
+
+.is-position-fixed {
+  position: fixed !important;
+  top: 0;
+}
+
+.is-active-link {
+  font-weight: 700;
+}
+
+.toc-link::before {
+  background-color: #eee;
+  content: " ";
+  display: inline-block;
+  height: inherit;
+  left: 0;
+  margin-top: -1px;
+  position: absolute;
+  width: 2px;
+}
+
+.is-active-link::before {
+  @apply bg-theme;
+}
