@@ -17,10 +17,10 @@ jobs:
         with:
           node-version: 22
 
-      - name: Clone Rin repository
+      - name: Clone widgets repository
         uses: actions/checkout@v4
         with:
-          path: Rin
+          path: widgets
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v1
@@ -49,6 +49,6 @@ jobs:
           RSS_TITLE: ${{ vars.RSS_TITLE }}
           RSS_DESCRIPTION: ${{ vars.RSS_DESCRIPTION }}
         run: |
-          cd Rin/
+          cd widgets/
           bun i
           bun scripts/migrator.ts
