@@ -16,7 +16,7 @@ export const app = () => new Elysia({aot: false})
     {
       // aot: false,
       // origin: true,
-      origin: /.*\.trendingup\.top$/,
+      // // origin: /.*\.trendingup\.top$/,
       // methods: '*',
       // allowedHeaders: '*',
       // maxAge: 600,
