@@ -14,12 +14,10 @@ import { ConfigService } from './services/config';
 export const app = () => new Elysia({ aot: false })
     .use(cors({
         aot: false,
-        origin: '*',
+        // origin: true,
+        origin: /.*\.trendingup\.top$/,
         methods: '*',
-        allowedHeaders: [
-            'Authorization',
-            'content-type'
-        ],
+        allowedHeaders: '*',
         maxAge: 600,
         credentials: true,
         preflight: true
