@@ -7,11 +7,18 @@ import { oauth_url } from "../main";
 import { Profile, ProfileContext } from "../state/profile";
 import { Icon } from "./icon";
 import { Padding } from "./padding";
-
+import { Customizer } from '@/components/theme/ThemeCustomizer'
+import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
+import { Button } from '@/ui/button'
+import { SquareMousePointer } from 'lucide-react'
+import { useConfig } from '@/store/useConfig'
+import useToggleTheme from '@/hooks/use-toggle-theme'
 
 export function Header({ children }: { children?: React.ReactNode }) {
     const profile = useContext(ProfileContext);
     const { t } = useTranslation()
+    const [config] = useConfig()
+    useToggleTheme(config)
 
     return (
         <>
@@ -57,6 +64,20 @@ export function Header({ children }: { children?: React.ReactNode }) {
                                 <LanguageSwitch />
                                 <UserAvatar profile={profile} />
                             </div>
+                            <div>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button variant="ghost" className="hidden w-9 px-0 lg:inline-flex">
+                                            <SquareMousePointer className="h-5 w-5" />
+                                            {/*{!open && <SquareDashedMousePointer className="h-5 w-5" />}*/}
+                                            <span className="sr-only">Customize</span>
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-[350px] p-0">
+                                        <Customizer />
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
                         </div>
                     </Padding>
                 </div>
@@ -78,7 +99,7 @@ function NavItem({ menu, title, selected, href, when = true, onClick }: {
         <>
             {when &&
                 <Link href={href}
-                    className={`${menu ? "" : "hidden"} md:block cursor-pointer hover:text-theme duration-300 px-2 py-4 md:p-4 text-sm ${selected ? "text-theme" : "dark:text-white"}`}
+                    className={`${menu ? "" : "hidden"} md:block cursor-pointer hover:text-theme duration-300 px-2 py-4 md:p-4 text-sm ${selected ? "text-primary" : "dark:text-white"}`}
                     state={{ animate: true }}
                     onClick={onClick}
                 >
