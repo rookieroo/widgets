@@ -25,8 +25,7 @@ export default function useWorksAction() {
     let query = {
       page: 1,
       limit: 10,
-      type: 'normal',
-      title: title,
+      type: 'normal'
     }
     if(title) {
       query.title = title
