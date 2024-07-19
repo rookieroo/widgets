@@ -22,13 +22,17 @@ export default function useWorksAction() {
   }, []);
 
   function fetchFeeds(title?: string) {
+    let query = {
+      page: 1,
+      limit: 10,
+      type: 'normal',
+      title: title,
+    }
+    if(title) {
+      query.title = title
+    }
     client.feed.index.get({
-      query: {
-        page: 1,
-        limit: 10,
-        type: 'normal',
-        title: title,
-      },
+      query,
       headers: headersWithAuth()
     }).then(({ data }) => {
       if (data && typeof data != 'string') {
