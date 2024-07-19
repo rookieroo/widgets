@@ -9,7 +9,7 @@ const searchId = generateKey();
 
 export default function useWorksAction() {
   const [location, navigate] = useLocation();
-  const [results, setResults] = useState();
+  const [results, setResults] = useState([]);
 
   const defaultAction = useMemo(() => {
     return {
@@ -46,7 +46,7 @@ export default function useWorksAction() {
 
   const searchActions = useMemo(() => {
     if (!results) {
-      return null;
+      return [];
     }
 
     return results.map(({ id, summary, title, hashtags }) => {
