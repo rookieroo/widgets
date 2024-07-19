@@ -24,7 +24,7 @@ export default function useWorksAction() {
   function fetchFeeds(title?: string) {
     let query = {
       page: 1,
-      limit: 10,
+      limit: 5,
       type: 'normal'
     }
     if(title) {
