@@ -1,36 +1,65 @@
-import { useEffect, useRef, useState } from 'react'
-import { Helmet } from 'react-helmet'
-import { getCookie } from 'typescript-cookie'
-import { DefaultParams, PathPattern, Route, Switch } from 'wouter'
+import {useEffect, useRef, useState} from 'react'
+import {Helmet} from 'react-helmet'
+import {getCookie} from 'typescript-cookie'
+import {DefaultParams, PathPattern, Route, Switch} from 'wouter'
 import Footer from './components/footer'
-import { Header } from './components/header'
-import { Padding } from './components/padding'
+import {Header} from './components/header'
+import {Padding} from './components/padding'
 import useTableOfContents from './hooks/useTableOfContents.tsx'
-import { client } from './main'
-import { CallbackPage } from './page/callback'
-import { FeedPage, TOCHeader } from './page/feed'
-import { FeedsPage } from './page/feeds'
-import { FriendsPage } from './page/friends'
-import { HashtagPage } from './page/hashtag.tsx'
-import { HashtagsPage } from './page/hashtags.tsx'
-import { Settings } from "./page/settings.tsx"
-import { TimelinePage } from './page/timeline'
-import { WritingPage } from './page/writing'
-import { ClientConfigContext, ConfigWrapper, defaultClientConfig, defaultClientConfigWrapper } from './state/config.tsx'
-import { Profile, ProfileContext } from './state/profile'
-import { headersWithAuth } from './utils/auth'
-import { tryInt } from './utils/int'
+import {client} from './main'
+import {CallbackPage} from './page/callback'
+import {FeedPage, TOCHeader} from './page/feed'
+import {FeedsPage} from './page/feeds'
+import {FriendsPage} from './page/friends'
+import {HashtagPage} from './page/hashtag.tsx'
+import {HashtagsPage} from './page/hashtags.tsx'
+import {Settings} from "./page/settings.tsx"
+import {TimelinePage} from './page/timeline'
+import {WritingPage} from './page/writing'
+import {ClientConfigContext, ConfigWrapper, defaultClientConfig, defaultClientConfigWrapper} from './state/config.tsx'
+import {Profile, ProfileContext} from './state/profile'
+import {headersWithAuth} from './utils/auth'
+import {tryInt} from './utils/int'
+import {
+  KBarProvider,
+  KBarPortal,
+  KBarPositioner,
+  KBarAnimator,
+  KBarSearch,
+  useMatches,
+  NO_GROUP
+} from "kbar";
+import {TailwindIndicator} from "./components/tailwind-indicator";
+import CommandBar from "./components/command-k/command-bar";
 
 function App() {
   const ref = useRef(false)
   const [profile, setProfile] = useState<Profile | undefined>()
   const [config, setConfig] = useState<ConfigWrapper>(defaultClientConfigWrapper)
+
+  const actions = [
+    {
+      id: "blog",
+      name: "Blog",
+      shortcut: ["b"],
+      keywords: "writing words",
+      perform: () => (window.location.pathname = "blog"),
+    },
+    {
+      id: "contact",
+      name: "Contact",
+      shortcut: ["c"],
+      keywords: "email",
+      perform: () => (window.location.pathname = "contact"),
+    },
+  ]
+
   useEffect(() => {
     if (ref.current) return
     if (getCookie('token')?.length ?? 0 > 0) {
       client.user.profile.get({
         headers: headersWithAuth()
-      }).then(({ data }) => {
+      }).then(({data}) => {
         if (data && typeof data != 'string') {
           setProfile({
             id: data.id,
@@ -47,7 +76,7 @@ function App() {
       const configWrapper = new ConfigWrapper(configObj, defaultClientConfig)
       setConfig(configWrapper)
     } else {
-      client.config({ type: "client" }).get().then(({ data }) => {
+      client.config({type: "client"}).get().then(({data}) => {
         if (data && typeof data != 'string') {
           sessionStorage.setItem('config', JSON.stringify(data))
           const config = new ConfigWrapper(data, defaultClientConfig)
@@ -61,82 +90,92 @@ function App() {
     <>
       <ClientConfigContext.Provider value={config}>
         <ProfileContext.Provider value={profile}>
-          <Helmet>
-            <link rel="icon" href={config.get("favicon")} />
-          </Helmet>
-          <Switch>
-            <RouteMe path="/">
-              <FeedsPage />
-            </RouteMe>
+          <CommandBar>
+            {/*<KBarPortal>
+              <KBarPositioner>
+                <KBarAnimator>
+                  <KBarSearch />
+                </KBarAnimator>
+              </KBarPositioner>
+            </KBarPortal>*/}
+            <Helmet>
+              <link rel="icon" href={config.get("favicon")}/>
+            </Helmet>
+            <Switch>
+              <RouteMe path="/">
+                <FeedsPage/>
+              </RouteMe>
 
-            <RouteMe path="/timeline">
-              <TimelinePage />
-            </RouteMe>
-
-
-            <RouteMe path="/friends">
-              <FriendsPage />
-            </RouteMe>
-
-            <RouteMe path="/hashtags">
-              <HashtagsPage />
-            </RouteMe>
-
-            <RouteMe path="/hashtag/:name">
-              {params => {
-                return (<HashtagPage name={params.name || ""} />)
-              }}
-            </RouteMe>
-
-            <RouteMe path="/settings" paddingClassName='mx-4'>
-              <Settings />
-            </RouteMe>
+              <RouteMe path="/timeline">
+                <TimelinePage/>
+              </RouteMe>
 
 
-            <RouteMe path="/writing" paddingClassName='mx-4'>
-              <WritingPage />
-            </RouteMe>
+              <RouteMe path="/friends">
+                <FriendsPage/>
+              </RouteMe>
 
-            <RouteMe path="/writing/:id" paddingClassName='mx-4'>
-              {({ id }) => {
-                const id_num = tryInt(0, id)
-                return (
-                  <WritingPage id={id_num} />
-                )
-              }}
-            </RouteMe>
+              <RouteMe path="/hashtags">
+                <HashtagsPage/>
+              </RouteMe>
 
-            <RouteMe path="/callback" >
-              <CallbackPage />
-            </RouteMe>
+              <RouteMe path="/hashtag/:name">
+                {params => {
+                  return (<HashtagPage name={params.name || ""}/>)
+                }}
+              </RouteMe>
 
-            <RouteWithIndex path="/feed/:id">
-              {(params, TOC) => {
-                return (<FeedPage id={params.id || ""} TOC={TOC} />)
-              }}
-            </RouteWithIndex>
+              <RouteMe path="/settings" paddingClassName='mx-4'>
+                <Settings/>
+              </RouteMe>
 
-            <RouteWithIndex path="/:alias">
-              {(params, TOC) => {
-                return (
-                  <FeedPage id={params.alias || ""} TOC={TOC} />
-                )
-              }}
-            </RouteWithIndex>
 
-            {/* Default route in a switch */}
-            <Route>404: No such page!</Route>
-          </Switch>
+              <RouteMe path="/writing" paddingClassName='mx-4'>
+                <WritingPage/>
+              </RouteMe>
+
+              <RouteMe path="/writing/:id" paddingClassName='mx-4'>
+                {({id}) => {
+                  const id_num = tryInt(0, id)
+                  return (
+                    <WritingPage id={id_num}/>
+                  )
+                }}
+              </RouteMe>
+
+              <RouteMe path="/callback">
+                <CallbackPage/>
+              </RouteMe>
+
+              <RouteWithIndex path="/feed/:id">
+                {(params, TOC) => {
+                  return (<FeedPage id={params.id || ""} TOC={TOC}/>)
+                }}
+              </RouteWithIndex>
+
+              <RouteWithIndex path="/:alias">
+                {(params, TOC) => {
+                  return (
+                    <FeedPage id={params.alias || ""} TOC={TOC}/>
+                  )
+                }}
+              </RouteWithIndex>
+
+              {/* Default route in a switch */}
+              <Route>404: No such page!</Route>
+            </Switch>
+            <TailwindIndicator/>
+          </CommandBar>
         </ProfileContext.Provider>
       </ClientConfigContext.Provider>
     </>
   )
 }
 
-function RouteMe({ path, children, headerComponent, paddingClassName }:
-  { path: PathPattern, children: React.ReactNode | ((params: DefaultParams) => React.ReactNode), headerComponent?: React.ReactNode, paddingClassName?: string }) {
+function RouteMe({path, children, headerComponent, paddingClassName}:
+                   { path: PathPattern, children: React.ReactNode | ((params: DefaultParams) => React.ReactNode), headerComponent?: React.ReactNode, paddingClassName?: string }) {
   return (
-    <Route path={path} >
+    <Route path={path}>
       {params => {
         return (<>
           <Header>
@@ -145,7 +184,7 @@ function RouteMe({ path, children, headerComponent, paddingClassName }:
           <Padding className={paddingClassName}>
             {typeof children === 'function' ? children(params) : children}
           </Padding>
-          <Footer />
+          <Footer/>
         </>)
       }}
     </Route>
@@ -153,10 +192,10 @@ function RouteMe({ path, children, headerComponent, paddingClassName }:
 }
 
 
-function RouteWithIndex({ path, children }:
-  { path: PathPattern, children: (params: DefaultParams, TOC: () => JSX.Element) => React.ReactNode }) {
+function RouteWithIndex({path, children}:
+                          { path: PathPattern, children: (params: DefaultParams, TOC: () => JSX.Element) => React.ReactNode }) {
   const TOC = useTableOfContents(".toc-content", "header");
-  return (<RouteMe path={path} headerComponent={TOCHeader({ TOC: TOC })} paddingClassName='mx-4'>
+  return (<RouteMe path={path} headerComponent={TOCHeader({TOC: TOC})} paddingClassName='mx-4'>
     {params => children(params, TOC)}
   </RouteMe>)
 }

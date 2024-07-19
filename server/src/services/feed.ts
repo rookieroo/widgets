@@ -1,4 +1,4 @@
-import { and, count, desc, eq, or } from "drizzle-orm";
+import {and, count, desc, eq, like, or} from "drizzle-orm";
 import Elysia, { t } from "elysia";
 import { XMLParser } from "fast-xml-parser";
 import html2md from 'html-to-md';
@@ -16,7 +16,7 @@ export function FeedService() {
         .use(setup())
         .group('/feed', (group) =>
             group
-                .get('/', async ({ admin, set, query: { page, limit, type } }) => {
+                .get('/', async ({ admin, set, query: { page, limit, type, title } }) => {
                     if ((type === 'draft' || type === 'unlisted') && !admin) {
                         set.status = 403;
                         return 'Permission denied';
@@ -29,7 +29,8 @@ export function FeedService() {
                     if (cached) {
                         return cached;
                     }
-                    const where = type === 'draft' ? eq(feeds.draft, 1) : type === 'unlisted' ? and(eq(feeds.draft, 0), eq(feeds.listed, 0)) : and(eq(feeds.draft, 0), eq(feeds.listed, 1));
+                    let where = type === 'draft' ? eq(feeds.draft, 1) : type === 'unlisted' ? and(eq(feeds.draft, 0), eq(feeds.listed, 0)) : and(eq(feeds.draft, 0), eq(feeds.listed, 1));
+                    where = where + and(like(feeds.title, title));
                     const size = await db.select({ count: count() }).from(feeds).where(where);
                     if (size[0].count === 0) {
                         return {
