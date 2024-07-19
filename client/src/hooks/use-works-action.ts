@@ -45,7 +45,7 @@ export default function useWorksAction() {
   }, []);
 
   const searchActions = useMemo(() => {
-    if (!results) {
+    if (!results || !results.length) {
       return [];
     }
 
