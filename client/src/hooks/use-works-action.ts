@@ -35,7 +35,7 @@ export default function useWorksAction() {
       headers: headersWithAuth()
     }).then(({ data }) => {
       if (data && typeof data != 'string') {
-        setResults(data);
+        setResults(data?.data);
       }
     })
   }
