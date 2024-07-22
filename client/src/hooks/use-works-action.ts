@@ -25,10 +25,11 @@ export default function useWorksAction() {
     let query = {
       page: 1,
       limit: 5,
-      type: 'normal'
+      type: 'normal',
+      title: title
     }
-    if(title) {
-      query.title = title
+    if(!title) {
+      delete query.title
     }
     client.feed.index.get({
       query,
@@ -41,7 +42,7 @@ export default function useWorksAction() {
   }
 
   useEffect(() => {
-    fetchFeeds('');
+    fetchFeeds('cf');
   }, []);
 
   const searchActions = useMemo(() => {
