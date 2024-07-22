@@ -30,7 +30,7 @@ export function FeedService() {
                     if (cached) {
                         return cached;
                     }
-                    let where = type === 'draft' ? eq(feeds.draft, 1) : type === 'unlisted' ? and(eq(feeds.draft, 0), eq(feeds.listed, 0)) : and(eq(feeds.draft, 0), eq(feeds.listed, 1), like(feeds.title, blog_title));
+                    const where = type === 'draft' ? eq(feeds.draft, 1) : type === 'unlisted' ? and(eq(feeds.draft, 0), eq(feeds.listed, 0)) : and(eq(feeds.draft, 0), eq(feeds.listed, 1), like(feeds.title, blog_title));
                     const size = await db.select({ count: count() }).from(feeds).where(where);
                     if (size[0].count === 0) {
                         return {
