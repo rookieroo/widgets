@@ -86,7 +86,8 @@ export function FeedService() {
                     query: t.Object({
                         page: t.Optional(t.Numeric()),
                         limit: t.Optional(t.Numeric()),
-                        type: t.Optional(t.String())
+                        type: t.Optional(t.String()),
+                        title: t.Optional(t.String()),
                     })
                 })
                 .get('/timeline', async () => {
