@@ -25,7 +25,7 @@ export function FeedService() {
                     const blog_title = title || '';
                     const page_num = (page ? page > 0 ? page : 1 : 1) - 1;
                     const limit_num = limit ? +limit > 50 ? 50 : +limit : 20;
-                    const cacheKey = `feeds_${type}_${page_num}_${limit_num}_${title}`;
+                    const cacheKey = `feeds_${type}_${page_num}_${limit_num}_${blog_title}`;
                     const cached = await cache.get(cacheKey);
                     if (cached) {
                         return cached;
