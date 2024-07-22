@@ -22,6 +22,7 @@ export function FeedService() {
                         return 'Permission denied';
                     }
                     const cache = PublicCache();
+                    const blog_title = title || '';
                     const page_num = (page ? page > 0 ? page : 1 : 1) - 1;
                     const limit_num = limit ? +limit > 50 ? 50 : +limit : 20;
                     const cacheKey = `feeds_${type}_${page_num}_${limit_num}_${title}`;
@@ -29,7 +30,7 @@ export function FeedService() {
                     if (cached) {
                         return cached;
                     }
-                    let where = type === 'draft' ? eq(feeds.draft, 1) : type === 'unlisted' ? and(eq(feeds.draft, 0), eq(feeds.listed, 0)) : and(eq(feeds.draft, 0), eq(feeds.listed, 1), like(feeds.title, title));
+                    let where = type === 'draft' ? eq(feeds.draft, 1) : type === 'unlisted' ? and(eq(feeds.draft, 0), eq(feeds.listed, 0)) : and(eq(feeds.draft, 0), eq(feeds.listed, 1), like(feeds.title, blog_title));
                     const size = await db.select({ count: count() }).from(feeds).where(where);
                     if (size[0].count === 0) {
                         return {

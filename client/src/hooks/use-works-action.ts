@@ -28,9 +28,6 @@ export default function useWorksAction() {
       type: 'normal',
       title: title
     }
-    if(!title) {
-      delete query.title
-    }
     client.feed.index.get({
       query,
       headers: headersWithAuth()
@@ -42,7 +39,7 @@ export default function useWorksAction() {
   }
 
   useEffect(() => {
-    fetchFeeds('cf');
+    fetchFeeds('CF');
   }, []);
 
   const searchActions = useMemo(() => {
