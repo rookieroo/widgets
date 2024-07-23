@@ -39,7 +39,7 @@ export default function useWorksAction() {
   }
 
   useEffect(() => {
-    fetchFeeds('');
+    // fetchFeeds('');
   }, []);
 
   const searchActions = useMemo(() => {
