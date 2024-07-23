@@ -23,12 +23,9 @@ export default function useWorksAction() {
 
   function fetchFeeds(title?: string) {
     let query = {
-      page: 1,
-      limit: 5,
-      type: 'normal',
       title: title
     }
-    client.feed.index.get({
+    client.feed.search.get({
       query,
       headers: headersWithAuth()
     }).then(({ data }) => {
@@ -39,7 +36,7 @@ export default function useWorksAction() {
   }
 
   useEffect(() => {
-    fetchFeeds('cf');
+    fetchFeeds('');
   }, []);
 
   const searchActions = useMemo(() => {
