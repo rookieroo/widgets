@@ -6,23 +6,24 @@ import type { Env } from "../db/db";
 import * as schema from "../db/schema";
 import { friends } from "../db/schema";
 import { setup } from "../setup";
-import { getDB } from "../utils/di";
 import { ClientConfig, ServerConfig } from "../utils/cache";
+import { Config } from "../utils/config";
+import { getDB, getEnv } from "../utils/di";
+import { notify } from "../utils/webhook";
 
 export function FriendService() {
     const db: DB = getDB();
+    const env: Env = getEnv();
     return new Elysia({ aot: false })
         .use(setup())
         .group('/friend', (group) =>
             group.get('/', async ({ admin, uid }) => {
                 const friend_list = await (admin ? db.query.friends.findMany() : db.query.friends.findMany({ where: eq(friends.accepted, 1) }));
-                console.log(friend_list);
                 const uid_num = parseInt(uid);
                 const apply_list = await db.query.friends.findFirst({ where: eq(friends.uid, uid_num ?? null) });
-                console.log(apply_list);
                 return { friend_list, apply_list };
             })
-                .post('/', async ({ admin, uid, set, body: { name, desc, avatar, url } }) => {
+                .post('/', async ({ admin, uid, username, set, body: { name, desc, avatar, url } }) => {
                     const config = ClientConfig()
                     const enable = await config.getOrDefault('friend_apply_enable', true)
                     if (!enable && !admin) {
@@ -60,6 +61,13 @@ export function FriendService() {
                         uid: uid_num,
                         accepted,
                     });
+
+                    if (!admin) {
+                        const webhookUrl = await ServerConfig().get(Config.webhookUrl) || env.WEBHOOK_URL;
+                        const content = `${env.FRONTEND_URL}/friends\n${username} 申请友链: ${name}\n${desc}\n${url}`;
+                        // notify
+                        await notify(webhookUrl, content);
+                    }
                     return 'OK';
                 }, {
                     body: t.Object({
@@ -69,7 +77,7 @@ export function FriendService() {
                         url: t.String(),
                     })
                 })
-                .put('/:id', async ({ admin, uid, set, params: { id }, body: { name, desc, avatar, url, accepted } }) => {
+                .put('/:id', async ({ admin, uid, username, set, params: { id }, body: { name, desc, avatar, url, accepted } }) => {
                     const config = ClientConfig()
                     const enable = await config.getOrDefault('friend_apply_enable', true)
                     if (!enable && !admin) {
@@ -104,6 +112,12 @@ export function FriendService() {
                         url: wrap(url),
                         accepted: accepted === undefined ? undefined : accepted,
                     }).where(eq(friends.id, parseInt(id)));
+                    if (!admin) {
+                        const webhookUrl = await ServerConfig().get(Config.webhookUrl) || env.WEBHOOK_URL;
+                        const content = `${env.FRONTEND_URL}/friends\n${username} 更新友链: ${name}\n${desc}\n${url}`;
+                        // notify
+                        await notify(webhookUrl, content);
+                    }
                     return 'OK';
                 }, {
                     body: t.Object({

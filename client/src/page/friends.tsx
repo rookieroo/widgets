@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Helmet } from 'react-helmet';
 import { useTranslation } from "react-i18next";
 import Modal from 'react-modal';
@@ -87,7 +87,7 @@ export function FriendsPage() {
         ref.current = true
     }, [])
     function publishButton() {
-        publish({ name, desc, avatar, url, showAlert})
+        publish({ name, desc, avatar, url, showAlert })
     }
     return (<>
         <Helmet>
@@ -98,13 +98,13 @@ export function FriendsPage() {
             <meta property="og:type" content="article" />
             <meta property="og:url" content={document.URL} />
         </Helmet>
-        <Waiting for={friendsAvailable.length != 0 || friendsUnavailable.length != 0 || status === "idle"}>
+        <Waiting for={friendsAvailable.length !== 0 || friendsUnavailable.length !== 0 || status === "idle"}>
             <main className="w-full flex flex-col justify-center items-center mb-8 t-primary">
                 <FriendList title={t('friends.title')} show={friendsAvailable.length > 0} friends={friendsAvailable} />
                 <FriendList title={t('friends.left')} show={friendsUnavailable.length > 0} friends={friendsUnavailable} />
                 <FriendList title={t('friends.review.waiting')} show={waitList.length > 0} friends={waitList} />
                 <FriendList title={t('friends.review.rejected')} show={refusedList.length > 0} friends={refusedList} />
-                <FriendList title={t('friends.my_apply')} show={profile?.permission != true && apply != undefined} friends={apply ? [apply] : []} />
+                <FriendList title={t('friends.my_apply')} show={profile?.permission !== true && apply !== undefined} friends={apply ? [apply] : []} />
                 {profile && (profile.permission || config.get("friend_apply_enable")) &&
                     <div className="wauto t-primary flex text-start text-2xl font-bold mt-8 ani-show">
                         <div className="md:basis-1/2 bg-w rounded-xl p-4">
@@ -159,7 +159,8 @@ function Friend({ friend }: { friend: FriendItem }) {
     const [modalIsOpen, setIsOpen] = useState(false);
     const { showConfirm, ConfirmUI } = useConfirm()
     const { showAlert, AlertUI } = useAlert()
-    function deleteFriend() {
+
+    const deleteFriend = useCallback(() => {
         showConfirm(
             t('delete.title'),
             t('delete.confirm'),
@@ -176,8 +177,9 @@ function Friend({ friend }: { friend: FriendItem }) {
                     }
                 })
             })
-    }
-    function updateFriend() {
+    }, [friend.id])
+
+    const updateFriend = useCallback(() => {
         client.friend({ id: friend.id }).put({
             avatar,
             name,
@@ -195,7 +197,7 @@ function Friend({ friend }: { friend: FriendItem }) {
                 })
             }
         })
-    }
+    }, [avatar, name, desc, url, status])
 
     const statusOption = [
         { value: -1, label: t('friends.review.rejected') },
@@ -204,16 +206,16 @@ function Friend({ friend }: { friend: FriendItem }) {
     ]
     return (
         <>
-            <a title={friend.name} href={friend.url} target="_blank" className="bg-active w-full bg-w rounded-xl p-4 flex flex-col justify-center items-center relative ani-show">
+            <a title={friend.name} href={friend.url} target="_blank" className="bg-button w-full bg-w rounded-xl p-4 flex flex-col justify-center items-center relative ani-show">
                 <div className="w-16 h-16">
                     <img className={"rounded-full " + (friend.health.length > 0 ? "grayscale" : "")} src={friend.avatar} alt={friend.name} />
                 </div>
                 <p className="text-base text-center">{friend.name}</p>
                 {friend.health.length == 0 && <p className="text-sm text-neutral-500 text-center">{friend.desc}</p>}
-                {friend.accepted != 1 && <p className={`${friend.accepted === 0 ? "t-primary" : "text-theme"}`}>{statusOption[friend.accepted + 1].label}</p>}
+                {friend.accepted !== 1 && <p className={`${friend.accepted === 0 ? "t-primary" : "text-theme"}`}>{statusOption[friend.accepted + 1].label}</p>}
                 {friend.health.length > 0 && <p className="text-sm text-gray-500 text-center">{errorHumanize(friend.health)}</p>}
                 {(profile?.permission || profile?.id === friend.uid) && <>
-                    <button onClick={(e) => { e.preventDefault(); setIsOpen(true) }} className="absolute top-0 right-0 m-2 px-2 py-1 bg-secondary t-primary rounded-full bg-active">
+                    <button onClick={(e) => { e.preventDefault(); setIsOpen(true) }} className="absolute top-0 right-0 m-2 px-2 py-1 bg-secondary t-primary rounded-full bg-button">
                         <i className="ri-settings-line"></i>
                     </button></>}
             </a>
@@ -262,7 +264,7 @@ function Friend({ friend }: { friend: FriendItem }) {
                                     <Select options={statusOption} required defaultValue={statusOption[friend.accepted + 1]}
                                         onChange={(newValue, _) => {
                                             const value = newValue?.value
-                                            if (value != undefined) {
+                                            if (value !== undefined) {
                                                 setStatus(value)
                                             }
                                         }}
@@ -276,8 +278,8 @@ function Friend({ friend }: { friend: FriendItem }) {
                     <Input value={avatar} setValue={setAvatar} placeholder={t('avatar.url')} className="mt-2" />
                     <Input value={url} setValue={setUrl} placeholder={t('url')} className="my-2" />
                     <div className='flex flex-row justify-center space-x-2'>
-                        <button onClick={deleteFriend} className="bg-secondary text-theme rounded-full bg-active px-4 py-2 mt-2">{t('delete.title')}</button>
-                        <button onClick={updateFriend} className="bg-secondary t-primary rounded-full bg-active px-4 py-2 mt-2">{t('save')}</button>
+                        <button onClick={deleteFriend} className="bg-secondary text-theme rounded-full bg-button px-4 py-2 mt-2">{t('delete.title')}</button>
+                        <button onClick={updateFriend} className="bg-secondary t-primary rounded-full bg-button px-4 py-2 mt-2">{t('save')}</button>
                     </div>
                 </div >
             </Modal>
@@ -290,7 +292,7 @@ function Friend({ friend }: { friend: FriendItem }) {
 function errorHumanize(error: string) {
     if (error === "certificate has expired" || error == "526") {
         return "证书已过期"
-    } else if (error.includes("Unable to connect") || error == "521") {
+    } else if (error.includes("Unable to connect") || error == "521" || error == "522") {
         return "无法访问"
     }
     return error

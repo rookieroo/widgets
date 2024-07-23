@@ -14,6 +14,9 @@ import { ProfileContext } from "../state/profile";
 import { headersWithAuth } from "../utils/auth";
 import { siteName } from "../utils/constants";
 import { timeago } from "../utils/timeago";
+import { Button } from "../components/button";
+import { Tips } from "../components/tips";
+import { useLoginModal } from "../hooks/useLoginModal";
 
 type Feed = {
   id: number;
@@ -35,7 +38,7 @@ type Feed = {
   uv: number;
 };
 
-export function FeedPage({ id, TOC }: { id: string, TOC: () => JSX.Element }) {
+export function FeedPage({ id, TOC, clean }: { id: string, TOC: () => JSX.Element, clean: (id: string) => void }) {
   const { t } = useTranslation();
   const profile = useContext(ProfileContext);
   const [feed, setFeed] = useState<Feed>();
@@ -45,6 +48,7 @@ export function FeedPage({ id, TOC }: { id: string, TOC: () => JSX.Element }) {
   const [_, setLocation] = useLocation();
   const { showAlert, AlertUI } = useAlert();
   const { showConfirm, ConfirmUI } = useConfirm();
+  const [top, setTop] = useState<number>(0);
   const config = useContext(ClientConfigContext);
   const counterEnabled = config.get<boolean>('counter.enabled');
   function deleteFeed() {
@@ -69,6 +73,32 @@ export function FeedPage({ id, TOC }: { id: string, TOC: () => JSX.Element }) {
           });
       })
   }
+  function topFeed() {
+    const isUnTop = !(top > 0)
+    const topNew = isUnTop ? 1 : 0;
+    // Confirm
+    showConfirm(
+      isUnTop ? t("article.top.title") : t("article.untop.title"),
+      isUnTop ? t("article.top.confirm") : t("article.untop.confirm"),
+      () => {
+        if (!feed) return;
+        client
+          .feed.top({ id: feed.id })
+          .post({
+            top: topNew,
+          }, {
+            headers: headersWithAuth(),
+          })
+          .then(({ error }) => {
+            if (error) {
+              showAlert(error.value as string);
+            } else {
+              showAlert(isUnTop ? t("article.top.success") : t("article.untop.success"));
+              setTop(topNew);
+            }
+          });
+      })
+  }
   useEffect(() => {
     if (ref.current == id) return;
     setFeed(undefined);
@@ -85,12 +115,14 @@ export function FeedPage({ id, TOC }: { id: string, TOC: () => JSX.Element }) {
         } else if (data && typeof data !== "string") {
           setTimeout(() => {
             setFeed(data);
+            setTop(data.top);
             // Extract head image
             const img_reg = /!\[.*?\]\((.*?)\)/;
             const img_match = img_reg.exec(data.content);
             if (img_match) {
               setHeadImage(img_match[1]);
             }
+            clean(id);
           }, 0);
         }
       });
@@ -132,14 +164,15 @@ export function FeedPage({ id, TOC }: { id: string, TOC: () => JSX.Element }) {
       <div className="w-full flex flex-row justify-center ani-show">
         {error && (
           <>
-            <div className="flex flex-col wauto rounded-2xl bg-w m-2 p-6 items-center justify-center">
+            <div className="flex flex-col wauto rounded-2xl bg-w m-2 p-6 items-center justify-center space-y-2">
               <h1 className="text-xl font-bold t-primary">{error}</h1>
-              <button
-                className="mt-2 bg-theme text-white px-4 py-2 rounded-full"
+              {error === "Not found" && id === "about" && (
+                <Tips value={t("about.notfound")} />
+              )}
+              <Button
+                title={t("index.back")}
                 onClick={() => (window.location.href = "/")}
-              >
-                {t("index.back")}
-              </button>
+              />
             </div>
           </>
         )}
@@ -175,12 +208,12 @@ export function FeedPage({ id, TOC }: { id: string, TOC: () => JSX.Element }) {
                       )}
                     </div>
                     {counterEnabled && <p className='text-[12px] text-gray-400 font-normal link-line'>
-                      <span className="font-bold"> {t("count.pv")} </span>
+                      <span> {t("count.pv")} </span>
                       <span>
                         {feed.pv}
                       </span>
                       <span> |</span>
-                      <span className="font-bold"> {t("count.uv")} </span>
+                      <span> {t("count.uv")} </span>
                       <span>
                         {feed.uv}
                       </span>
@@ -195,17 +228,24 @@ export function FeedPage({ id, TOC }: { id: string, TOC: () => JSX.Element }) {
                   <div className="pt-2">
                     {profile?.permission && (
                       <div className="flex gap-2">
+                        <button
+                          aria-label={top > 0 ? t("untop.title") : t("top.title")}
+                          onClick={topFeed}
+                          className={`flex-1 flex flex-col items-end justify-center px-2 py rounded-full transition ${top > 0 ? "bg-theme text-white hover:bg-theme-hover active:bg-theme-active" : "bg-secondary bg-button dark:text-neutral-400"}`}
+                        >
+                          <i className="ri-skip-up-line" />
+                        </button>
                         <Link
                           aria-label={t("edit")}
                           href={`/writing/${feed.id}`}
-                          className="flex-1 flex flex-col items-end justify-center px-2 py bg-secondary hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-full transition"
+                          className="flex-1 flex flex-col items-end justify-center px-2 py bg-secondary bg-button rounded-full transition"
                         >
-                          <i className="ri-edit-2-line dark:text-gray-400" />
+                          <i className="ri-edit-2-line dark:text-neutral-400" />
                         </Link>
                         <button
                           aria-label={t("delete.title")}
                           onClick={deleteFeed}
-                          className="flex-1 flex flex-col items-end justify-center px-2 py bg-secondary hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-full transition"
+                          className="flex-1 flex flex-col items-end justify-center px-2 py bg-secondary bg-button rounded-full transition"
                         >
                           <i className="ri-delete-bin-7-line text-red-500" />
                         </button>
@@ -282,7 +322,7 @@ export function TOCHeader({ TOC }: { TOC: () => JSX.Element }) {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            background: "white",
+            background: "none",
           },
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -310,12 +350,18 @@ function CommentInput({
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const { showAlert, AlertUI } = useAlert();
+  const profile = useContext(ProfileContext);
+  const { LoginModal, setIsOpened } = useLoginModal()
   function errorHumanize(error: string) {
     if (error === "Unauthorized") return t("login.required");
     else if (error === "Content is required") return t("comment.empty");
     return error;
   }
   function submit() {
+    if (!profile) {
+      setIsOpened(true)
+      return;
+    }
     client.feed
       .comment({ feed: id })
       .post(
@@ -338,8 +384,10 @@ function CommentInput({
   }
   return (
     <div className="w-full rounded-2xl bg-w t-primary m-2 p-6 items-end flex flex-col">
-      <div className="flex flex-col w-full items-start space-y-4">
+      <div className="flex flex-col w-full items-start mb-4">
         <label htmlFor="comment">{t("comment.title")}</label>
+      </div>
+      {profile ? (<>
         <textarea
           id="comment"
           placeholder={t("comment.placeholder.title")}
@@ -347,15 +395,25 @@ function CommentInput({
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-      </div>
-      <button
-        className="mt-2 bg-theme text-white px-4 py-2 rounded-full"
-        onClick={submit}
-      >
-        {t("comment.submit")}
-      </button>
+        <button
+          className="mt-4 bg-theme text-white px-4 py-2 rounded-full"
+          onClick={submit}
+        >
+          {t("comment.submit")}
+        </button>
+      </>) : (
+        <div className="flex flex-row w-full items-center justify-center space-x-2 py-12">
+          <button
+            className="mt-2 bg-theme text-white px-4 py-2 rounded-full"
+            onClick={() => setIsOpened(true)}
+          >
+            {t("login.required")}
+          </button>
+        </div>
+      )}
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       <AlertUI />
+      <LoginModal />
     </div>
   );
 }

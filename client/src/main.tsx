@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet'
 import Backend from 'i18next-http-backend';
 import { initReactI18next } from "react-i18next"
 import Modal from 'react-modal'
-import { App as Server } from 'widgets/src/server'
+import { App as Server } from 'rin-server/src/server'
 import App from './App'
 import './index.css'
 import './components.css'

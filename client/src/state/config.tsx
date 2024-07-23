@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-const defaultFavicon = process.env.AVATAR ? `//wsrv.nl/?url=${process.env.AVATAR}&w=144&h=144&mask=circle` : '/favicon.ico'
+const defaultFavicon = process.env.AVATAR ? `//wsrv.nl/?url=${encodeURIComponent(process.env.AVATAR)}&w=144&h=144&mask=circle` : '/favicon.ico';
 export const defaultClientConfig = new Map(Object.entries({
     "favicon": defaultFavicon,
     "counter.enabled": true,
@@ -10,7 +10,7 @@ export const defaultClientConfig = new Map(Object.entries({
 export const defaultServerConfig = new Map(Object.entries({
     "friend_apply_auto_accept": false,
     "friend_crontab": true,
-    "friend_ua":"Rin-Check/0.1.0"
+    "friend_ua": "Rin-Check/0.1.0"
 }))
 
 export class ConfigWrapper {
@@ -21,8 +21,9 @@ export class ConfigWrapper {
         this.defaultConfig = defaultConfig;
     }
     get<T>(key: string) {
-        if (this.config[key] != undefined) {
-            return this.config[key] as T;
+        const value = this.config[key];
+        if (value !== undefined && value !== "") {
+            return value as T;
         }
         if (this.defaultConfig.has(key)) {
             return this.defaultConfig.get(key) as T;

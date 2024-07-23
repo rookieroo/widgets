@@ -12,6 +12,7 @@ export const feeds = sqliteTable("feeds", {
     content: text("content").notNull(),
     listed: integer("listed").default(1).notNull(),
     draft: integer("draft").default(1).notNull(),
+    top: integer("top").default(0).notNull(),
     uid: integer("uid").references(() => users.id).notNull(),
     createdAt: created_at,
     updatedAt: updated_at,
@@ -22,6 +23,11 @@ export const visits = sqliteTable("visits", {
     feedId: integer("feed_id").references(() => feeds.id, { onDelete: 'cascade' }).notNull(),
     ip: text("ip").notNull(),
     createdAt: created_at,
+});
+
+export const info = sqliteTable("info", {
+    key: text("key").notNull().unique(),
+    value: text("value").notNull(),
 });
 
 export const friends = sqliteTable("friends", {

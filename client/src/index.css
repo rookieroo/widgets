@@ -16,7 +16,7 @@
 }
 
 body {
-  @apply bg-background dark:bg-background text-gray-800;
+  @apply bg-background-light dark:bg-background-dark text-gray-800;
   font-family: Cantarell, "Source Han Serif CN VF" !important;
 }
 
@@ -91,6 +91,12 @@ ul {
 .octicon {
   @apply mr-1 w-3;
 }
+
+.katex {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 /* animation */
 
 @keyframes anvil {
@@ -127,6 +133,8 @@ ul {
 
 .table {
   @apply w-full border-collapse my-4;
+  overflow-x: auto;
+  display: block !important;
 }
 
 .table th,
@@ -197,118 +205,4 @@ a.toc-link {
 
 .is-active-link::before {
   @apply bg-theme;
-}
-
-/* Generated with http://k88hudson.github.io/syntax-highlighting-theme-generator/www */
-/* http://k88hudson.github.io/react-markdocs */
-/**
- * @author k88hudson
- *
- * Based on prism.js default theme for JavaScript, CSS and HTML
- * Based on dabblet (http://dabblet.com)
- * @author Lea Verou
- */
-/*********************************************************
-* General
-*/
-pre[class*="language-"]::selection,
-code[class*="language-"]::selection,
-pre[class*="language-"]::mozselection,
-code[class*="language-"]::mozselection {
-  text-shadow: none;
-  background: #36acaa;
-}
-
-:not(pre) > code[class*="language-"] {
-  color: #0076ff;
-}
-
-/*********************************************************
-* Tokens
-*/
-.namespace {
-  opacity: 0.7;
-}
-
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-  color: #888888;
-}
-
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: #0076ff;
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-  color: #008563;
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-  color: #ff0078;
-}
-
-.token.atrule,
-.token.attr-value,
-.token.keyword {
-  color: #ff0080;
-}
-
-.token.function {
-  color: #0076ff;
-}
-
-.token.regex,
-.token.important,
-.token.variable {
-  color: #0076ff;
-}
-
-.token.important,
-.token.bold {
-  font-weight: bold;
-}
-
-.token.italic {
-  font-style: italic;
-}
-
-.token.entity {
-  cursor: help;
-}
-
-/*********************************************************
-* Line highlighting
-*/
-pre[data-line] {
-  position: relative;
-}
-
-.line-highlight {
-  position: absolute;
-  left: 0;
-  right: 0;
-  padding: inherit 0;
-  background: #f7ebc6;
-  box-shadow: inset 5px 0 0 #f7d87c;
-  z-index: 0;
-  pointer-events: none;
-  line-height: inherit;
-  white-space: pre;
 }
