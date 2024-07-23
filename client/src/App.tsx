@@ -23,15 +23,6 @@ import { tryInt } from './utils/int'
 import { SearchPage } from './page/search.tsx'
 import { Tips, TipsPage } from './components/tips.tsx'
 import { useTranslation } from 'react-i18next'
-import {
-  KBarProvider,
-  KBarPortal,
-  KBarPositioner,
-  KBarAnimator,
-  KBarSearch,
-  useMatches,
-  NO_GROUP
-} from "kbar";
 import {TailwindIndicator} from "./components/tailwind-indicator";
 import CommandBar from "./components/command-k/command-bar";
 
