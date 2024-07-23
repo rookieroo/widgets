@@ -25,8 +25,8 @@ export default function useWorksAction() {
     let query = {
       title: title
     }
-    client.feed.search.get({
-      query,
+    client.feed.timeline.get({
+      // query,
       headers: headersWithAuth()
     }).then(({ data }) => {
       if (data && typeof data != 'string') {
