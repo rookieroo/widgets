@@ -1,4 +1,4 @@
-import {and, count, desc, eq, like, or} from "drizzle-orm";
+import {and, count, desc, eq, ilike, or} from "drizzle-orm";
 import Elysia, { t } from "elysia";
 import { XMLParser } from "fast-xml-parser";
 import html2md from 'html-to-md';
@@ -30,7 +30,7 @@ export function FeedService() {
                     if (cached) {
                         return cached;
                     }
-                    const where = type === 'draft' ? eq(feeds.draft, 1) : type === 'unlisted' ? and(eq(feeds.draft, 0), eq(feeds.listed, 0)) : and(eq(feeds.draft, 0), eq(feeds.listed, 1));
+                    const where = type === 'draft' ? eq(feeds.draft, 1) : type === 'unlisted' ? and(eq(feeds.draft, 0), eq(feeds.listed, 0)) : and(eq(feeds.draft, 0), eq(feeds.listed, 1), ilike(feeds.title, blog_title));
                     const size = await db.select({ count: count() }).from(feeds).where(where);
                     if (size[0].count === 0) {
                         return {
