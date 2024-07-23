@@ -49,6 +49,9 @@ crons = ["*/20 * * * *"]
 
 [vars]
 FRONTEND_URL = "${FRONTEND_URL}"
+JWT_SECRET = "${jwtSecret}"
+RIN_GITHUB_CLIENT_ID = "${githubClientId}"
+RIN_GITHUB_CLIENT_SECRET = "${githubClientSecret}"
 S3_FOLDER = "${S3_FOLDER}"
 S3_CACHE_FOLDER="${S3_CACHE_FOLDER}"
 S3_REGION = "${S3_REGION}"
