@@ -10,11 +10,12 @@ import { Button } from "./button";
 import { IconSmall } from "./icon";
 import { Input } from "./input";
 import { Padding } from "./padding";
-
+import {CustomizerWrapper} from "./theme/ThemeCustomizer";
+import {Card} from "./ui/card";
 
 export function Header({ children }: { children?: React.ReactNode }) {
     const profile = useContext(ProfileContext);
-    const { t } = useTranslation()
+    const { t } = useTranslation();
 
     return useMemo(() => (
         <>
@@ -34,14 +35,14 @@ export function Header({ children }: { children?: React.ReactNode }) {
                                     </p>
                                 </div>
                             </Link>
-                            <div
+                            <Card
                                 className="w-full md:w-max transition-all duration-500 md:absolute md:left-1/2 md:translate-x-[-50%] flex-row justify-center items-center">
                                 <div
-                                    className="flex flex-row items-center bg-w t-primary rounded-full px-2 shadow-xl shadow-light">
+                                    className="flex flex-row items-center t-primary px-2">
                                     <Link aria-label={t('home')} href="/"
                                         className="visible opacity-100 md:hidden md:opacity-0 duration-300 mr-auto flex flex-row items-center py-2">
                                         <img src={process.env.AVATAR} alt="Avatar"
-                                            className="w-10 h-10 rounded-full border-2" />
+                                            className="w-10 h-10 border-2" />
                                         <div className="flex flex-col justify-center items-start mx-2">
                                             <p className="text-sm font-bold">
                                                 {process.env.NAME}
@@ -55,11 +56,12 @@ export function Header({ children }: { children?: React.ReactNode }) {
                                     {children}
                                     <Menu />
                                 </div>
-                            </div>
+                            </Card>
                             <div className="ml-auto hidden opacity-0 md:opacity-100 duration-300 md:flex flex-row items-center space-x-2">
                                 <SearchButton />
                                 <LanguageSwitch />
                                 <UserAvatar profile={profile} />
+                                <CustomizerWrapper />
                             </div>
                         </div>
                     </Padding>
@@ -82,7 +84,7 @@ function NavItem({ menu, title, selected, href, when = true, onClick }: {
         <>
             {when &&
                 <Link href={href}
-                    className={`${menu ? "" : "hidden"} md:block cursor-pointer hover:text-theme duration-300 px-2 py-4 md:p-4 text-sm ${selected ? "text-theme" : "dark:text-white"}`}
+                    className={`${menu ? "" : "hidden"} md:block cursor-pointer hover:text-primary duration-300 px-2 py-4 md:p-4 text-sm ${selected ? "text-primary" : "dark:text-white"}`}
                     state={{ animate: true }}
                     onClick={onClick}
                 >

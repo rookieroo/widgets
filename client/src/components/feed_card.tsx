@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { timeago } from "../utils/timeago";
 import { HashTag } from "./hashtag";
 import { useMemo } from "react";
+import {Card} from "./ui/card";
 export function FeedCard({ id, title, avatar, draft, listed, top, summary, hashtags, createdAt, updatedAt }:
     {
         id: string, avatar?: string,
@@ -13,8 +14,8 @@ export function FeedCard({ id, title, avatar, draft, listed, top, summary, hasht
     }) {
     const { t } = useTranslation()
     return useMemo(() => (
-        <>
-            <Link href={`/feed/${id}`} target="_blank" className="w-full rounded-2xl bg-w my-2 p-6 duration-300 ani-show bg-button">
+        <Card className="p-6 my-2 transition-all duration-500">
+            <Link href={`/feed/${id}`} target="_blank">
                 {avatar &&
                     <div className="flex flex-row items-center mb-2 rounded-xl overflow-clip">
                         <img src={avatar} alt=""
@@ -36,7 +37,7 @@ export function FeedCard({ id, title, avatar, draft, listed, top, summary, hasht
                 <p className="space-x-2">
                     {draft === 1 && <span className="text-gray-400 text-sm">草稿</span>}
                     {listed === 0 && <span className="text-gray-400 text-sm">未列出</span>}
-                    {top === 1 && <span className="text-theme text-sm">
+                    {top === 1 && <span className="text-primary text-sm">
                         置顶
                     </span>}
                 </p>
@@ -52,6 +53,6 @@ export function FeedCard({ id, title, avatar, draft, listed, top, summary, hasht
                 }
 
             </Link>
-        </>
+        </Card>
     ), [id, title, avatar, draft, listed, top, summary, hashtags, createdAt, updatedAt])
 }

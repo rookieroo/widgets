@@ -16,6 +16,31 @@ import {
   Type,
 } from 'lucide-react'
 import { ScrollArea } from '@/ui/scroll-area'
+import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
+import { SquareMousePointer } from 'lucide-react'
+import useToggleTheme from '@/hooks/use-toggle-theme'
+
+export function CustomizerWrapper() {
+  const [config] = useConfig()
+  useToggleTheme(config)
+
+  return (
+    <div>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="ghost" className="flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
+            <SquareMousePointer className="h-4 w-4" />
+            {/*{!open && <SquareDashedMousePointer className="h-5 w-5" />}*/}
+            <span className="sr-only">Customize</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[350px] p-0">
+          <Customizer />
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}
 
 export function Customizer() {
   const [mounted, setMounted] = React.useState(false)
@@ -34,7 +59,7 @@ export function Customizer() {
   }
 
   return (
-    <ScrollArea className="h-[80vh] p-4">
+    <ScrollArea className="h-auto p-4">
       <div className="flex items-start pt-4 md:pt-0">
         <div className="space-y-1 pr-2">
           <div className="font-semibold leading-none tracking-tight">
@@ -115,7 +140,8 @@ export function Customizer() {
                       radius: parseFloat(value),
                     })
                   }}
-                  className={cn(config.radius === parseFloat(value) && 'border-2 border-primary')}
+                  style={{borderRadius: `calc(${value}rem - 2px)`}}
+                  className={cn(config.radius === parseFloat(value) && 'border-2 border-primary', '')}
                 >
                   {value}
                 </Button>
@@ -137,7 +163,7 @@ export function Customizer() {
                       blogTheme: 'tailwind',
                     })
                   }
-                  className={cn(config.blogTheme === 'tailwind' && 'border-2 border-primary')}
+                  className={cn(config.blogTheme === 'tailwind' && 'border-2 border-primary', 'transition-all duration-500')}
                 >
                   <Highlighter className="mr-1 w-3 -translate-x-1" />
                   {'tailwind'}

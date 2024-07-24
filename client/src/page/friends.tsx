@@ -212,7 +212,7 @@ function Friend({ friend }: { friend: FriendItem }) {
                 </div>
                 <p className="text-base text-center">{friend.name}</p>
                 {friend.health.length == 0 && <p className="text-sm text-neutral-500 text-center">{friend.desc}</p>}
-                {friend.accepted !== 1 && <p className={`${friend.accepted === 0 ? "t-primary" : "text-theme"}`}>{statusOption[friend.accepted + 1].label}</p>}
+                {friend.accepted !== 1 && <p className={`${friend.accepted === 0 ? "t-primary" : "text-primary"}`}>{statusOption[friend.accepted + 1].label}</p>}
                 {friend.health.length > 0 && <p className="text-sm text-gray-500 text-center">{errorHumanize(friend.health)}</p>}
                 {(profile?.permission || profile?.id === friend.uid) && <>
                     <button onClick={(e) => { e.preventDefault(); setIsOpen(true) }} className="absolute top-0 right-0 m-2 px-2 py-1 bg-secondary t-primary rounded-full bg-button">
@@ -278,7 +278,7 @@ function Friend({ friend }: { friend: FriendItem }) {
                     <Input value={avatar} setValue={setAvatar} placeholder={t('avatar.url')} className="mt-2" />
                     <Input value={url} setValue={setUrl} placeholder={t('url')} className="my-2" />
                     <div className='flex flex-row justify-center space-x-2'>
-                        <button onClick={deleteFriend} className="bg-secondary text-theme rounded-full bg-button px-4 py-2 mt-2">{t('delete.title')}</button>
+                        <button onClick={deleteFriend} className="bg-secondary text-primary rounded-full bg-button px-4 py-2 mt-2">{t('delete.title')}</button>
                         <button onClick={updateFriend} className="bg-secondary t-primary rounded-full bg-button px-4 py-2 mt-2">{t('save')}</button>
                     </div>
                 </div >

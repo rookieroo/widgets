@@ -51,7 +51,7 @@ export function HashtagsPage() {
                             return (
                                 <div key={index} className="w-full flex flex-row">
                                     <div className="w-full rounded-2xl m-2 duration-300 flex flex-row items-center space-x-4   ">
-                                        <Link href={`/hashtag/${hashtag.name}`} className="text-base t-primary hover:text-theme text-pretty overflow-hidden">
+                                        <Link href={`/hashtag/${hashtag.name}`} className="text-base t-primary hover:text-primary text-pretty overflow-hidden">
                                             <HashTag name={hashtag.name} />
                                         </Link>
                                         <div className="flex-1" />

@@ -388,9 +388,9 @@ export function WritingPage({ id }: { id?: number }) {
             {MetaInput({ className: "visible md:hidden mb-8" })}
             <div className="flex flex-col mx-4 my-2 md:mx-0 md:my-0 gap-2">
               <div className="flex flex-row space-x-2">
-                <button className={`${preview === 'edit' ? "text-theme" : ""}`} onClick={() => setPreview('edit')}> {t("edit")} </button>
-                <button className={`${preview === 'preview' ? "text-theme" : ""}`} onClick={() => setPreview('preview')}> {t("preview")} </button>
-                <button className={`${preview === 'comparison' ? "text-theme" : ""}`} onClick={() => setPreview('comparison')}> {t("comparison")} </button>
+                <button className={`${preview === 'edit' ? "text-primary" : ""}`} onClick={() => setPreview('edit')}> {t("edit")} </button>
+                <button className={`${preview === 'preview' ? "text-primary" : ""}`} onClick={() => setPreview('preview')}> {t("preview")} </button>
+                <button className={`${preview === 'comparison' ? "text-primary" : ""}`} onClick={() => setPreview('comparison')}> {t("comparison")} </button>
                 <div className="flex-grow" />
                 {uploading &&
                   <div className="flex flex-row space-x-2 items-center">

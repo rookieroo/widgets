@@ -85,7 +85,7 @@ export function FeedItem({ id, title, createdAt }: { id: string, title: string, 
                 <span className="t-secondary text-sm" title={new Date(createdAt).toLocaleString()}>
                     {formatter.format(new Date(createdAt))}
                 </span>
-                <Link href={`/feed/${id}`} target="_blank" className="text-base t-primary hover:text-theme text-pretty overflow-hidden">
+                <Link href={`/feed/${id}`} target="_blank" className="text-base t-primary hover:text-primary text-pretty overflow-hidden">
                     {title}
                 </Link>
             </div>
