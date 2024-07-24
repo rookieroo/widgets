@@ -14,7 +14,7 @@ import { ProfileContext } from "../state/profile";
 import { headersWithAuth } from "../utils/auth";
 import { siteName } from "../utils/constants";
 import { timeago } from "../utils/timeago";
-import { Button } from "../components/button";
+import { Button } from "../components/ui/button";
 import { Tips } from "../components/tips";
 import { useLoginModal } from "../hooks/useLoginModal";
 
@@ -161,18 +161,20 @@ export function FeedPage({ id, TOC, clean }: { id: string, TOC: () => JSX.Elemen
           />
         </Helmet>
       )}
-      <div className="w-full flex flex-row justify-center ani-show">
+      <div className="w-full flex flex-row justify-center ani-show dark:text-white">
         {error && (
           <>
-            <div className="flex flex-col wauto rounded-2xl bg-w m-2 p-6 items-center justify-center space-y-2">
+            <div className="flex flex-col wauto rounded-2xl m-2 p-6 items-center justify-center space-y-2 dark:text-white">
               <h1 className="text-xl font-bold t-primary">{error}</h1>
               {error === "Not found" && id === "about" && (
                 <Tips value={t("about.notfound")} />
               )}
               <Button
-                title={t("index.back")}
+                className="dark:text-white"
                 onClick={() => (window.location.href = "/")}
-              />
+              >
+                {t("index.back")}
+              </Button>
             </div>
           </>
         )}
@@ -181,7 +183,7 @@ export function FeedPage({ id, TOC, clean }: { id: string, TOC: () => JSX.Elemen
             <div className="xl:w-64" />
             <main className="wauto">
               <article
-                className="rounded-2xl bg-w m-2 px-6 py-4"
+                className="rounded-2xl m-2 px-6 py-4"
                 aria-label={feed.title ?? "Unnamed"}
               >
                 <div className="flex justify-between">

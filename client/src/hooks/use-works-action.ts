@@ -1,61 +1,42 @@
 import { useRegisterActions } from "kbar";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import {generateKey} from "@/utils/utils";
 import {useLocation} from "wouter";
-import {client} from "../main";
-import {headersWithAuth} from "../utils/auth";
+import {useConfig} from "@/store/useConfig";
 
 const searchId = generateKey();
 
 export default function useWorksAction() {
   const [location, navigate] = useLocation();
-  const [results, setResults] = useState([]);
+  const [config] = useConfig();
 
   const defaultAction = useMemo(() => {
     return {
       id: searchId,
-      name: "Search works...",
+      name: "Search blogs...",
       shortcut: ["?"],
       keywords: "works find search work portfolio",
-      section: "Works",
+      section: "Blogs",
     };
   }, []);
 
-  function fetchFeeds(title?: string) {
-    let query = {
-      title: title
-    }
-    client.feed.timeline.get({
-      // query,
-      headers: headersWithAuth()
-    }).then(({ data }) => {
-      if (data && typeof data != 'string') {
-        setResults(data);
-      }
-    })
-  }
-
-  useEffect(() => {
-    fetchFeeds('');
-  }, []);
-
   const searchActions = useMemo(() => {
-    if (!results || !results.length) {
+    if (!config.search || !config.search.length) {
       return [];
     }
 
-    return results.map(({ id, summary, title, hashtags }) => {
+    return config.search.map(({ id, summary, title, hashtags }) => {
       return {
         id,
         parent: searchId,
-        name: title,
+        name: `${title} ${summary}`,
         shortcut: [],
         section: "Blogs",
         keywords: hashtags,
-        perform: () => navigate(`feed/${id}`),
+        perform: () => navigate(`/feed/${id}`),
       };
     });
-  }, [results, location]);
+  }, [config.search, location]);
 
   const rootWorksAction = useMemo(
     () => (searchActions?.length ? defaultAction : null),

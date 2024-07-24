@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .SwitchRoot[data-state='checked'] {
-    @apply bg-theme;
+    @apply bg-background;
 }
 
 .SwitchRoot {

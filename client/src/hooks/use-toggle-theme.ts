@@ -11,9 +11,13 @@ const useToggleTheme = (config) => {
     const css = getThemeCode(activeTheme, config.radius)
     const style = document.createElement('style')
     style.textContent = css
-    document.head.appendChild(style)
+    document.head?.appendChild(style)
     return () => {
-      document.head.removeChild(style)
+      try {
+        document.head?.removeChild(style)
+      }catch (e) {
+
+      }
     }
   }, [config])
 }

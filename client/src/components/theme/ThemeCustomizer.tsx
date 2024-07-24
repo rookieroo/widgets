@@ -28,8 +28,8 @@ export function CustomizerWrapper() {
     <div>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
-            <SquareMousePointer className="h-4 w-4" />
+          <Button variant="ghost" className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center t-primary bg-button">
+            <SquareMousePointer className="h-4 w-4 dark:text-white" />
             {/*{!open && <SquareDashedMousePointer className="h-5 w-5" />}*/}
             <span className="sr-only">Customize</span>
           </Button>

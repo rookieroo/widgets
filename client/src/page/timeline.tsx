@@ -40,13 +40,13 @@ export function TimelinePage() {
                 <meta property="og:url" content={document.URL} />
             </Helmet>
             <Waiting for={feeds}>
-                <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
-                    <div className="wauto text-start text-black dark:text-white py-4 text-4xl font-bold">
+                <main className="w-full flex flex-col justify-center items-center mb-8 ani-show dark:text-white">
+                    <div className="wauto text-start py-4 text-4xl font-bold">
                         <p>
                             {t('timeline')}
                         </p>
                         <div className="flex flex-row justify-between">
-                            <p className="text-sm mt-4 text-neutral-500 font-normal">
+                            <p className="text-sm mt-4 font-normal">
                                 {t('article.total$count', { count: length })}
                             </p>
                         </div>
@@ -81,11 +81,11 @@ export function FeedItem({ id, title, createdAt }: { id: string, title: string, 
             <div className="flex flex-row items-center">
                 <div className="w-2 h-2 bg-primary rounded-full"></div>
             </div>
-            <div className="flex-1 rounded-2xl m-2 duration-300 flex flex-row items-center space-x-4   ">
-                <span className="t-secondary text-sm" title={new Date(createdAt).toLocaleString()}>
+            <div className="flex-1 rounded-2xl m-2 duration-300 flex flex-row items-center space-x-4">
+                <span className="text-sm" title={new Date(createdAt).toLocaleString()}>
                     {formatter.format(new Date(createdAt))}
                 </span>
-                <Link href={`/feed/${id}`} target="_blank" className="text-base t-primary hover:text-primary text-pretty overflow-hidden">
+                <Link href={`/feed/${id}`} target="_blank" className="hover:text-primary overflow-hidden">
                     {title}
                 </Link>
             </div>

@@ -50,3 +50,13 @@ export function generateKey(length = 16) {
   return Math.random().toString(36).substr(2, length);
 }
 
+export const debounce = (callback, delay) => {
+  let timerId;
+  return function (...args) {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      callback.apply(this, args);
+    }, delay);
+  };
+};
+

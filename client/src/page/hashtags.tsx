@@ -39,8 +39,8 @@ export function HashtagsPage() {
                 <meta property="og:url" content={document.URL} />
             </Helmet>
             <Waiting for={hashtags}>
-                <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
-                    <div className="wauto text-start text-black dark:text-white py-4 text-4xl font-bold">
+                <main className="w-full flex flex-col justify-center items-center mb-8 ani-show dark:text-white">
+                    <div className="wauto text-start text-black py-4 text-4xl font-bold">
                         <p>
                             {t('hashtags')}
                         </p>

@@ -7,13 +7,40 @@ import {
   KBarSearch,
 } from "kbar";
 import Results from "./results";
-import useWorksAction from "@/hooks/use-works-action";
 import {useLocation} from "wouter";
 import actions from "./actions";
+import {debounce} from "@/utils/utils";
+import {useState} from "react";
+import {tryInt} from "../../utils/int";
+import {client} from "../../main";
+import {headersWithAuth} from "../../utils/auth";
+import {useConfig} from "../../store/useConfig";
+import useWorksAction from "../../hooks/use-works-action";
 
 function InnerCommandBar() {
-
+  const [config, setConfig] = useConfig()
   useWorksAction();
+
+  const handleSearchChange = debounce((event) => {
+    const keyword = `${encodeURIComponent(event.target.value)}`
+    if (!keyword) return
+    const page = tryInt(1)
+    const limit = tryInt(10, process.env.PAGE_SIZE)
+    client.search({ keyword }).get({
+      query: {
+        page: page,
+        limit: limit
+      },
+      headers: headersWithAuth()
+    }).then(({ data }) => {
+      if (data.data && typeof data.data !== 'string') {
+        setConfig({
+          ...config,
+          search: data.data
+        });
+      }
+    })
+  }, 500);
 
   return (
     <KBarPortal>
@@ -40,13 +67,15 @@ function InnerCommandBar() {
         <KBarAnimator className="w-full max-w-xl">
           <div
             className="smooth-shadow dark:shadow-none h-auto
-                dark:bg-neutral-900 bg-white
+                dark:bg-background dark:text-white bg-white
                 dark:bg-opacity-75 dark:backdrop-filter dark:backdrop-blur-md
                 w-full py-2 px-2 rounded-xl"
           >
             <KBarSearch
-              className="w-full p-4 outline-none mb-4 bg-neutral-50 dark:bg-neutral-800 rounded"
+              className="w-full p-4 outline-none mb-4 bg-neutral-50 dark:bg-input rounded"
               placeholder="Search"
+              onChange={handleSearchChange}
+              value={config.search}
             />
 
             <div className="mt-2 border-t border-neutral-200 dark:border-neutral-800 max-h-[60vh] overflow-y-scroll">

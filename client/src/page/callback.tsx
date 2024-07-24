@@ -13,7 +13,7 @@ export function CallbackPage() {
         }
     }, [searchParams]);
     return (<>
-        <div className="w-screen h-screen flex justify-center items-center">
+        <div className="w-screen h-screen flex justify-center items-center dark:text-white">
             <div className="text-center text-black p-4 text-xl font-bold">
                 <p>
                     Waiting...
