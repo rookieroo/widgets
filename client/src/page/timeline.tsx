@@ -79,7 +79,7 @@ export function FeedItem({ id, title, createdAt }: { id: string, title: string, 
     return (
         <div className="flex flex-row pl-8">
             <div className="flex flex-row items-center">
-                <div className="w-2 h-2 bg-theme rounded-full"></div>
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
             </div>
             <div className="flex-1 rounded-2xl m-2 duration-300 flex flex-row items-center space-x-4   ">
                 <span className="t-secondary text-sm" title={new Date(createdAt).toLocaleString()}>

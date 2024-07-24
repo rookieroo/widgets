@@ -39,7 +39,7 @@ function InnerCommandBar() {
       <KBarPositioner>
         <KBarAnimator className="w-full max-w-xl">
           <div
-            className="smooth-shadow dark:shadow-none
+            className="smooth-shadow dark:shadow-none h-auto
                 dark:bg-neutral-900 bg-white
                 dark:bg-opacity-75 dark:backdrop-filter dark:backdrop-blur-md
                 w-full py-2 px-2 rounded-xl"
@@ -49,7 +49,7 @@ function InnerCommandBar() {
               placeholder="Search"
             />
 
-            <div className="mt-2 border-t border-neutral-200 dark:border-neutral-800">
+            <div className="mt-2 border-t border-neutral-200 dark:border-neutral-800 max-h-[60vh] overflow-y-scroll">
               <Results />
             </div>
           </div>
