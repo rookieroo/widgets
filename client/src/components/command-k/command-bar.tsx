@@ -90,11 +90,12 @@ function InnerCommandBar() {
 
 export default function CommandBar({ children }) {
   const [location, navigate] = useLocation();
+  const [config, setConfig] = useConfig();
 
   return (
     <AnimatePresence>
       <KBarProvider
-        actions={actions(navigate)}
+        actions={actions(navigate, config, setConfig)}
         options={{
           enabledHistory: true,
         }}

@@ -1,4 +1,4 @@
-function actions(router) {
+function actions(router, config, setConfig) {
   return [
     {
       id: "home",
@@ -73,6 +73,22 @@ function actions(router) {
       type: "twitter",
       section: "other",
     },
+    {
+      id: "mode",
+      name: "Toggle mode...",
+      shortcut: ["m"],
+      keywords: "Toggle dark mode ",
+      section: "Modes",
+    },
+    {
+      id: "light",
+      parent: "mode",
+      name: "light",
+      shortcut: [],
+      section: "Modes",
+      keywords: "",
+      perform: () => setConfig({...config, mode: 'light'}),
+    }
   ];
 }
 
