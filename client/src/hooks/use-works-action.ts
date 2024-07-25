@@ -3,22 +3,24 @@ import { useMemo } from "react";
 import {generateKey} from "@/utils/utils";
 import {useLocation} from "wouter";
 import {useConfig} from "@/store/useConfig";
+import {useTranslation} from "react-i18next";
 
 const searchId = generateKey();
 
 export default function useWorksAction() {
   const [location, navigate] = useLocation();
   const [config] = useConfig();
+  const {t, i18n} = useTranslation();
 
   const defaultAction = useMemo(() => {
     return {
       id: searchId,
-      name: "Search blogs...",
+      name: t('search_blogs'),
       shortcut: ["?"],
       keywords: "works find search work portfolio",
       section: "Blogs",
     };
-  }, []);
+  }, [i18n.language]);
 
   const searchActions = useMemo(() => {
     if (!config.search || !config.search.length) {

@@ -1,4 +1,51 @@
 {
+  "contact": "Email",
+  "search_blogs": "Search blogs...",
+  "toggle_mode": "Toggle reading mode...",
+  "customize": {
+    "Customize": "Customize",
+    "Other": "Other",
+    "settings": "settings",
+    "Reset": "Reset",
+    "Hide": "Hide",
+    "Mode": "Read Mode",
+    "Radius": "Radius",
+    "Light": "Light",
+    "Dark": "Dark",
+    "System": "System",
+    "direction": "direction",
+    "ltr": "left to right",
+    "rtl": "right to left",
+    "Lang": "Language",
+    "zh": "chinese",
+    "Color": "Color",
+    "Layout": "Blog layout",
+    "List": "List",
+    "Grid": "Grid",
+    "editWebsiteColors": "Pick a color theme",
+    "customizeTitle": "Pick a your layout and theme for your website.",
+    "toggleTheme": "Toggle theme",
+    "colors": {
+      "Zinc": "Zinc",
+      "Slate": "Slate",
+      "Stone": "Stone",
+      "Gray": "Gray",
+      "Neutral": "Neutral",
+      "Red": "Red",
+      "Rose": "Rose",
+      "Orange": "Orange",
+      "Green": "Green",
+      "Blue": "Blue",
+      "Yellow": "Yellow",
+      "Violet": "Violet"
+    },
+    "search": {
+      "SearchContent": "Type a command or search blogs...",
+      "Navigation": "Navigation",
+      "Search": "Search...",
+      "Blogs": "Blogs"
+    }
+  },
   "about": {
     "notfound": "Set the article alias to `about` to create an about page",
     "title": "About"

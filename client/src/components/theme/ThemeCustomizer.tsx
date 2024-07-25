@@ -25,6 +25,7 @@ import { ScrollArea } from '@/ui/scroll-area'
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover'
 import { SquareMousePointer } from 'lucide-react'
 import useToggleTheme from '@/hooks/use-toggle-theme'
+import {useTranslation} from "react-i18next";
 
 export function CustomizerWrapper() {
   const [config] = useConfig()
@@ -51,6 +52,7 @@ export function CustomizerWrapper() {
 export function Customizer() {
   const [mounted, setMounted] = React.useState(false)
   const [config, setConfig] = useConfig()
+  const {t} = useTranslation();
 
   useEffect(() => {
     setMounted(true)
@@ -76,7 +78,7 @@ export function Customizer() {
       <div className="flex items-start pt-4 md:pt-0">
         <div className="space-y-1 pr-2">
           <div className="font-semibold leading-none tracking-tight">
-            {'Pick a style and color for your components.'}
+            {t('customize.customizeTitle')}
           </div>
         </div>
         <Button
@@ -91,11 +93,13 @@ export function Customizer() {
           }}
         >
           <ResetIcon />
-          <span className="sr-only">{'Reset'}</span>
+          <span className="sr-only">
+            {t('customize.Reset')}
+          </span>
         </Button>
       </div>
       <div className="space-y-1.5">
-        <Label className="text-xs">{'Mode'}</Label>
+        <Label className="text-xs">{t('customize.Mode')}</Label>
         <div className="grid grid-cols-3 gap-2">
           {mounted ? (
             <>
@@ -106,7 +110,7 @@ export function Customizer() {
                 className={cn(config.mode === 'light' && 'border-2 border-primary')}
               >
                 <Sun className="mr-1 w-3 -translate-x-1" />
-                {'Light'}
+                {t('customize.Light')}
               </Button>
               <Button
                 variant={'outline'}
@@ -115,7 +119,7 @@ export function Customizer() {
                 className={cn(config.mode === 'dark' && 'border-2 border-primary')}
               >
                 <Moon className="mr-1 w-3 -translate-x-1" />
-                {'Dark'}
+                {t('customize.Dark')}
               </Button>
               <Button
                 variant={'outline'}
@@ -124,7 +128,7 @@ export function Customizer() {
                 className={cn(config.mode === 'system' && 'border-2 border-primary')}
               >
                 <SunMoon className="mr-1 w-3 -translate-x-1" />
-                {'System'}
+                {t('customize.System')}
               </Button>
             </>
           ) : (
@@ -137,7 +141,9 @@ export function Customizer() {
       </div>
       <div className="flex flex-1 flex-col space-y-4 md:space-y-6">
         <div className="space-y-1.5">
-          <Label className="text-xs">{'Color'}</Label>
+          <Label className="text-xs">
+            {t('customize.Color')}
+          </Label>
           <div className="grid grid-cols-3 gap-2">
             {themes.map((theme) => {
               const isActive = config.theme === theme.name
@@ -171,7 +177,7 @@ export function Customizer() {
                   >
                     {isActive && <CheckIcon className="h-4 w-4 text-white" />}
                   </span>
-                  {theme.label}
+                  {t(`customize.colors.${theme.label}`)}
                 </Button>
               ) : (
                 <Skeleton className="h-8 w-full" key={theme.name} />
@@ -180,7 +186,7 @@ export function Customizer() {
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label className="text-xs">{'Radius'}</Label>
+          <Label className="text-xs">{t('customize.Radius')}</Label>
           <div className="grid grid-cols-5 gap-2">
             {['0', '0.3', '0.5', '0.75', '1.0'].map((value) => {
               return (
@@ -204,7 +210,9 @@ export function Customizer() {
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label className="text-xs">Blog Layout</Label>
+          <Label className="text-xs">
+            {t('customize.Layout')}
+          </Label>
           <div className="grid grid-cols-2 gap-2">
             {mounted ? (
               <>
@@ -220,7 +228,7 @@ export function Customizer() {
                   className={cn(config.blogList === 'list' && 'border-2 border-primary')}
                 >
                   <List className="mr-1 w-3 -translate-x-1" />
-                  {'List'}
+                  {t('customize.List')}
                 </Button>
                 <Button
                   variant={'outline'}
@@ -234,7 +242,7 @@ export function Customizer() {
                   className={cn(config.blogList === 'grid' && 'border-2 border-primary')}
                 >
                   <LayoutGrid className="mr-1 w-3 -translate-x-1" />
-                  {'Grid'}
+                  {t('customize.Grid')}
                 </Button>
               </>
             ) : (

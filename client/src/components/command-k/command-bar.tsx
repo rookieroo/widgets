@@ -4,7 +4,7 @@ import {
   KBarPortal,
   KBarPositioner,
   KBarProvider,
-  KBarSearch,
+  KBarSearch
 } from "kbar";
 import Results from "./results";
 import {useLocation} from "wouter";
@@ -16,6 +16,8 @@ import {headersWithAuth} from "../../utils/auth";
 import {useConfig} from "../../store/useConfig";
 import useWorksAction from "../../hooks/use-works-action";
 import useToggleMode from "../../hooks/use-toggle-mode";
+import {useTranslation} from "react-i18next";
+import {useEffect, useState} from "react";
 
 function InnerCommandBar() {
   const [config, setConfig] = useConfig()
@@ -89,20 +91,26 @@ function InnerCommandBar() {
 }
 
 export default function CommandBar({ children }) {
-  const [location, navigate] = useLocation();
+  const [navigate] = useLocation();
   const [config, setConfig] = useConfig();
+  const {t, i18n} = useTranslation();
+  const [actions_state, setActions] = useState(actions(navigate, config, setConfig, t));
   useToggleMode(config);
+
+  useEffect(() => {
+    const ac = actions(navigate, config, setConfig, t);
+    setActions(ac);
+  }, [i18n.language])
 
   return (
     <AnimatePresence>
       <KBarProvider
-        actions={actions(navigate, config, setConfig)}
+        actions={actions_state}
         options={{
           enabledHistory: true,
         }}
       >
         <InnerCommandBar />
-
         {children}
       </KBarProvider>
     </AnimatePresence>

@@ -1,4 +1,49 @@
 {
+  "contact": "发邮件",
+  "search_blogs": "搜索博客...",
+  "toggle_mode": "切换阅读模式...",
+  "customize": {
+    "Customize": "个性化设置",
+    "Other": "其他",
+    "Reset": "重置",
+    "Hide": "隐藏",
+    "Mode": "阅读模式",
+    "Radius": "圆角",
+    "Light": "浅色",
+    "Dark": "深色",
+    "System": "系统",
+    "direction": "方向",
+    "ltr": "左到右",
+    "rtl": "右到左",
+    "Lang": "语言",
+    "zh": "中文",
+    "Color": "颜色",
+    "Layout": "文章布局",
+    "List": "列表",
+    "Grid": "网格",
+    "editWebsiteColors": "自定义颜色",
+    "customizeTitle": "定制个性化网站",
+    "toggleTheme": "切换主题",
+    "colors": {
+      "Zinc": "锌",
+      "Slate": "石板",
+      "Stone": "石头",
+      "Gray": "灰",
+      "Neutral": "中性",
+      "Red": "红",
+      "Rose": "玫瑰",
+      "Orange": "橘",
+      "Green": "绿",
+      "Blue": "蓝",
+      "Yellow": "黄",
+      "Violet": "紫"
+    }
+  },
+  "search": {
+    "SearchContent": "搜索博客、路由、操作",
+    "Search": "搜索",
+    "Blogs": "博客"
+  },
   "about": {
     "notfound": "将文章别名设置为 about 可以创建关于页面",
     "title": "关于"

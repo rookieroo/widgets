@@ -16,6 +16,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
 import * as React from "react";
 import { Drawer, DrawerContent, DrawerTrigger } from '@/ui/drawer'
 import {Paintbrush} from "lucide-react";
+import {cn} from "../utils/utils";
 
 export function Header({children}: { children?: React.ReactNode }) {
   const profile = useContext(ProfileContext);
@@ -188,7 +189,7 @@ function LanguageSwitch({className}: { className?: string }) {
               Languages
             </p>
             {languages.map(({code, name}) => (
-              <button key={code} onClick={() => i18n.changeLanguage(code)}>
+              <button className={cn(code === i18n.language && 'text-primary')} key={code} onClick={() => i18n.changeLanguage(code)}>
                 {name}
               </button>
             ))}

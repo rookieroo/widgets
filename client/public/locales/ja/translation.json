@@ -1,4 +1,50 @@
 {
+  "contact": "メール連絡先",
+  "search_blogs": "ブログを検索...",
+  "toggle_mode": "トグルモード...",
+  "customize": {
+    "Customize": "カスタマイズ",
+    "Other": "他",
+    "settings": "設定",
+    "Reset": "リセット",
+    "Hide": "隠れる",
+    "Mode": "読み取りモード",
+    "Radius": "半径",
+    "Light": "ライトモード",
+    "Dark": "ダークモード",
+    "System": "システムモード",
+    "direction": "方向",
+    "ltr": "左から右へ",
+    "rtl": "右から左",
+    "Lang": "言語",
+    "zh": "中国語",
+    "Color": "色",
+    "Layout": "ブログのレイアウト",
+    "List": "リスト",
+    "Grid": "グリッド",
+    "editWebsiteColors": "カラーテーマを選ぶ",
+    "customizeTitle": "あなたのウェブサイトのレイアウトとテーマを選んでください。",
+    "toggleTheme": "テーマの切り替え",
+    "colors": {
+      "Zinc": "亜鉛",
+      "Slate": "スレート",
+      "Stone": "石",
+      "Gray": "灰色",
+      "Neutral": "ニュートラル",
+      "Red": "赤い",
+      "Rose": "ローズカラー",
+      "Orange": "オレンジ",
+      "Green": "緑",
+      "Blue": "青い",
+      "Yellow": "黄色",
+      "Violet": "紫"
+    },
+    "search": {
+      "SearchContent": "ブログ、ルーター、アクションの検索...",
+      "Search": "捜索。。。",
+      "Blogs": "ブログ"
+    }
+  },
   "about": {
     "notfound": "About ページを作成するには、記事のエイリアスを about に設定します",
     "title": "概要"
