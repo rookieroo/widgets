@@ -1,7 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import { Helmet } from 'react-helmet'
 import { Link, useSearch } from "wouter"
-import { FeedCard } from "../components/feed_card"
+import { FeedCardGrid } from "../components/feed_card_grid"
+import { FeedCardList } from "../components/feed_card_list"
 import { Waiting } from "../components/loading"
 import { client } from "../main"
 import { ProfileContext } from "../state/profile"
@@ -9,6 +10,7 @@ import { headersWithAuth } from "../utils/auth"
 import { siteName } from "../utils/constants"
 import { tryInt } from "../utils/int"
 import { useTranslation } from "react-i18next";
+import {useConfig} from "../store/useConfig";
 
 type FeedsData = {
     size: number,
@@ -26,6 +28,7 @@ export function FeedsPage() {
     const { t } = useTranslation()
     const query = new URLSearchParams(useSearch());
     const profile = useContext(ProfileContext);
+    const [config] = useConfig();
     const [listState, _setListState] = useState<FeedType>(query.get("type") as FeedType || 'normal')
     const [status, setStatus] = useState<'loading' | 'idle'>('idle')
     const [feeds, setFeeds] = useState<FeedsMap>({
@@ -77,7 +80,7 @@ export function FeedsPage() {
             </Helmet>
             <Waiting for={feeds.draft.size + feeds.normal.size + feeds.unlisted.size > 0 || status === 'idle'}>
                 <main className="w-full flex flex-col justify-center items-center mb-8">
-                    <div className="wauto text-start text-black dark:text-white py-4 text-4xl font-bold">
+                    <div className="w-auto text-start text-black dark:text-white py-4 text-4xl font-bold">
                         <p>
                             {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
                         </p>
@@ -98,12 +101,21 @@ export function FeedsPage() {
                         </div>
                     </div>
                     <Waiting for={status === 'idle'}>
-                        <div className="wauto flex flex-col">
-                        {feeds[listState].data.map(({ id, ...feed }: any) => (
-                            <FeedCard key={id} id={id} {...feed} />
-                        ))}
+                        {config.blogList === 'list' &&
+                        <div className="w-[80vw] flex flex-col">
+                            {feeds[listState].data.map(({ id, ...feed }: any) => (
+                             <FeedCardList key={id} id={id} {...feed} />
+                            ))}
                         </div>
-                        <div className="wauto flex flex-row items-center mt-4 ani-show">
+                        }
+                        {config.blogList === 'grid' &&
+                        <div className="w-[80vw] grid grid-cols-1 gap-6 lg:grid-cols-2">
+                            {feeds[listState].data.map(({ id, ...feed }: any) => (
+                              <FeedCardGrid key={id} id={id} {...feed} />
+                            ))}
+                        </div>
+                        }
+                        <div className="w-[80vw] flex flex-row items-center mt-4 ani-show">
                             {page > 1 &&
                                 <Link href={`/?type=${listState}&page=${(page - 1)}`}
                                     className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>

@@ -9,11 +9,13 @@ import {Button} from "./ui/button";
 import {IconSmall} from "./icon";
 import {Input} from "./input";
 import {Padding} from "./padding";
-import {CustomizerWrapper} from "./theme/ThemeCustomizer";
+import {Customizer, CustomizerWrapper} from "./theme/ThemeCustomizer";
 import {Card} from "./ui/card";
 import {useKBar} from "kbar";
 import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
 import * as React from "react";
+import { Drawer, DrawerContent, DrawerTrigger } from '@/ui/drawer'
+import {Paintbrush} from "lucide-react";
 
 export function Header({children}: { children?: React.ReactNode }) {
   const profile = useContext(ProfileContext);
@@ -104,7 +106,8 @@ function Menu() {
     <div className="visible md:hidden flex flex-row items-center">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="w-10 h-10 flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
+          <Button variant="ghost"
+                  className="w-10 h-10 flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
             <i className="ri-menu-line ri-lg dark:text-white"/>
             {/*{!open && <SquareDashedMousePointer className="h-5 w-5" />}*/}
             <span className="sr-only">Customize</span>
@@ -113,11 +116,22 @@ function Menu() {
         <PopoverContent className="w-[350px] p-2">
           <div className="flex flex-col rounded-xl p-2 mt-4 w-[50vw]">
             <div className="flex flex-row justify-end space-x-2">
-              <SearchButtonUseKBar />
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button variant="ghost" className="w-10 h-10 flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
+                    <Paintbrush className="h-4 w-4" />
+                    <span className="sr-only">Customize</span>
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent className="p-0 pt-0">
+                  <Customizer />
+                </DrawerContent>
+              </Drawer>
+              <SearchButtonUseKBar/>
               <LanguageSwitch/>
-              <UserAvatar profile={profile} />
+              <UserAvatar profile={profile}/>
             </div>
-            <NavBar menu={true} />
+            <NavBar menu={true}/>
           </div>
         </PopoverContent>
       </Popover>
@@ -161,7 +175,8 @@ function LanguageSwitch({className}: { className?: string }) {
     <div className={className + " flex flex-row items-center"}>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center t-primary bg-button">
+          <Button variant="ghost"
+                  className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center t-primary bg-button">
             <i className="ri-translate-2 dark:text-white"></i>
             {/*{!open && <SquareDashedMousePointer className="h-5 w-5" />}*/}
             <span className="sr-only">{label}</span>
@@ -271,11 +286,16 @@ function UserAvatar({className, profile, onClose}: { className?: string, profile
       {profile?.avatar ? <>
         <div className="w-8 relative">
           <img src={profile.avatar} alt="Avatar" className="w-8 h-8 rounded-full border"/>
-          <div className="z-50 absolute left-0 top-0 w-10 h-8 opacity-0 hover:opacity-100 duration-300">
-            <IconSmall label={t('logout')} name="ri-logout-circle-line" onClick={() => {
-              removeCookie("token")
-              window.location.reload()
-            }} hover={false}/>
+          <div className="z-50 absolute left-0 top-0 w-10 h-8 opacity-0 hover:opacity-100 hover:dark:text-white hover:dark:text-black duration-300">
+            <IconSmall
+              label={t('logout')}
+              name="ri-logout-circle-line"
+              onClick={() => {
+                removeCookie("token")
+                window.location.reload()
+              }}
+              hover={false}
+            />
           </div>
         </div>
       </> : <>

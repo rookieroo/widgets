@@ -4,7 +4,7 @@ import { timeago } from "../utils/timeago";
 import { HashTag } from "./hashtag";
 import { useMemo } from "react";
 import {Card} from "./ui/card";
-export function FeedCard({ id, title, avatar, draft, listed, top, summary, hashtags, createdAt, updatedAt }:
+export function FeedCardGrid({ id, title, avatar, draft, listed, top, summary, hashtags, createdAt, updatedAt }:
     {
         id: string, avatar?: string,
         draft?: number, listed?: number, top?: number,
@@ -14,7 +14,7 @@ export function FeedCard({ id, title, avatar, draft, listed, top, summary, hasht
     }) {
     const { t } = useTranslation()
     return useMemo(() => (
-        <Card className="p-6 my-2 transition-all duration-500">
+        <Card className="p-4 my-2 transition-all duration-500">
             <Link href={`/feed/${id}`} target="_blank">
                 {avatar &&
                     <div className="flex flex-row items-center mb-2 rounded-xl overflow-clip">

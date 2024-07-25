@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Helmet } from 'react-helmet'
 import { useTranslation } from "react-i18next"
-import { FeedCard } from "../components/feed_card"
+import { FeedCardGrid } from "../components/feed_card_grid"
 import { Waiting } from "../components/loading"
 import { client } from "../main"
 import { headersWithAuth } from "../utils/auth"
@@ -78,7 +78,7 @@ export function HashtagPage({ name }: { name: string }) {
                     <Waiting for={status === 'idle'}>
                         <div className="wauto flex flex-col">
                             {hashtag?.feeds?.map(({ id, ...feed }: any) => (
-                                <FeedCard key={id} id={id} {...feed} />
+                                <FeedCardGrid key={id} id={id} {...feed} />
                             ))}
                         </div>
                     </Waiting>
