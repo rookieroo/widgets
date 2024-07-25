@@ -10,12 +10,12 @@ import Results from "./results";
 import {useLocation} from "wouter";
 import actions from "./actions";
 import {debounce} from "@/utils/utils";
-import {useState} from "react";
 import {tryInt} from "../../utils/int";
 import {client} from "../../main";
 import {headersWithAuth} from "../../utils/auth";
 import {useConfig} from "../../store/useConfig";
 import useWorksAction from "../../hooks/use-works-action";
+import useToggleMode from "../../hooks/use-toggle-mode";
 
 function InnerCommandBar() {
   const [config, setConfig] = useConfig()
@@ -91,6 +91,7 @@ function InnerCommandBar() {
 export default function CommandBar({ children }) {
   const [location, navigate] = useLocation();
   const [config, setConfig] = useConfig();
+  useToggleMode(config);
 
   return (
     <AnimatePresence>

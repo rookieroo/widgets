@@ -1,7 +1,6 @@
 import {useContext, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import ReactModal from "react-modal";
-import Popup from "reactjs-popup";
 import {removeCookie} from "typescript-cookie";
 import {Link, useLocation} from "wouter";
 import {useLoginModal} from "../hooks/useLoginModal";
@@ -10,11 +9,10 @@ import {Button} from "./ui/button";
 import {IconSmall} from "./icon";
 import {Input} from "./input";
 import {Padding} from "./padding";
-import {Customizer, CustomizerWrapper} from "./theme/ThemeCustomizer";
+import {CustomizerWrapper} from "./theme/ThemeCustomizer";
 import {Card} from "./ui/card";
 import {useKBar} from "kbar";
 import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
-import {SquareMousePointer} from "lucide-react";
 import * as React from "react";
 
 export function Header({children}: { children?: React.ReactNode }) {
@@ -63,7 +61,7 @@ export function Header({children}: { children?: React.ReactNode }) {
               </Card>
               <div
                 className="ml-auto hidden opacity-0 md:opacity-100 duration-300 md:flex flex-row items-center space-x-2">
-                <SearchButton/>
+                <SearchButtonUseKBar/>
                 <LanguageSwitch/>
                 <UserAvatar profile={profile}/>
                 <CustomizerWrapper/>
@@ -222,10 +220,10 @@ function SearchButton({className, onClose}: { className?: string, onClose?: () =
       setLocation(`/search/${key}`)
   }
   return (<div className={className + " flex flex-row items-center"}>
-      <button onClick={() => query.toggle()} title={label} aria-label={label}
-              className="flex rounded-full border px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
+      <Button onClick={() => query.toggle()} title={label} aria-label={label}
+              className="flex rounded-full border px-2 aspect-[1] items-center justify-center t-primary bg-button">
         <i className="ri-search-line dark:text-white"></i>
-      </button>
+      </Button>
       <ReactModal
         isOpen={isOpened}
         style={{
@@ -281,10 +279,15 @@ function UserAvatar({className, profile, onClose}: { className?: string, profile
           </div>
         </div>
       </> : <>
-        <button onClick={() => setIsOpened(true)} title={label} aria-label={label}
-                className="flex rounded-full border px-2 aspect-[1] items-center justify-center t-primary bg-button">
+        <Button
+          variant="ghost"
+          onClick={() => setIsOpened(true)}
+          title={label}
+          aria-label={label}
+          className="flex rounded-full border dark:border-neutral-600 px-2 aspect-[1] items-center justify-center"
+        >
           <i className="ri-user-received-line dark:text-white"></i>
-        </button>
+        </Button>
       </>}
       <LoginModal/>
     </div>

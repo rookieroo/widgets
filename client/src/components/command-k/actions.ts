@@ -88,6 +88,24 @@ function actions(router, config, setConfig) {
       section: "Modes",
       keywords: "",
       perform: () => setConfig({...config, mode: 'light'}),
+    },
+    {
+      id: "dark",
+      parent: "mode",
+      name: "dark",
+      shortcut: [],
+      section: "Modes",
+      keywords: "",
+      perform: () => setConfig({...config, mode: 'dark'}),
+    },
+    {
+      id: "system",
+      parent: "mode",
+      name: "system",
+      shortcut: [],
+      section: "Modes",
+      keywords: "",
+      perform: () => setConfig({...config, mode: 'system'}),
     }
   ];
 }
