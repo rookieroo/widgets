@@ -69,7 +69,7 @@ function InnerCommandBar() {
         <KBarAnimator className="w-full max-w-xl">
           <div
             className="smooth-shadow dark:shadow-none h-auto
-                dark:bg-input dark:text-white bg-white
+                dark:bg-secondary dark:text-white bg-white
                 dark:bg-opacity-75 dark:backdrop-filter dark:backdrop-blur-md
                 w-full py-2 px-2 rounded-xl"
           >
