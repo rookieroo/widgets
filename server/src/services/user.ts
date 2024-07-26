@@ -12,6 +12,73 @@ export function UserService() {
         .use(setup())
         .group('/user', (group) =>
             group
+              .get("/google", async ({ oauth2, redirect }) => {
+                  const url = await oauth2.createURL("Google");
+                  url.searchParams.set("access_type", "offline");
+
+                  return redirect(url.href);
+              })
+              .get("/google/callback", async ({ jwt, oauth2, set, store, query, cookie: { token, redirect_to, state } }) => {
+                  const t = await oauth2.authorize("Google");
+                  const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
+                      headers: {
+                          Authorization: `Bearer ${t?.accessToken}`
+                      }
+                  });
+                  const user = await response.json();
+                  // send request to API with token
+                  const profile: {
+                      openid: string;
+                      username: string;
+                      avatar: string;
+                      email: string;
+                      permission: number | null;
+                  } = {
+                      openid: user.sub,
+                      username: user.name || user.given_name,
+                      avatar: user.picture,
+                      email: user.email,
+                      permission: 0
+                  };
+                  await db.query.users.findFirst({ where: eq(users.openid, profile.openid) })
+                    .then(async (user) => {
+                        if (user) {
+                            profile.permission = user.permission
+                            await db.update(users).set(profile).where(eq(users.id, user.id));
+                            token.set({
+                                value: await jwt.sign({ id: user.id }),
+                                expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+                                path: '/',
+                            })
+                        } else {
+                            // if no user exists, set permission to 1
+                            // store.anyUser is a global state to cache the existence of any user
+                            if (!await store.anyUser(db)) {
+                                const realTimeCheck = (await db.query.users.findMany())?.length > 0
+                                if (!realTimeCheck) {
+                                    profile.permission = 1
+                                    store.anyUser = async (_: DB) => true
+                                }
+                            }
+                            const result = await db.insert(users).values(profile).returning({ insertedId: users.id });
+                            if (!result || result.length === 0) {
+                                throw new Error('Failed to register');
+                            } else {
+                                token.set({
+                                    value: await jwt.sign({ id: result[0].insertedId }),
+                                    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+                                    path: '/',
+                                })
+                            }
+                        }
+                    });
+                  const redirect_host = redirect_to.value || ""
+                  const redirect_url = (`${redirect_host}/callback?token=${token.value}`);
+                  set.headers = {
+                      'Content-Type': 'text/html',
+                  }
+                  set.redirect = redirect_url
+              })
                 .get("/github", ({ oauth2, headers: { referer }, cookie: { redirect_to } }) => {
                     if (!referer) {
                         return 'Referer not found'

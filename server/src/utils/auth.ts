@@ -1,11 +1,4 @@
-import { getCookie } from "typescript-cookie";
-const { OAuth2Client } = import('google-auth-library')
-
-export function headersWithAuth() {
-    return {
-        'Authorization': `Bearer ${getCookie('token')}`
-    }
-}
+const { OAuth2Client } = require('google-auth-library')
 
 /**
  * @description Function to decode Google OAuth token

@@ -1,6 +1,9 @@
 import { drizzle } from 'drizzle-orm/d1';
 
 export interface Env {
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRET: string;
+    GOOGLE_AUTH_CALLBACK: string;
     DB: D1Database;
     RIN_GITHUB_CLIENT_ID: string;
     RIN_GITHUB_CLIENT_SECRET: string;
@@ -18,7 +21,6 @@ export interface Env {
     S3_CACHE_FOLDER: string,
     WEBHOOK_URL: string,
     S3_FORCE_PATH_STYLE: string,
-
     RSS_TITLE: string,
     RSS_DESCRIPTION: string,
 }

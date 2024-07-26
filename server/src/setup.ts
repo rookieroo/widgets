@@ -14,6 +14,9 @@ export function setup() {
     const env: Env = getEnv();
     let gh_client_id = env.RIN_GITHUB_CLIENT_ID || env.GITHUB_CLIENT_ID;
     let gh_client_secret = env.RIN_GITHUB_CLIENT_SECRET || env.GITHUB_CLIENT_SECRET;
+    let google_client_id = env.GOOGLE_CLIENT_ID;
+    let google_client_secret = env.GOOGLE_CLIENT_SECRET;
+    let google_auth_callback = env.GOOGLE_AUTH_CALLBACK;
     let jwt_secret = env.JWT_SECRET;
 
     if (!gh_client_id || !gh_client_secret) {
@@ -27,6 +30,11 @@ export function setup() {
             gh_client_id,
             gh_client_secret
         ],
+        Google: [
+            google_client_id,
+            google_client_secret,
+            google_auth_callback,
+        ]
     })
     return new Elysia({ aot: false, name: 'setup' })
         .state('anyUser', anyUser)
