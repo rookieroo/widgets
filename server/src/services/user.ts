@@ -17,7 +17,7 @@ export function UserService() {
                   url.searchParams.set("access_type", "offline");
                   set.redirect = url.href;
               })
-              .get("/google/callback", async ({ jwt, oauth2, set, store, query, cookie: { token, redirect_to, state } }) => {
+              .get("/google/callback", async ({ oauth2, query: { state, code, scope, authuser, prompt } }) => {
                   const t = await oauth2.authorize("Google");
                   const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
                       headers: {
