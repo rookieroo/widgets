@@ -12,11 +12,10 @@ export function UserService() {
         .use(setup())
         .group('/user', (group) =>
             group
-              .get("/google", async ({ oauth2, redirect }) => {
+              .get("/google", async ({ oauth2, set }) => {
                   const url = await oauth2.createURL("Google");
                   url.searchParams.set("access_type", "offline");
-
-                  return redirect(url.href);
+                  set.redirect = url.href;
               })
               .get("/google/callback", async ({ jwt, oauth2, set, store, query, cookie: { token, redirect_to, state } }) => {
                   const t = await oauth2.authorize("Google");
