@@ -67,7 +67,7 @@ function App() {
   const favicon = useMemo(() => config.get<string>("favicon"), [config])
   return (
     <>
-      <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENTID}>
+      {/*<GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENTID}>*/}
         <ClientConfigContext.Provider value={config}>
           <ProfileContext.Provider value={profile}>
             <CommandBar>
@@ -172,7 +172,7 @@ function App() {
             </CommandBar>
           </ProfileContext.Provider>
         </ClientConfigContext.Provider>
-      </GoogleOAuthProvider>
+      {/*</GoogleOAuthProvider>*/}
     </>
   )
 }
