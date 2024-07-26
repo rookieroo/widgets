@@ -33,7 +33,7 @@ export function setup() {
         Google: [
             google_client_id,
             google_client_secret,
-            google_auth_callback,
+            google_auth_callback
         ]
     })
     return new Elysia({ aot: false, name: 'setup' })
