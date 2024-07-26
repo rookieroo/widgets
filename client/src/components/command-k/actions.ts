@@ -2,7 +2,8 @@ function actions(router, config, setConfig, t) {
   return [
     {
       id: "home",
-      name: t('home'),
+      // name: t('home'),
+      name: 'home',
       shortcut: ["h"],
       keywords: "home index",
       perform: () => router("/"),
@@ -29,7 +30,8 @@ function actions(router, config, setConfig, t) {
     // },
     {
       id: "writing",
-      name: t('writing'),
+      // name: t('writing'),
+      name: 'writing',
       shortcut: ["h"],
       keywords: "writing",
       perform: () => router("writing"),
@@ -56,7 +58,8 @@ function actions(router, config, setConfig, t) {
     // },
     {
       id: "contact",
-      name: t('contact'),
+      // name: t('contact'),
+      name: 'contact',
       shortcut: ["c"],
       keywords: "email",
       perform: () => window.open("mailto:chrisding03@gmail.com"),
@@ -84,7 +87,8 @@ function actions(router, config, setConfig, t) {
     },
     {
       id: "mode",
-      name: t('toggle_mode'),
+      // name: t('toggle_mode'),
+      name: 'Toggle mode',
       shortcut: ["m"],
       keywords: "Toggle dark mode ",
       section: "Modes",
@@ -92,7 +96,8 @@ function actions(router, config, setConfig, t) {
     {
       id: "light",
       parent: "mode",
-      name: t('customize.Light'),
+      // name: t('customize.Light'),
+      name: 'Light',
       shortcut: [],
       section: "Modes",
       keywords: "",
@@ -101,7 +106,8 @@ function actions(router, config, setConfig, t) {
     {
       id: "dark",
       parent: "mode",
-      name: t('customize.Dark'),
+      // name: t('customize.Dark'),
+      name: 'Dark',
       shortcut: [],
       section: "Modes",
       keywords: "",
@@ -110,7 +116,8 @@ function actions(router, config, setConfig, t) {
     {
       id: "system",
       parent: "mode",
-      name: t('customize.System'),
+      // name: t('customize.System'),
+      name: 'System',
       shortcut: [],
       section: "Modes",
       keywords: "",

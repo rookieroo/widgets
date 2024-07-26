@@ -19,7 +19,7 @@ const useToggleTheme = (config) => {
 
       }
     }
-  }, [config.theme])
+  }, [config])
 }
 
 export default useToggleTheme

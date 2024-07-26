@@ -69,7 +69,7 @@ function InnerCommandBar() {
         <KBarAnimator className="w-full max-w-xl">
           <div
             className="smooth-shadow dark:shadow-none h-auto
-                dark:bg-background dark:text-white bg-white
+                bg-accent dark:text-white bg-white
                 dark:bg-opacity-75 dark:backdrop-filter dark:backdrop-blur-md
                 w-full py-2 px-2 rounded-xl"
           >
@@ -97,10 +97,10 @@ export default function CommandBar({ children }) {
   const [actions_state, setActions] = useState(actions(navigate, config, setConfig, t));
   useToggleMode(config);
 
-  useEffect(() => {
-    const ac = actions(navigate, config, setConfig, t);
-    setActions(ac);
-  }, [i18n.language])
+  // useEffect(() => {
+  //   const ac = actions(navigate, config, setConfig, t);
+  //   setActions(ac);
+  // }, [t, i18n, i18n.language])
 
   return (
     <AnimatePresence>
