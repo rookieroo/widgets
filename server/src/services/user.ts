@@ -17,11 +17,14 @@ export function UserService() {
                   url.searchParams.set("access_type", "offline");
                   return redirect(url.href);
               })
-              .get("/google/callback", async ({ oauth2, store, query: { state, code, scope, authuser, prompt } }) => {
-                  const token = await oauth2.authorize("Google");
+              .get("/google/callback", async ({ jwt, oauth2, set, store, query, cookie: { token, redirect_to, state } }) => {
+                console.log('state', state.value)
+                console.log('p_state', query.state)
+
+                  const g_token = await oauth2.authorize("Google");
                   const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
                       headers: {
-                          Authorization: `Bearer ${token}`
+                          Authorization: `Bearer ${g_token.accessToken}`
                       }
                   });
                   const user = await response.json();
