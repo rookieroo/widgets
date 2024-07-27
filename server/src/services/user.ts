@@ -17,7 +17,7 @@ export function UserService() {
                   url.searchParams.set("access_type", "offline");
                   return redirect(url.href);
               })
-              .get("/google/callback", async ({ jwt, oauth2, set, store, query, cookie: { token, redirect_to, state } }) => {
+              .get("/google/callback", async ({ jwt, oauth2, set, query, cookie: { token, redirect_to, state } }) => {
                 console.log('state', state.value)
                 console.log('p_state', query.state)
 
@@ -55,13 +55,13 @@ export function UserService() {
                         } else {
                             // if no user exists, set permission to 1
                             // store.anyUser is a global state to cache the existence of any user
-                            if (!await store.anyUser(db)) {
-                                const realTimeCheck = (await db.query.users.findMany())?.length > 0
-                                if (!realTimeCheck) {
-                                    profile.permission = 1
-                                    store.anyUser = async (_: DB) => true
-                                }
-                            }
+                            // if (!await store.anyUser(db)) {
+                            //     const realTimeCheck = (await db.query.users.findMany())?.length > 0
+                            //     if (!realTimeCheck) {
+                            //         profile.permission = 1
+                            //         store.anyUser = async (_: DB) => true
+                            //     }
+                            // }
                             const result = await db.insert(users).values(profile).returning({ insertedId: users.id });
                             if (!result || result.length === 0) {
                                 throw new Error('Failed to register');
