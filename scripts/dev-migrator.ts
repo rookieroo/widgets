@@ -3,7 +3,7 @@ import * as path from 'path';
 import { execSync } from 'child_process';
 import { fixTopField, getMigrationVersion, isInfoExist, updateMigrationVersion } from './fix-top-field';
 
-const DB_NAME = "rin";
+const DB_NAME = "prop";
 const SQL_DIR = path.join(__dirname, '..', 'server', 'sql');
 
 // Change to the server/sql directory
