@@ -21,7 +21,7 @@ export function UserService() {
                     console.log('state', state.value)
                     console.log('p_state', query.state)
 
-                    const g_token = await oauth2.authorize("Google");
+                    // const g_token = await oauth2.authorize("Google");
                     const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
                         headers: {
                             Authorization: `Bearer ${g_token.accessToken}`
