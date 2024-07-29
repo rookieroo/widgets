@@ -7,11 +7,19 @@ import { Input } from "../components/input";
 import {google_oauth_url, oauth_url} from "../main";
 import {Chrome} from "lucide-react";
 import * as React from "react";
+import {useGoogleLogin} from "@react-oauth/google";
 
 export function useLoginModal(onClose?: () => void) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isOpened, setIsOpened] = useState(false);
+    const login = useGoogleLogin({
+        onSuccess: tokenResponse => {
+            console.log(tokenResponse);
+            // const realUserData = getDecodedOAuthJwtGoogle(tokenResponse?.access_token)
+            // console.log(realUserData);
+        },
+    });
 
     const onLogin = useCallback(() => {
         setTimeout(() => {
@@ -69,7 +77,8 @@ export function useLoginModal(onClose?: () => void) {
                             }} hover={true} />
                             <Button
                               variant="ghost"
-                              onClick={() => {window.location.href = `${google_oauth_url}`}}
+                              // onClick={() => {window.location.href = `${google_oauth_url}`}}
+                              onClick={login}
                               className="flex rounded-full border dark:border-grey-600 px-2 aspect-[1] items-center justify-center t-primary bg-button"
                             >
                                 <Chrome className="h-4 w-4 dark:text-white" />

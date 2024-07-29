@@ -4,7 +4,10 @@ import { URL } from "url";
 import type { DB } from "../_worker";
 import { users } from "../db/schema";
 import { setup } from "../setup";
-import { getDB } from "../utils/di";
+import {getDB, getEnv} from "../utils/di";
+import {OAuth2Client} from "google-auth-library";
+import {Env} from "../db/db";
+
 
 export function UserService() {
     const db: DB = getDB();
@@ -12,17 +15,29 @@ export function UserService() {
         .use(setup())
         .group('/user', (group) =>
             group
-                .get("/google", async ({ oauth2, redirect }) => {
-                    const url = await oauth2.createURL("Google");
-                    url.searchParams.set("access_type", "offline");
-                    return redirect(url.href);
+                .get("/google", async ({ oauth2, redirect, query: {token} }) => {
+                    const env: Env = getEnv();
+                    const oAuth2Client = new OAuth2Client(
+                      env.GOOGLE_CLIENT_ID,
+                      env.GOOGLE_CLIENT_SECRET,
+                      env.GOOGLE_AUTH_CALLBACK
+                    );
+                    oAuth2Client.setCredentials(token);
+                    const authorizeUrl = oAuth2Client.generateAuthUrl({
+                        access_type: 'offline',
+                        scope: 'https://www.googleapis.com/auth/userinfo.profile',
+                    });
+
+                    // const url = await oauth2.createURL("Google");
+                    // url.searchParams.set("access_type", "offline");
+                    return redirect(authorizeUrl);
                 })
                 .get("/google/callback", async ({ jwt, oauth2, set, query, cookie: { token, redirect_to, state } }) => {
                     console.log('state', state.value)
                     console.log('p_state', query.state)
 
                     const g_token = await oauth2.authorize("Google");
-                    const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
+                    const response = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
                         headers: {
                             Authorization: `Bearer ${g_token.accessToken}`
                         }
