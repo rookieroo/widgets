@@ -12,16 +12,16 @@ export function UserService() {
         .use(setup())
         .group('/user', (group) =>
             group
-                .get("/google", ({ oauth2, redirect }) => {
+                .get("/google", async ({ oauth2, redirect }) => {
                     const url = await oauth2.createURL("Google");
-                    url.searchParams.set("access_type", "offline");
+                    // url.searchParams.set("access_type", "offline");
                     return redirect(url.href);
                 })
                 .get("/google/callback", async ({ jwt, oauth2, set, query, cookie: { token, redirect_to, state } }) => {
                     console.log('state', state.value)
                     console.log('p_state', query.state)
 
-                    // const g_token = await oauth2.authorize("Google");
+                    const g_token = await oauth2.authorize("Google");
                     const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
                         headers: {
                             Authorization: `Bearer ${g_token.accessToken}`
