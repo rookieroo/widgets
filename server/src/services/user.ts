@@ -14,7 +14,7 @@ export function UserService() {
             group
                 .get("/google", async ({ oauth2, redirect }) => {
                     const url = await oauth2.createURL("Google");
-                    // url.searchParams.set("access_type", "offline");
+                    url.searchParams.set("access_type", "offline");
                     return redirect(url.href);
                 })
                 .get("/google/callback", async ({ jwt, oauth2, set, query, cookie: { token, redirect_to, state } }) => {
