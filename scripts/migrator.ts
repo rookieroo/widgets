@@ -63,6 +63,11 @@ S3_FORCE_PATH_STYLE = "${S3_FORCE_PATH_STYLE}"
 WEBHOOK_URL = "${WEBHOOK_URL}"
 RSS_TITLE = "${RSS_TITLE}"
 RSS_DESCRIPTION = "${RSS_DESCRIPTION}"
+RIN_GITHUB_CLIENT_ID = "${githubClientId}"
+RIN_GITHUB_CLIENT_SECRET = "${githubClientSecret}"
+JWT_SECRET = "${jwtSecret}"
+GOOGLE_CLIENT_ID = "${googleClientId}"
+GOOGLE_CLIENT_SECRET = "${googleClientSecret}"
 GOOGLE_AUTH_CALLBACK = "${googleAuthCallback}"
 
 [placement]
