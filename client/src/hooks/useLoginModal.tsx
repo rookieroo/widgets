@@ -77,8 +77,8 @@ export function useLoginModal(onClose?: () => void) {
                             }} hover={true} />
                             <Button
                               variant="ghost"
-                              // onClick={() => {window.location.href = `${google_oauth_url}`}}
-                              onClick={login}
+                              onClick={() => {window.location.href = `${google_oauth_url}`}}
+                              // onClick={login}
                               className="flex rounded-full border dark:border-grey-600 px-2 aspect-[1] items-center justify-center t-primary bg-button"
                             >
                                 <Chrome className="h-4 w-4 dark:text-white" />
