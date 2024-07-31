@@ -34,6 +34,8 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           RIN_GITHUB_CLIENT_ID: ${{ secrets.RIN_GITHUB_CLIENT_ID }}
           RIN_GITHUB_CLIENT_SECRET: ${{ secrets.RIN_GITHUB_CLIENT_SECRET }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
 
           DB_NAME: ${{ vars.DB_NAME }}
           WORKER_NAME: ${{ vars.WORKER_NAME }}
@@ -48,6 +50,7 @@ jobs:
           WEBHOOK_URL: ${{ vars.WEBHOOK_URL }}
           RSS_TITLE: ${{ vars.RSS_TITLE }}
           RSS_DESCRIPTION: ${{ vars.RSS_DESCRIPTION }}
+          GOOGLE_AUTH_CALLBACK: ${{ vars.GOOGLE_AUTH_CALLBACK }}
         run: |
           cd widgets/
           bun i
