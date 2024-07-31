@@ -1,5 +1,5 @@
 import {eq} from "drizzle-orm";
-import Elysia, {t} from "elysia";
+import Elysia, {redirect, t} from "elysia";
 import {URL} from "url";
 import type {DB} from "../_worker";
 import {users} from "../db/schema";
@@ -8,43 +8,25 @@ import {getDB, getEnv} from "../utils/di";
 import {OAuth2Client} from "google-auth-library";
 import {Env} from "../db/db";
 import {getBookmarks, getUserInfo} from "../utils/fetch";
+import {Google, generateCodeVerifier, generateState} from "arctic";
 
 export function UserService() {
   const db: DB = getDB();
   const env: Env = getEnv();
-  const oAuth2Client = new OAuth2Client(
-    env.GOOGLE_CLIENT_ID,
-    env.GOOGLE_CLIENT_SECRET,
-    env.GOOGLE_AUTH_CALLBACK
-  );
+  const google = new Google(env.GOOGLE_CLIENT_ID, env.GOOGLE_CLIENT_SECRET,env.GOOGLE_AUTH_CALLBACK)
+  const state = generateState();
+  const codeVerifier = generateCodeVerifier();
+
+  // const url = await google.createAuthorizationURL(state, codeVerifier);
   return new Elysia({aot: false})
     .use(setup())
     .group('/user', (group) =>
       group
-        .get("/google", async ({}) => {
-          const authUrl = oAuth2Client.generateAuthUrl({
-            access_type: 'offline',
-            scope: [
-              'https://www.googleapis.com/auth/userinfo.email',
-              'https://www.googleapis.com/auth/userinfo.profile',
-              'https://www.googleapis.com/auth/chrome.sync.readonly'
-            ]
-          })
-          return new Response(null, {
-            status: 302,
-            headers: {Location: authUrl}
-          })
-        })
-        .get("/auth/google", async ({ oauth2, set }) => {
-          const url = await oauth2.createURL("Google");
-          url.searchParams.set("access_type", "offline");
-
-          set.redirect = url.href;
-        })
-        .get("/auth/google/callback", async ({ oauth2 }) => {
-          const token = await oauth2.authorize("Google");
-
-          // send request to API with token
+        .get("/google", async () => {
+          const url = await google.createAuthorizationURL(state, codeVerifier, {
+            scopes: ["profile", "email"]
+          });
+          return redirect(url as string);
         })
         .get("/google/callback", async ({jwt, oauth2, set, query, cookie: {token, redirect_to, state}}) => {
           const {code} = query
