@@ -29,8 +29,8 @@ const S3_FORCE_PATH_STYLE = env("S3_FORCE_PATH_STYLE", "false")
 const WEBHOOK_URL = env("WEBHOOK_URL", "")
 const RSS_TITLE = env("RSS_TITLE", "")
 const RSS_DESCRIPTION = env("RSS_DESCRIPTION", "")
-const GOOGLE_CLIENT_ID = env("GOOGLE_CLIENT_ID", "")
-const GOOGLE_AUTH_CALLBACK = env("GOOGLE_AUTH_CALLBACK", "")
+const GOOGLE_CLIENT_ID = renv("GOOGLE_CLIENT_ID", "")
+const GOOGLE_AUTH_CALLBACK = renv("GOOGLE_AUTH_CALLBACK", "")
 
 // Secrets
 const accessKeyId = env("S3_ACCESS_KEY_ID")
@@ -38,7 +38,7 @@ const secretAccessKey = env("S3_SECRET_ACCESS_KEY")
 const jwtSecret = env("JWT_SECRET")
 const githubClientId = env("RIN_GITHUB_CLIENT_ID")
 const githubClientSecret = env("RIN_GITHUB_CLIENT_SECRET")
-const googleClientSecret = env("GOOGLE_CLIENT_SECRET")
+const googleClientSecret = renv("GOOGLE_CLIENT_SECRET")
 
 Bun.write('wrangler.toml', stripIndent(`
 #:schema node_modules/wrangler/config-schema.json
