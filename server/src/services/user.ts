@@ -34,7 +34,7 @@ export function UserService() {
           if (!code || typeof code !== 'string') {
             return new Response('Invalid code', {status: 400})
           }
-          try {
+          // try {
             const tokens = await oauth2.authorize("Google");
             const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
               headers: {
@@ -95,10 +95,10 @@ export function UserService() {
               'Content-Type': 'text/html',
             }
             set.redirect = redirect_url
-          } catch (error) {
-            console.error('Error in callback:', error)
-            return new Response('Authentication failed', {status: 500})
-          }
+          // } catch (error) {
+          //   console.error('Error in callback:', error)
+          //   return new Response('Authentication failed', {status: 500})
+          // }
         })
         .get("/github", ({oauth2, headers: {referer}, cookie: {redirect_to}}) => {
           if (!referer) {
