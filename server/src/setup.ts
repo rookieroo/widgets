@@ -36,6 +36,7 @@ export function setup() {
             google_auth_callback
         ]
     })
+
     return new Elysia({ aot: false, name: 'setup' })
         .state('anyUser', anyUser)
         .use(oauth)

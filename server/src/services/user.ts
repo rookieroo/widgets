@@ -36,6 +36,17 @@ export function UserService() {
             headers: {Location: authUrl}
           })
         })
+        .get("/auth/google", async ({ oauth2, set }) => {
+          const url = await oauth2.createURL("Google");
+          url.searchParams.set("access_type", "offline");
+
+          set.redirect = url.href;
+        })
+        .get("/auth/google/callback", async ({ oauth2 }) => {
+          const token = await oauth2.authorize("Google");
+
+          // send request to API with token
+        })
         .get("/google/callback", async ({jwt, oauth2, set, query, cookie: {token, redirect_to, state}}) => {
           const {code} = query
           if (!code || typeof code !== 'string') {
