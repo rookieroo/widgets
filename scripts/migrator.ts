@@ -36,9 +36,9 @@ const secretAccessKey = env("S3_SECRET_ACCESS_KEY")
 const jwtSecret = env("JWT_SECRET")
 const githubClientId = env("RIN_GITHUB_CLIENT_ID")
 const githubClientSecret = env("RIN_GITHUB_CLIENT_SECRET")
-const googleClientId = env("GOOGLE_CLIENT_ID", "52848205396-0hie2d12onj3cikhgviu3r8idatvm3a3.apps.googleusercontent.com")
-const googleClientSecret = env("GOOGLE_CLIENT_SECRET", "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")
-const googleAuthCallback = env("GOOGLE_AUTH_CALLBACK", "https://service.trendingup.top/user/google/callback")
+const googleClientId = env("GOOGLE_CLIENT_ID")
+const googleClientSecret = env("GOOGLE_CLIENT_SECRET")
+const googleAuthCallback = env("GOOGLE_AUTH_CALLBACK")
 
 Bun.write('wrangler.toml', stripIndent(`
 #:schema node_modules/wrangler/config-schema.json
