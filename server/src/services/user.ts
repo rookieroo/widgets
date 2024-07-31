@@ -31,7 +31,7 @@ export function UserService() {
 
           set.redirect = url.href;
         })
-        .get("/google/callback", async ({jwt, oauth2, set, store, query, cookie: {token, redirect_to, state}}) => {
+        .get("/google/callback", async ({jwt, oauth2, request, set, store, query, cookie: {token, redirect_to, state}}) => {
           const {code} = query
           if (!code || typeof code !== 'string') {
             return new Response('Invalid code', {status: 400})
@@ -92,7 +92,7 @@ export function UserService() {
                   }
                 }
               });
-            const redirect_host = redirect_to.value || ""
+            const redirect_host = redirect_to.value || request.headers.get('referer').slice(0, -1) || ""
             const redirect_url = (`${redirect_host}/callback?token=${token.value}`);
             set.headers = {
               'Content-Type': 'text/html',
