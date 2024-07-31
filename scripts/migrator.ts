@@ -29,6 +29,8 @@ const S3_FORCE_PATH_STYLE = env("S3_FORCE_PATH_STYLE", "false")
 const WEBHOOK_URL = env("WEBHOOK_URL", "")
 const RSS_TITLE = env("RSS_TITLE", "")
 const RSS_DESCRIPTION = env("RSS_DESCRIPTION", "")
+const GOOGLE_CLIENT_ID = env("GOOGLE_CLIENT_ID", "")
+const GOOGLE_AUTH_CALLBACK = env("GOOGLE_AUTH_CALLBACK", "")
 
 // Secrets
 const accessKeyId = env("S3_ACCESS_KEY_ID")
@@ -36,9 +38,9 @@ const secretAccessKey = env("S3_SECRET_ACCESS_KEY")
 const jwtSecret = env("JWT_SECRET")
 const githubClientId = env("RIN_GITHUB_CLIENT_ID")
 const githubClientSecret = env("RIN_GITHUB_CLIENT_SECRET")
-const googleClientId = env("GOOGLE_CLIENT_ID")
+// const googleClientId = env("GOOGLE_CLIENT_ID")
 const googleClientSecret = env("GOOGLE_CLIENT_SECRET")
-const googleAuthCallback = env("GOOGLE_AUTH_CALLBACK")
+// const googleAuthCallback = env("GOOGLE_AUTH_CALLBACK")
 
 Bun.write('wrangler.toml', stripIndent(`
 #:schema node_modules/wrangler/config-schema.json
@@ -66,9 +68,9 @@ RSS_DESCRIPTION = "${RSS_DESCRIPTION}"
 RIN_GITHUB_CLIENT_ID = "${githubClientId}"
 RIN_GITHUB_CLIENT_SECRET = "${githubClientSecret}"
 JWT_SECRET = "${jwtSecret}"
-GOOGLE_CLIENT_ID = "${googleClientId}"
+GOOGLE_CLIENT_ID = "${GOOGLE_CLIENT_ID}"
 GOOGLE_CLIENT_SECRET = "${googleClientSecret}"
-GOOGLE_AUTH_CALLBACK = "${googleAuthCallback}"
+GOOGLE_AUTH_CALLBACK = "${GOOGLE_AUTH_CALLBACK}"
 
 [placement]
 mode = "smart"
@@ -167,7 +169,7 @@ await putSecret('S3_ACCESS_KEY_ID', accessKeyId)
 await putSecret('S3_SECRET_ACCESS_KEY', secretAccessKey)
 await putSecret('RIN_GITHUB_CLIENT_ID', githubClientId)
 await putSecret('RIN_GITHUB_CLIENT_SECRET', githubClientSecret)
-await putSecret('GOOGLE_CLIENT_ID', googleClientId)
+// await putSecret('GOOGLE_CLIENT_ID', googleClientId)
 await putSecret('GOOGLE_CLIENT_SECRET', googleClientSecret)
 await putSecret('JWT_SECRET', jwtSecret)
 
