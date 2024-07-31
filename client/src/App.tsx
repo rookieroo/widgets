@@ -25,7 +25,6 @@ import {Tips, TipsPage} from './components/tips.tsx'
 import {useTranslation} from 'react-i18next'
 import {TailwindIndicator} from "./components/tailwind-indicator";
 import CommandBar from "./components/command-k/command-bar";
-import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   const ref = useRef(false)
@@ -68,112 +67,110 @@ function App() {
   const favicon = useMemo(() => config.get<string>("favicon"), [config])
   return (
     <>
-      <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
-        <ClientConfigContext.Provider value={config}>
-          <ProfileContext.Provider value={profile}>
-            <CommandBar>
-              <Helmet>
-                {favicon &&
-                <link rel="icon" href={favicon}/>}
-              </Helmet>
-              <Switch>
-                <RouteMe path="/">
-                  <FeedsPage/>
-                </RouteMe>
+      <ClientConfigContext.Provider value={config}>
+        <ProfileContext.Provider value={profile}>
+          <CommandBar>
+            <Helmet>
+              {favicon &&
+              <link rel="icon" href={favicon}/>}
+            </Helmet>
+            <Switch>
+              <RouteMe path="/">
+                <FeedsPage/>
+              </RouteMe>
 
-                <RouteMe path="/timeline">
-                  <TimelinePage/>
-                </RouteMe>
-
-
-                <RouteMe path="/friends">
-                  <FriendsPage/>
-                </RouteMe>
-
-                <RouteMe path="/hashtags">
-                  <HashtagsPage/>
-                </RouteMe>
-
-                <RouteMe path="/hashtag/:name">
-                  {params => {
-                    return (<HashtagPage name={params.name || ""}/>)
-                  }}
-                </RouteMe>
-
-                <RouteMe path="/search/:keyword">
-                  {params => {
-                    return (<SearchPage keyword={params.keyword || ""}/>)
-                  }}
-                </RouteMe>
-
-                <RouteMe path="/settings" paddingClassName='mx-4'>
-                  <Settings/>
-                </RouteMe>
+              <RouteMe path="/timeline">
+                <TimelinePage/>
+              </RouteMe>
 
 
-                <RouteMe path="/writing" paddingClassName='mx-4'>
-                  <WritingPage/>
-                </RouteMe>
+              <RouteMe path="/friends">
+                <FriendsPage/>
+              </RouteMe>
 
-                <RouteMe path="/writing/:id" paddingClassName='mx-4'>
-                  {({id}) => {
-                    const id_num = tryInt(0, id)
-                    return (
-                      <WritingPage id={id_num}/>
-                    )
-                  }}
-                </RouteMe>
+              <RouteMe path="/hashtags">
+                <HashtagsPage/>
+              </RouteMe>
 
-                <RouteMe path="/callback">
-                  <CallbackPage/>
-                </RouteMe>
+              <RouteMe path="/hashtag/:name">
+                {params => {
+                  return (<HashtagPage name={params.name || ""}/>)
+                }}
+              </RouteMe>
 
-                <RouteWithIndex path="/feed/:id">
-                  {(params, TOC, clean) => {
-                    return (<FeedPage id={params.id || ""} TOC={TOC} clean={clean}/>)
-                  }}
-                </RouteWithIndex>
+              <RouteMe path="/search/:keyword">
+                {params => {
+                  return (<SearchPage keyword={params.keyword || ""}/>)
+                }}
+              </RouteMe>
 
-                <RouteWithIndex path="/:alias">
-                  {(params, TOC, clean) => {
-                    return (
-                      <FeedPage id={params.alias || ""} TOC={TOC} clean={clean}/>
-                    )
-                  }}
-                </RouteWithIndex>
+              <RouteMe path="/settings" paddingClassName='mx-4'>
+                <Settings/>
+              </RouteMe>
 
-                <RouteMe path="/user/github">
-                  {_ => (
-                    <TipsPage>
-                      <Tips value={t('error.api_url')} type='error'/>
-                    </TipsPage>
-                  )}
-                </RouteMe>
 
-                <RouteMe path="/*/user/github">
-                  {_ => (
-                    <TipsPage>
-                      <Tips value={t('error.api_url_slash')} type='error'/>
-                    </TipsPage>
-                  )}
-                </RouteMe>
+              <RouteMe path="/writing" paddingClassName='mx-4'>
+                <WritingPage/>
+              </RouteMe>
 
-                <RouteMe path="/user/github/callback">
-                  {_ => (
-                    <TipsPage>
-                      <Tips value={t('error.github_callback')} type='error'/>
-                    </TipsPage>
-                  )}
-                </RouteMe>
+              <RouteMe path="/writing/:id" paddingClassName='mx-4'>
+                {({id}) => {
+                  const id_num = tryInt(0, id)
+                  return (
+                    <WritingPage id={id_num}/>
+                  )
+                }}
+              </RouteMe>
 
-                {/* Default route in a switch */}
-                <Route>404: No such page!</Route>
-              </Switch>
-              <TailwindIndicator/>
-            </CommandBar>
-          </ProfileContext.Provider>
-        </ClientConfigContext.Provider>
-      </GoogleOAuthProvider>
+              <RouteMe path="/callback">
+                <CallbackPage/>
+              </RouteMe>
+
+              <RouteWithIndex path="/feed/:id">
+                {(params, TOC, clean) => {
+                  return (<FeedPage id={params.id || ""} TOC={TOC} clean={clean}/>)
+                }}
+              </RouteWithIndex>
+
+              <RouteWithIndex path="/:alias">
+                {(params, TOC, clean) => {
+                  return (
+                    <FeedPage id={params.alias || ""} TOC={TOC} clean={clean}/>
+                  )
+                }}
+              </RouteWithIndex>
+
+              <RouteMe path="/user/github">
+                {_ => (
+                  <TipsPage>
+                    <Tips value={t('error.api_url')} type='error'/>
+                  </TipsPage>
+                )}
+              </RouteMe>
+
+              <RouteMe path="/*/user/github">
+                {_ => (
+                  <TipsPage>
+                    <Tips value={t('error.api_url_slash')} type='error'/>
+                  </TipsPage>
+                )}
+              </RouteMe>
+
+              <RouteMe path="/user/github/callback">
+                {_ => (
+                  <TipsPage>
+                    <Tips value={t('error.github_callback')} type='error'/>
+                  </TipsPage>
+                )}
+              </RouteMe>
+
+              {/* Default route in a switch */}
+              <Route>404: No such page!</Route>
+            </Switch>
+            <TailwindIndicator/>
+          </CommandBar>
+        </ProfileContext.Provider>
+      </ClientConfigContext.Provider>
     </>
   )
 }
