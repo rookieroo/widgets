@@ -24,7 +24,9 @@ export function UserService() {
           // const url = await google.createAuthorizationURL(state, codeVerifier, {
           //   scopes: ["profile", "email"]
           // });
-          const url = await oauth2.createURL("Google");
+          const url = await oauth2.createURL("Google", {
+            scopes: ["profile", "email"]
+          });
           url.searchParams.set("access_type", "offline");
 
           set.redirect = url.href;
