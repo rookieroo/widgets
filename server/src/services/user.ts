@@ -20,14 +20,14 @@ export function UserService() {
     .use(setup())
     .group('/user', (group) =>
       group
-        .get("/google", async ({oauth2, cookie: {redirect_to}}) => {
+        .get("/google", async ({oauth2, set, cookie: {redirect_to}}) => {
           // const url = await google.createAuthorizationURL(state, codeVerifier, {
           //   scopes: ["profile", "email"]
           // });
           const url = await oauth2.createURL("Google");
           url.searchParams.set("access_type", "offline");
 
-          return redirect_to(url.href);
+          set.redirect = url.href;
         })
         .get("/google/callback", async ({jwt, oauth2, set, store, query, cookie: {token, redirect_to, state}}) => {
           const {code} = query
