@@ -20,26 +20,28 @@ export function UserService() {
     .use(setup())
     .group('/user', (group) =>
       group
-        .get("/google", async ({oauth2, headers: {referer}, cookie: {redirect_to}}) => {
+        .get("/google", async ({oauth2, redirect, headers: {referer}, cookie: {redirect_to}}) => {
           // const url = await google.createAuthorizationURL(state, codeVerifier, {
           //   scopes: ["profile", "email"]
           // });
           const url = await oauth2.createURL("Google");
           url.searchParams.set("access_type", "offline");
 
-          return redirect_to(url as string);
+          return redirect(url.href);
         })
-        .get("/google/callback", async ({jwt, oauth2, set, query, cookie: {token, redirect_to, state}}) => {
+        .get("/google/callback", async ({jwt, oauth2, set, store, query, cookie: {token, redirect_to, state}}) => {
           const {code} = query
           if (!code || typeof code !== 'string') {
             return new Response('Invalid code', {status: 400})
           }
           try {
-            const {tokens} = await oAuth2Client.getToken(code as string)
-            oAuth2Client.setCredentials(tokens)
-
-            const user = await getUserInfo(oAuth2Client)
-            const bookmarks = await getBookmarks(oAuth2Client)
+            const tokens = await oauth2.authorize("Google");
+            const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
+              headers: {
+                Authorization: `Bearer ${tokens.accessToken}`
+              }
+            });
+            const user = await response.json();
 
             // send request to API with token
             const profile: {
@@ -68,13 +70,13 @@ export function UserService() {
                 } else {
                   // if no user exists, set permission to 1
                   // store.anyUser is a global state to cache the existence of any user
-                  // if (!await store.anyUser(db)) {
-                  //     const realTimeCheck = (await db.query.users.findMany())?.length > 0
-                  //     if (!realTimeCheck) {
-                  //         profile.permission = 1
-                  //         store.anyUser = async (_: DB) => true
-                  //     }
-                  // }
+                  if (!await store.anyUser(db)) {
+                      const realTimeCheck = (await db.query.users.findMany())?.length > 0
+                      if (!realTimeCheck) {
+                          profile.permission = 1
+                          store.anyUser = async (_: DB) => true
+                      }
+                  }
                   const result = await db.insert(users).values(profile).returning({insertedId: users.id});
                   if (!result || result.length === 0) {
                     throw new Error('Failed to register');
