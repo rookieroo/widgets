@@ -44,8 +44,8 @@ export function UserService() {
               }
             });
             const user = await response.json();
-            return new Response(JSON.stringify(user), {status: 400})
-            console.log('user', user);
+            // return new Response(JSON.stringify(user), {status: 400})
+            // console.log('user', user);
             // send request to API with token
             const profile: {
               openid: string;
@@ -55,7 +55,7 @@ export function UserService() {
               permission: number | null;
             } = {
               openid: user.sub,
-              username: user.name || user.given_name,
+              username: user.name || user.given_name || user.family_name,
               avatar: user.picture,
               email: user.email,
               permission: 0
