@@ -9,15 +9,14 @@ import {OAuth2Client} from "google-auth-library";
 import {Env} from "../db/db";
 import {getBookmarks, getUserInfo} from "../utils/fetch";
 
-const env: Env = getEnv();
-const oAuth2Client = new OAuth2Client(
-  env.GOOGLE_CLIENT_ID,
-  env.GOOGLE_CLIENT_SECRET,
-  env.GOOGLE_AUTH_CALLBACK
-);
-
 export function UserService() {
   const db: DB = getDB();
+  const env: Env = getEnv();
+  const oAuth2Client = new OAuth2Client(
+    env.GOOGLE_CLIENT_ID,
+    env.GOOGLE_CLIENT_SECRET,
+    env.GOOGLE_AUTH_CALLBACK
+  );
   return new Elysia({aot: false})
     .use(setup())
     .group('/user', (group) =>

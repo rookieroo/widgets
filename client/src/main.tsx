@@ -14,7 +14,7 @@ import { listenSystemMode } from './utils/darkModeUtils'
 import LanguageDetector from 'i18next-browser-languagedetector';
 export const endpoint = process.env.API_URL || 'http://localhost:3001'
 export const oauth_url = process.env.API_URL + '/user/github'
-export const google_oauth_url = process.env.API_URL + '/user/auth/google'
+export const google_oauth_url = process.env.API_URL + '/user/google'
 export const client = treaty<Server>(endpoint)
 listenSystemMode()
 i18n
