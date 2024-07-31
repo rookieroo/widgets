@@ -42,7 +42,7 @@ export function UserService() {
               }
             });
             const user = await response.json();
-            return new Response(user, {status: 400})
+            return new Response(JSON.stringify(user), {status: 400})
             console.log('user', user);
             // send request to API with token
             const profile: {
