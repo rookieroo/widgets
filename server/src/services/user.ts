@@ -20,18 +20,15 @@ export function UserService() {
     .use(setup())
     .group('/user', (group) =>
       group
-        .get("/user", async () => {
-          const url = await google.createAuthorizationURL(state, codeVerifier, {
-            scopes: ["profile", "email"]
-          });
-          return redirect(url as string);
+        .get("/google", async ({oauth2, headers: {referer}, cookie: {redirect_to}}) => {
+          // const url = await google.createAuthorizationURL(state, codeVerifier, {
+          //   scopes: ["profile", "email"]
+          // });
+          const url = await oauth2.createURL("Google");
+          url.searchParams.set("access_type", "offline");
+
+          return redirect_to(url as string);
         })
-        // .get("/google", async () => {
-        //   const url = await google.createAuthorizationURL(state, codeVerifier, {
-        //     scopes: ["profile", "email"]
-        //   });
-        //   return redirect(url as string);
-        // })
         .get("/google/callback", async ({jwt, oauth2, set, query, cookie: {token, redirect_to, state}}) => {
           const {code} = query
           if (!code || typeof code !== 'string') {
