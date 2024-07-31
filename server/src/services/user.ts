@@ -5,7 +5,6 @@ import type {DB} from "../_worker";
 import {users} from "../db/schema";
 import {setup} from "../setup";
 import {getDB, getEnv} from "../utils/di";
-import {OAuth2Client} from "google-auth-library";
 import {Env} from "../db/db";
 import {getBookmarks, getUserInfo} from "../utils/fetch";
 import {Google, generateCodeVerifier, generateState} from "arctic";
@@ -17,17 +16,22 @@ export function UserService() {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
 
-  // const url = await google.createAuthorizationURL(state, codeVerifier);
   return new Elysia({aot: false})
     .use(setup())
     .group('/user', (group) =>
       group
-        .get("/google", async () => {
+        .get("/user", async () => {
           const url = await google.createAuthorizationURL(state, codeVerifier, {
             scopes: ["profile", "email"]
           });
           return redirect(url as string);
         })
+        // .get("/google", async () => {
+        //   const url = await google.createAuthorizationURL(state, codeVerifier, {
+        //     scopes: ["profile", "email"]
+        //   });
+        //   return redirect(url as string);
+        // })
         .get("/google/callback", async ({jwt, oauth2, set, query, cookie: {token, redirect_to, state}}) => {
           const {code} = query
           if (!code || typeof code !== 'string') {
