@@ -19,3 +19,19 @@ export async function getBookmarks(auth: OAuth2Client) {
   const bookmarksResponse = await res.json();
   return bookmarksResponse.data.bookmarks || []
 }
+
+export async function fetchChromeBookmarks(accessToken: string) {
+  const response = await fetch('https://www.googleapis.com/chrome/sync/v1/bookmarks', {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/json'
+    }
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  const data = await response.json()
+  return data.bookmarks
+}

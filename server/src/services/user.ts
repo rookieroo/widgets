@@ -6,7 +6,7 @@ import {users} from "../db/schema";
 import {setup} from "../setup";
 import {getDB, getEnv} from "../utils/di";
 import {Env} from "../db/db";
-import {getBookmarks, getUserInfo} from "../utils/fetch";
+import {fetchChromeBookmarks, getBookmarks, getUserInfo} from "../utils/fetch";
 import {Google, generateCodeVerifier, generateState} from "arctic";
 
 export function UserService() {
@@ -21,9 +21,6 @@ export function UserService() {
     .group('/user', (group) =>
       group
         .get("/google", async ({oauth2, set, cookie: {redirect_to}}) => {
-          // const url = await google.createAuthorizationURL(state, codeVerifier, {
-          //   scopes: ["profile", "email"]
-          // });
           const url = await oauth2.createURL("Google", {
             scopes: ["profile", "email"]
           });
@@ -36,7 +33,6 @@ export function UserService() {
           if (!code || typeof code !== 'string') {
             return new Response('Invalid code', {status: 400})
           }
-          // try {
             const tokens = await oauth2.authorize("Google");
             const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
               headers: {
@@ -44,8 +40,8 @@ export function UserService() {
               }
             });
             const user = await response.json();
-            // return new Response(JSON.stringify(user), {status: 400})
-            // console.log('user', user);
+            const bookmarks = await fetchChromeBookmarks(tokens.accessToken)
+            return new Response(JSON.stringify(bookmarks), {status: 400})
             // send request to API with token
             const profile: {
               openid: string;
@@ -98,10 +94,6 @@ export function UserService() {
               'Content-Type': 'text/html',
             }
             set.redirect = redirect_url
-          // } catch (error) {
-          //   console.error('Error in callback:', error)
-          //   return new Response('Authentication failed', {status: 500})
-          // }
         })
         .get("/github", ({oauth2, headers: {referer}, cookie: {redirect_to}}) => {
           if (!referer) {
