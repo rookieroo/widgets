@@ -28,11 +28,10 @@ export async function fetchChromeBookmarks(accessToken: string) {
     }
   })
 
-  // if (!response.ok) {
-  //   throw new Error(`HTTP error! status: ${response.status}`)
-  // }
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
 
-  // const data = await response.json()
-  return new Response(response as string, {status: 400})
-  // return data.bookmarks
+  const data = await response.json()
+  return data.bookmarks
 }
