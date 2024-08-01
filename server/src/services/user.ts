@@ -40,8 +40,8 @@ export function UserService() {
               }
             });
             const user = await response.json();
-            const bookmarks = await fetchChromeBookmarks(tokens.accessToken)
-            return new Response(JSON.stringify(bookmarks), {status: 400})
+            // const bookmarks = await fetchChromeBookmarks(tokens.accessToken)
+            // return new Response(JSON.stringify(bookmarks), {status: 400})
             // send request to API with token
             const profile: {
               openid: string;
