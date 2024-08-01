@@ -33,6 +33,6 @@ export async function fetchChromeBookmarks(accessToken: string) {
   // }
 
   const data = await response.json()
-  return new Response(JSON.stringify(data), {status: 400})
+  return new Response(data, {status: 400})
   // return data.bookmarks
 }
