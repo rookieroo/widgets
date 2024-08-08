@@ -1,5 +1,6 @@
 import { ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import ColorThief from 'node_modules/colorthief/dist/color-thief.mjs'
 
 const DEFAULT_ICON = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA7klEQVR4nK3TMUvDUBQF4C/FQYiDk4uDm0MHBwf/g5ObOLg5OLj0JygOzg4OrjoIOjg4iIiDiINQHEREHEREpINIhw5FRIQiInJlaPMSawoNHjjDu/ede+4N/BeZwGOmP1Fq4Q3PMQ7XOAx7VfSwiY84HuIuxlXsoRPjJrawhw6WMI8FzKGNmxh3sIGpIQEbaOIlalVsI49+Fi38RK2JmyEBC1jFcYxnuM2E3eP8j/oNDh/Ru8RVnB+wHf0qPrA2SkALrzG/H7hFKXJ1rIwScIaneGAeZQwGapOjBJTxiXOURwmoYTnuVf6qvYsP9AdNnGX+3TqZTwAAAABJRU5ErkJggg==';
 
@@ -133,4 +134,54 @@ export function convertBookmarks(dom) {
   };
   reader.readAsText(file);
 }
+
+export function getColor(id) {
+  const colorThief = new ColorThief();
+  const img = document.querySelector(id);
+  // 确保图片已加载
+  if (img.complete) {
+    computeMultiColor(colorThief, img);
+  } else {
+    img.addEventListener('load', function() {
+      computeMultiColor(colorThief, img);
+    });
+  }
+}
+
+function computeMultiColor(colorThief, img) {
+  const dominantColor = colorThief?.getColor(img);
+  // 获取调色板(默认返回8种颜色)
+  const palette = colorThief.getPalette(img);
+  // 计算每种颜色的比例
+  const totalPixels = img.width * img.height;
+  const colorProportions = palette.map(color => {
+    const count = getColorCount(img, color);
+    return {
+      color: color,
+      proportion: count / totalPixels
+    };
+  });
+}
+
+// 辅助函数:计算特定颜色在图片中的像素数
+function getColorCount(img, targetColor) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = img.width;
+  canvas.height = img.height;
+  ctx.drawImage(img, 0, 0, img.width, img.height);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+
+  let count = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    if (Math.abs(data[i] - targetColor[0]) <= 5 &&
+      Math.abs(data[i+1] - targetColor[1]) <= 5 &&
+      Math.abs(data[i+2] - targetColor[2]) <= 5) {
+      count++;
+    }
+  }
+  return count;
+}
+
 
