@@ -26,6 +26,7 @@ import {useTranslation} from 'react-i18next'
 import {TailwindIndicator} from "./components/tailwind-indicator";
 import CommandBar from "./components/command-k/command-bar";
 import {ColorThief} from "./page/color-thief";
+import {MDEditor} from "./page/md";
 
 function App() {
   const ref = useRef(false)
@@ -88,6 +89,9 @@ function App() {
                 <ColorThief/>
               </RouteMe>
 
+              <RouteMe path="/md">
+                <MDEditor/>
+              </RouteMe>
 
               <RouteMe path="/friends">
                 <FriendsPage/>

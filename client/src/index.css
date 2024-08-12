@@ -1,4 +1,6 @@
 @import "./base.css";
+@import "./github-markdown.scss";
+/*@import "./mdx.css";*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
