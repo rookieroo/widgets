@@ -25,6 +25,7 @@ import {Tips, TipsPage} from './components/tips.tsx'
 import {useTranslation} from 'react-i18next'
 import {TailwindIndicator} from "./components/tailwind-indicator";
 import CommandBar from "./components/command-k/command-bar";
+import {ColorThief} from "./page/color-thief";
 
 function App() {
   const ref = useRef(false)
@@ -81,6 +82,10 @@ function App() {
 
               <RouteMe path="/timeline">
                 <TimelinePage/>
+              </RouteMe>
+
+              <RouteMe path="/color-thief">
+                <ColorThief/>
               </RouteMe>
 
 
