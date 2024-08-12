@@ -4,7 +4,6 @@ import {Waiting} from "../components/loading"
 import {client} from "../main"
 import {siteName} from "../utils/constants"
 import {useTranslation} from "react-i18next";
-import {getColor} from "../utils/utils";
 import ColorExtractor from "../components/color/color-extractor";
 import ColorMap from "../components/color/color-map";
 
@@ -18,7 +17,6 @@ export function ColorThief() {
     if (_files.length) {
       const url = URL.createObjectURL(_files[0]);
       _files[0].url = url;
-      getColor(url);
       setUrl(url);
     }
   };
