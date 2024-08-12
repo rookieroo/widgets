@@ -95,7 +95,7 @@ const CustomizedContent = ({ root, depth, x, y, width, height, index, payload, c
           fontSize={12}
         >
           {`${name}`}
-          {/*{`${root?.children[index]?.size.toFixed(2)}%`}*/}
+          {root?.children ? `${root?.children[index]?.size.toFixed(2)}%`: ''}
         </text>
       )}
     </g>
