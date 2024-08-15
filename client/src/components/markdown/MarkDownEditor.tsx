@@ -3,11 +3,13 @@ import "md-editor-rt/lib/style.css";
 import {useEffect, useState} from "react";
 import {toolbars, codeThemeOptions, previewThemeOptions} from "./config";
 import {Emoji, ExportPDF, Mark} from "@vavt/rt-extension";
-
+import i18n from 'i18next';
 import "@vavt/rt-extension/lib/asset/style.css";
 import {useTranslation} from "react-i18next";
 import {useConfig} from "../../store/useConfig";
 import {TimeNow} from "../time-now";
+import {client} from "../../main";
+import {headersWithAuth} from "../../utils/auth";
 
 interface IMdEditorState {
   lang?: string;
@@ -32,7 +34,7 @@ interface IMdEditorState {
     | "stackoverflow";
 }
 
-export default function MdEditorEx() {
+export default function MdEditorEx({text, theme, previewTheme, codeTheme, onContentChange}) {
   const [config] = useConfig();
   const {t, i18n} = useTranslation();
   const initState = {
@@ -98,20 +100,62 @@ export default function MdEditorEx() {
     );
   };
 
+  const onUploadImg = async (files, callback) => {
+    const res = await Promise.all(
+      files.map((file) => {
+        return new Promise((rev, rej) => {
+          client.storage.index
+            .post(
+              {
+                key: file.name,
+                file: file,
+              },
+              {
+                headers: headersWithAuth(),
+              }
+            )
+            .then(({data, error}) => {
+              if (error) {
+                rej(error)
+              }
+              if (data) {
+                rev(res);
+              }
+            })
+            .catch((e: any) => {
+              rej(e)
+            });
+        });
+      })
+    );
+
+    // Approach 1
+    callback(res.map((item) => item.data.url));
+    // Approach 2
+    // callback(
+    //   res.map((item: any) => ({
+    //     url: item.data.url,
+    //     alt: 'alt',
+    //     title: 'title'
+    //   }))
+    // );
+  };
+
   return (
     <div className="h-screen w-full relative z-1">
       <MdEditor
-        modelValue={state.text!}
-        theme={state.theme}
-        onChange={(modelValue) => setState({...state, text: modelValue})}
+        modelValue={text}
+        theme={theme}
+        onUploadImg={onUploadImg}
+        onChange={onContentChange}
         language={i18n.language === "en" ? "en-US" : i18n.language}
-        previewTheme={state.previewTheme}
-        codeTheme={state.codeTheme}
+        previewTheme={previewTheme}
+        codeTheme={codeTheme}
         toolbars={toolbars}
         defToolbars={[
           <Emoji key={1}/>,
           <Mark key={2}/>,
-          <ExportPDF key={3} modelValue={state.text!} height="100vh"/>,
+          <ExportPDF key={3} modelValue={text} height="100vh"/>,
           <CodeTheme key={4}/>,
           <PreviewTheme key={5}/>,
         ]}
