@@ -140,7 +140,7 @@ export function useConfirm() {
                             setIsOpen(false);
                         }}
                         title={t('confirm')} />
-                    <Button secondary onClick={close} title={t('cancel')} />
+                    <Button onClick={close} title={t('cancel')} />
                 </div>
             </div>
         </Modal>

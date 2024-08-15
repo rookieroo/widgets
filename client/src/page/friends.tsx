@@ -13,6 +13,7 @@ import { ProfileContext } from "../state/profile";
 import { shuffleArray } from "../utils/array";
 import { headersWithAuth } from "../utils/auth";
 import { siteName } from "../utils/constants";
+import {Button} from "../components/ui/button";
 
 
 type FriendItem = {
@@ -117,7 +118,7 @@ export function FriendsPage() {
                                 <Input value={avatar} setValue={setAvatar} placeholder={t('avatar.url')} className="mt-2" />
                                 <Input value={url} setValue={setUrl} placeholder={t('url')} className="my-2" />
                                 <div className='flex flex-row justify-center'>
-                                    <button onClick={publishButton} className='basis-1/2 bg-theme text-white py-4 rounded-full shadow-xl shadow-light'>{t('create.title')}</button>
+                                    <Button onClick={publishButton} className='basis-1/2 text-white py-4 rounded-full shadow-xl shadow-light'>{t('create.title')}</Button>
                                 </div>
                             </div>
                         </div>
@@ -206,7 +207,7 @@ function Friend({ friend }: { friend: FriendItem }) {
     ]
     return (
         <>
-            <a title={friend.name} href={friend.url} target="_blank" className="bg-button w-full bg-w rounded-xl p-4 flex flex-col justify-center items-center relative ani-show">
+            <a title={friend.name} href={friend.url} target="_blank" className="w-full bg-w rounded-xl p-4 flex flex-col justify-center items-center relative ani-show">
                 <div className="w-16 h-16">
                     <img className={"rounded-full " + (friend.health.length > 0 ? "grayscale" : "")} src={friend.avatar} alt={friend.name} />
                 </div>
@@ -215,9 +216,9 @@ function Friend({ friend }: { friend: FriendItem }) {
                 {friend.accepted !== 1 && <p className={`${friend.accepted === 0 ? "t-primary" : "text-primary"}`}>{statusOption[friend.accepted + 1].label}</p>}
                 {friend.health.length > 0 && <p className="text-sm text-gray-500 text-center">{errorHumanize(friend.health)}</p>}
                 {(profile?.permission || profile?.id === friend.uid) && <>
-                    <button onClick={(e) => { e.preventDefault(); setIsOpen(true) }} className="absolute top-0 right-0 m-2 px-2 py-1 bg-secondary t-primary rounded-full bg-button">
+                    <Button onClick={(e) => { e.preventDefault(); setIsOpen(true) }} className="absolute top-0 right-0 m-2 px-2 py-1 t-primary rounded-full">
                         <i className="ri-settings-line"></i>
-                    </button></>}
+                    </Button></>}
             </a>
 
             <Modal
@@ -278,8 +279,8 @@ function Friend({ friend }: { friend: FriendItem }) {
                     <Input value={avatar} setValue={setAvatar} placeholder={t('avatar.url')} className="mt-2" />
                     <Input value={url} setValue={setUrl} placeholder={t('url')} className="my-2" />
                     <div className='flex flex-row justify-center space-x-2'>
-                        <button onClick={deleteFriend} className="bg-secondary text-primary rounded-full bg-button px-4 py-2 mt-2">{t('delete.title')}</button>
-                        <button onClick={updateFriend} className="bg-secondary t-primary rounded-full bg-button px-4 py-2 mt-2">{t('save')}</button>
+                        <Button onClick={deleteFriend} className="text-primary rounded-full  px-4 py-2 mt-2">{t('delete.title')}</Button>
+                        <Button onClick={updateFriend} className="t-primary rounded-full  px-4 py-2 mt-2">{t('save')}</Button>
                     </div>
                 </div >
             </Modal>

@@ -462,7 +462,7 @@ export function WritingPage({ id }: { id?: number }) {
           <div className="visible md:hidden flex flex-row justify-center mt-8">
             <button
               onClick={publishButton}
-              className="basis-1/2 bg-theme text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
+              className="basis-1/2  text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
             >
               {publishing &&
                 <Loading type="spin" height={16} width={16} />
@@ -478,7 +478,7 @@ export function WritingPage({ id }: { id?: number }) {
           <div className="flex flex-row justify-center mt-8">
             <button
               onClick={publishButton}
-              className="basis-1/2 bg-theme text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
+              className="basis-1/2  text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
             >
               {publishing &&
                 <Loading type="spin" height={16} width={16} />

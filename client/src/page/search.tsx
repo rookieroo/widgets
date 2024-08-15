@@ -77,14 +77,14 @@ export function SearchPage({ keyword }: { keyword: string }) {
                         <div className="wauto flex flex-row items-center mt-4 ani-show">
                             {page > 1 &&
                                 <Link href={`?page=${(page - 1)}`}
-                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>
+                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white `}>
                                     {t('previous')}
                                 </Link>
                             }
                             <div className="flex-1" />
                             {feeds?.hasNext &&
                                 <Link href={`?page=${(page + 1)}`}
-                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>
+                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white `}>
                                     {t('next')}
                                 </Link>
                             }

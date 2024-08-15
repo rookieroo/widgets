@@ -17,6 +17,7 @@ import { timeago } from "../utils/timeago";
 import { Button } from "../components/ui/button";
 import { Tips } from "../components/tips";
 import { useLoginModal } from "../hooks/useLoginModal";
+import {Input} from "../components/ui/input";
 
 type Feed = {
   id: number;
@@ -230,27 +231,27 @@ export function FeedPage({ id, TOC, clean }: { id: string, TOC: () => JSX.Elemen
                   <div className="pt-2">
                     {profile?.permission && (
                       <div className="flex gap-2">
-                        <button
+                        <Button
                           aria-label={top > 0 ? t("untop.title") : t("top.title")}
                           onClick={topFeed}
-                          className={`flex-1 flex flex-col items-end justify-center px-2 py rounded-full transition ${top > 0 ? "bg-theme text-white hover:bg-theme-hover active:bg-theme-active" : "bg-secondary bg-button dark:text-neutral-400"}`}
+                          className={`flex-1 flex flex-col items-end justify-center px-2 py rounded-full transition ${top > 0 ? " text-white hover:-hover active:-active" : "dark:text-neutral-400"}`}
                         >
                           <i className="ri-skip-up-line" />
-                        </button>
+                        </Button>
                         <Link
                           aria-label={t("edit")}
                           href={`/writing/${feed.id}`}
-                          className="flex-1 flex flex-col items-end justify-center px-2 py bg-secondary bg-button rounded-full transition"
+                          className="flex-1 flex flex-col items-end justify-center px-2 py bg-secondary bg-Button rounded-full transition"
                         >
                           <i className="ri-edit-2-line dark:text-neutral-400" />
                         </Link>
-                        <button
+                        <Button
                           aria-label={t("delete.title")}
                           onClick={deleteFeed}
-                          className="flex-1 flex flex-col items-end justify-center px-2 py bg-secondary bg-button rounded-full transition"
+                          className="flex-1 flex flex-col items-end justify-center px-2 py bg-secondary bg-Button rounded-full transition"
                         >
                           <i className="ri-delete-bin-7-line text-red-500" />
-                        </button>
+                        </Button>
                       </div>
                     )}
                   </div>
@@ -270,7 +271,7 @@ export function FeedPage({ id, TOC, clean }: { id: string, TOC: () => JSX.Elemen
                       className="w-8 h-8 rounded-full"
                     />
                     <div className="ml-2">
-                      <span className="text-gray-400 text-sm cursor-default">
+                      <span className="text-sm cursor-default">
                         {feed.user.username}
                       </span>
                     </div>
@@ -301,12 +302,12 @@ export function TOCHeader({ TOC }: { TOC: () => JSX.Element }) {
 
   return (
     <div className="lg:hidden">
-      <button
+      <Button
         onClick={() => setIsOpened(true)}
         className="w-10 h-10 rounded-full flex flex-row items-center justify-center"
       >
         <i className="ri-menu-2-fill t-primary ri-lg"></i>
-      </button>
+      </Button>
       <ReactModal
         isOpen={isOpened}
         style={{
@@ -390,27 +391,28 @@ function CommentInput({
         <label htmlFor="comment">{t("comment.title")}</label>
       </div>
       {profile ? (<>
-        <textarea
+        <Input
+          type={"textarea"}
           id="comment"
           placeholder={t("comment.placeholder.title")}
           className="bg-w w-full h-24 rounded-lg"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <button
-          className="mt-4 bg-theme text-white px-4 py-2 rounded-full"
+        <Button
+          className="mt-4 text-white px-4 py-2 rounded-full"
           onClick={submit}
         >
           {t("comment.submit")}
-        </button>
+        </Button>
       </>) : (
         <div className="flex flex-row w-full items-center justify-center space-x-2 py-12">
-          <button
-            className="mt-2 bg-theme text-white px-4 py-2 rounded-full"
+          <Button
+            className="mt-2  text-white px-4 py-2 rounded-full"
             onClick={() => setIsOpened(true)}
           >
             {t("login.required")}
-          </button>
+          </Button>
         </div>
       )}
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
@@ -466,12 +468,12 @@ function Comments({ id }: { id: string }) {
           <>
             <div className="flex flex-col wauto rounded-2xl bg-w t-primary m-2 p-6 items-center justify-center">
               <h1 className="text-xl font-bold t-primary">{error}</h1>
-              <button
-                className="mt-2 bg-theme text-white px-4 py-2 rounded-full"
+              <Button
+                className="mt-2  text-white px-4 py-2 rounded-full"
                 onClick={loadComments}
               >
                 {t("reload")}
-              </button>
+              </Button>
             </div>
           </>
         )}
@@ -531,7 +533,7 @@ function CommentItem({
       />
       <div className="flex flex-col flex-1 w-0 ml-2 bg-w rounded-xl p-4">
         <div className="flex flex-row">
-          <span className="t-primary text-base font-bold">
+          <span className="font-bold">
             {comment.user.username}
           </span>
           <div className="flex-1 w-0" />
@@ -542,26 +544,26 @@ function CommentItem({
             {timeago(comment.createdAt)}
           </span>
         </div>
-        <p className="t-primary break-words">{comment.content}</p>
+        <p className="break-words">{comment.content}</p>
         <div className="flex flex-row justify-end">
           {(profile?.permission || profile?.id == comment.user.id) && (
             <Popup
               arrow={false}
               trigger={
-                <button className="px-2 py bg-secondary rounded-full">
+                <Button className="px-2 py bg-secondary rounded-full">
                   <i className="ri-more-fill t-secondary"></i>
-                </button>
+                </Button>
               }
               position="left center"
             >
               <div className="flex flex-row self-end mr-2">
-                <button
+                <Button
                   onClick={deleteComment}
                   aria-label={t("delete.comment.title")}
                   className="px-2 py bg-secondary rounded-full"
                 >
                   <i className="ri-delete-bin-2-line t-secondary"></i>
-                </button>
+                </Button>
               </div>
             </Popup>
           )}
