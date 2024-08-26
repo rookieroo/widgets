@@ -27,6 +27,7 @@ jobs:
       - name: Set up Puppeteer
         run: |
           sudo apt-get update
+          bun remove puppeteer
           sudo apt-get install -y libgbm-dev
           npx puppeteer browsers install chrome
 
@@ -45,5 +46,7 @@ jobs:
           S3_FORCE_PATH_STYLE: ${{ vars.S3_FORCE_PATH_STYLE }}
         run: |
           cd widgets/
-          bun install --frozen-lockfile
+          bun remove puppeteer
+          bun i
+          # bun install --frozen-lockfile
           bun scripts/render.ts
