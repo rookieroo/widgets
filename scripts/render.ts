@@ -67,29 +67,33 @@ const browser = await puppeteer.launch({
 async function fetchPage(url: string) {
     // Fetch page content
     console.log(`Fetching ${url}`);
-    const page = await browser.newPage();
-    await page.setDefaultNavigationTimeout(0); 
-    await page.setUserAgent(ua);
-    const response = await page.goto(url, { waitUntil: 'networkidle2' });
-    if (!response) {
-        console.error(`Failed to fetch ${url}`);
-        return;
-    }
-    if (response.ok() && response.headers()['content-type']?.includes('text/html')) {
-        const html = await page.content();
-        await saveFile(url, html);
-        fetchedLinks.add(url);
-        const links = await page.evaluate(() => {
-            const anchors = Array.from(document.querySelectorAll('a'));
-            return anchors.map(anchor => anchor.href);
-        });
-        for (const link of links.filter(link => (link.startsWith(baseUrl) || (containsKey != '' && link.includes(containsKey))))) {
-            const linkWithoutHash = link.split('#')[0];
-            if (fetchedLinks.has(linkWithoutHash)) {
-                continue;
-            }
-            await fetchPage(linkWithoutHash);
+    try {
+        const page = await browser.newPage();
+        await page.setDefaultNavigationTimeout(0); 
+        await page.setUserAgent(ua);
+        const response = await page.goto(url, { waitUntil: 'networkidle2' });
+        if (!response) {
+            console.error(`Failed to fetch ${url}`);
+            return;
         }
+        if (response.ok() && response.headers()['content-type']?.includes('text/html')) {
+            const html = await page.content();
+            await saveFile(url, html);
+            fetchedLinks.add(url);
+            const links = await page.evaluate(() => {
+                const anchors = Array.from(document.querySelectorAll('a'));
+                return anchors.map(anchor => anchor.href);
+            });
+            for (const link of links.filter(link => (link.startsWith(baseUrl) || (containsKey != '' && link.includes(containsKey))))) {
+                const linkWithoutHash = link.split('#')[0];
+                if (fetchedLinks.has(linkWithoutHash)) {
+                    continue;
+                }
+                await fetchPage(linkWithoutHash);
+            }
+        }
+    } catch (e: any) {
+        console.error(e.message)
     }
 }
 
