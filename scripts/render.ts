@@ -68,6 +68,7 @@ async function fetchPage(url: string) {
     // Fetch page content
     console.log(`Fetching ${url}`);
     const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0); 
     await page.setUserAgent(ua);
     const response = await page.goto(url, { waitUntil: 'networkidle2' });
     if (!response) {
