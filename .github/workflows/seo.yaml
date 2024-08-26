@@ -27,7 +27,6 @@ jobs:
       - name: Set up Puppeteer
         run: |
           sudo apt-get update
-          bun remove puppeteer
           sudo apt-get install -y libgbm-dev
           npx puppeteer browsers install chrome
 
