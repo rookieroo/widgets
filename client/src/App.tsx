@@ -176,7 +176,10 @@ function App() {
               {/* Default route in a switch */}
               <Route>404: No such page!</Route>
             </Switch>
-            <TailwindIndicator/>
+            {
+              process.env.ENV?.toLowerCase() === 'test' &&
+              <TailwindIndicator/>
+            }
           </CommandBar>
         </ProfileContext.Provider>
       </ClientConfigContext.Provider>

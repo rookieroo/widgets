@@ -19,7 +19,7 @@ export function TimelinePage() {
         }).then(({ data }) => {
             if (data && typeof data !== 'string') {
                 setLength(data.length)
-                const groups = Object.groupBy(data, ({ createdAt }) => new Date(createdAt).getFullYear())
+                const groups = Object?.groupBy(data, ({ createdAt }) => new Date(createdAt).getFullYear())
                 setFeeds(groups)
             }
         })

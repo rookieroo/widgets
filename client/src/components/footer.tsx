@@ -34,8 +34,8 @@ function Footer() {
         {footerHtml && <div dangerouslySetInnerHTML={{__html: footerHtml}}/>}
         <p className='text-sm text-neutral-500 font-normal link-line'>
                     <span>
-                        © 2024 Powered by <a className='hover:underline' href="https://github.com/openRin/Rin"
-                                             target="_blank">Rin</a>
+                        © 2024 Powered by <a className='hover:underline' href="https://github.com/rookieroo/widgets"
+                                             target="_blank">Prop</a>
                     </span>
           {conf.get<boolean>('rss') && <>
             <Spliter/>
