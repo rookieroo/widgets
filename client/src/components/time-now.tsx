@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 
 const weekNames = {
   'en': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-  'zh': ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
+  'zh-CN': ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
 }
 
 export function TimeNow() {

@@ -15,8 +15,9 @@ import {useKBar} from "kbar";
 import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
 import * as React from "react";
 import { Drawer, DrawerContent, DrawerTrigger } from '@/ui/drawer'
-import {Paintbrush} from "lucide-react";
+import {Paintbrush, SquareMousePointer, Link as LinkIcon} from "lucide-react";
 import {cn} from "../utils/utils";
+import HideOnScroll from "./hide-on-scroll";
 
 export function Header({children}: { children?: React.ReactNode }) {
   const profile = useContext(ProfileContext);
@@ -24,56 +25,59 @@ export function Header({children}: { children?: React.ReactNode }) {
 
   return useMemo(() => (
     <>
-      <div className="fixed z-40">
-        <div className="w-screen">
-          <Padding className="mx-4 mt-4">
-            <div className="w-full flex justify-between items-center">
-              <Link aria-label={t('home')} href="/"
-                    className="hidden opacity-0 md:opacity-100 duration-300 mr-auto md:flex flex-row items-center hover:text-primary-500 dark:hover:text-primary-500 text-gray-700 dark:text-gray-300">
-                <img src={process.env.AVATAR} alt="Avatar" className="w-12 h-12 rounded-2xl border-2"/>
-                <div className="flex flex-col justify-center items-start mx-4">
-                  <p className="text-xl font-bold">
-                    {process.env.NAME}
-                  </p>
-                  <p className="text-xs text-neutral-500">
-                    {process.env.DESCRIPTION}
-                  </p>
-                </div>
-              </Link>
-              <Card
-                className="w-full md:w-max transition-all duration-500 md:absolute md:left-1/2 md:translate-x-[-50%] flex-row justify-center items-center">
+      <HideOnScroll distance={100} direction="down">
+        <div className="fixed z-40">
+          <div className="w-screen">
+            <Padding className="mx-4 mt-4">
+              <div className="w-full flex justify-between items-center">
+                <Link aria-label={t('home')} href="/"
+                      className="hidden opacity-0 md:opacity-100 duration-300 mr-auto md:flex flex-row items-center hover:text-primary-500 dark:hover:text-primary-500 text-gray-700 dark:text-gray-300">
+                  <img src={process.env.AVATAR} alt="Avatar" className="w-12 h-12 rounded-2xl border-2"/>
+                  <div className="flex flex-col justify-center items-start mx-4">
+                    <p className="text-xl font-bold">
+                      {process.env.NAME}
+                    </p>
+                    <p className="text-xs text-neutral-500">
+                      {process.env.DESCRIPTION}
+                    </p>
+                  </div>
+                </Link>
+                <Card
+                  className="w-full md:w-max transition-all duration-500 md:absolute md:left-1/2 md:translate-x-[-50%] flex-row justify-center items-center">
+                  <div
+                    className="flex flex-row items-center t-primary px-2">
+                    <Link aria-label={t('home')} href="/"
+                          className="visible opacity-100 md:hidden md:opacity-0 duration-300 mr-auto flex flex-row items-center py-2">
+                      <img src={process.env.AVATAR} alt="Avatar"
+                           className="w-10 h-10 border-2"/>
+                      <div className="flex flex-col justify-center items-start mx-2">
+                        <p className="text-sm font-bold">
+                          {process.env.NAME}
+                        </p>
+                        <p className="text-xs text-neutral-500">
+                          {process.env.DESCRIPTION}
+                        </p>
+                      </div>
+                    </Link>
+                    <NavBar menu={false}/>
+                    {children}
+                    <Menu/>
+                  </div>
+                </Card>
                 <div
-                  className="flex flex-row items-center t-primary px-2">
-                  <Link aria-label={t('home')} href="/"
-                        className="visible opacity-100 md:hidden md:opacity-0 duration-300 mr-auto flex flex-row items-center py-2">
-                    <img src={process.env.AVATAR} alt="Avatar"
-                         className="w-10 h-10 border-2"/>
-                    <div className="flex flex-col justify-center items-start mx-2">
-                      <p className="text-sm font-bold">
-                        {process.env.NAME}
-                      </p>
-                      <p className="text-xs text-neutral-500">
-                        {process.env.DESCRIPTION}
-                      </p>
-                    </div>
-                  </Link>
-                  <NavBar menu={false}/>
-                  {children}
-                  <Menu/>
+                  className="ml-auto hidden opacity-0 md:opacity-100 duration-300 md:flex flex-row items-center space-x-2">
+                  <SearchButtonUseKBar/>
+                  <LanguageSwitch/>
+                  <UserAvatar profile={profile}/>
+                  <CustomizerWrapper/>
+                  <GithubSourceCodeUrl/>
                 </div>
-              </Card>
-              <div
-                className="ml-auto hidden opacity-0 md:opacity-100 duration-300 md:flex flex-row items-center space-x-2">
-                <SearchButtonUseKBar/>
-                <LanguageSwitch/>
-                <UserAvatar profile={profile}/>
-                <CustomizerWrapper/>
               </div>
-            </div>
-          </Padding>
+            </Padding>
+          </div>
         </div>
-      </div>
-      <div className="h-20"></div>
+        <div className="h-20"></div>
+      </HideOnScroll>
     </>
   ), [profile, children])
 }
@@ -131,6 +135,7 @@ function Menu() {
               <SearchButtonUseKBar/>
               <LanguageSwitch/>
               <UserAvatar profile={profile}/>
+              <GithubSourceCodeUrl />
             </div>
             <NavBar menu={true}/>
           </div>
@@ -213,6 +218,17 @@ function SearchButtonUseKBar() {
         aria-label={label}
         className="flex rounded-full border dark:border-neutral-600 px-2 aspect-[1] items-center justify-center">
         <i className="ri-search-line dark:text-white"></i>
+      </Button>
+    </>
+  )
+}
+
+function GithubSourceCodeUrl() {
+  return (
+    <>
+      <Button onClick={() => window.location.href = "https://github.com/rookieroo/widgets"} variant="ghost" className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center t-primary bg-button">
+        <LinkIcon className="h-4 w-4 dark:text-white" />
+        <span className="sr-only">Github Source Code</span>
       </Button>
     </>
   )

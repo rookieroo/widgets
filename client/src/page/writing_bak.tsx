@@ -19,6 +19,7 @@ import { useColorMode } from "../utils/darkModeUtils";
 import MdEditorEx from "../components/markdown/MarkDownEditor";
 import {useConfig} from "../store/useConfig";
 import {Button} from "../components/ui/button";
+import {Accordion, AccordionItem, AccordionTrigger, AccordionContent} from "../components/ui/accordion";
 
 async function publish({
   title,
@@ -380,21 +381,50 @@ export function WritingPage({ id }: { id?: number }) {
     <>
       <Helmet>
         <title>{`${t('writing')} - ${process.env.NAME}`}</title>
-        <meta property="og:site_name" content={siteName} />
-        <meta property="og:title" content={t('writing')} />
-        <meta property="og:image" content={process.env.AVATAR} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={document.URL} />
+        <meta property="og:site_name" content={siteName}/>
+        <meta property="og:title" content={t('writing')}/>
+        <meta property="og:image" content={process.env.AVATAR}/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:url" content={document.URL}/>
       </Helmet>
-      <div className="grid grid-cols-1 md:grid-cols-3 t-primary mt-2">
+      <div>
+        <Accordion
+          type="single"
+          defaultValue="item-1"
+          collapsible
+          className="w-full"
+          aria-orientation="vertical"
+        >
+          <AccordionItem value="item-1">
+            <AccordionTrigger>{t('publish.title')}</AccordionTrigger>
+            <AccordionContent>
+              <div className="hidden md:visible max-w-96 md:flex flex-col">
+                {MetaInput({className: "bg-w rounded-2xl shadow-xl shadow-light p-4 mx-8"})}
+                <div className="flex flex-row justify-center mt-8">
+                  <Button
+                    onClick={publishButton}
+                    className="basis-1/2 text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
+                  >
+                    {publishing &&
+                    <Loading type="spin" height={16} width={16}/>
+                    }
+                    <span>
+                {t('publish.title')}
+              </span>
+                  </Button>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
         <div className="col-span-2 pb-8">
           <div className="bg-w rounded-2xl shadow-xl shadow-light p-4">
-            {MetaInput({ className: "visible md:hidden mb-8" })}
+            {MetaInput({className: "visible md:hidden mb-8"})}
             <div className="flex flex-col mx-4 my-2 md:mx-0 md:my-0 gap-2">
               <div className={`grid grid-cols-1 ${preview === 'comparison' ? "sm:grid-cols-2" : ""}`}>
                 <div className={"flex flex-col " + (preview === 'preview' ? "hidden" : "")}>
                   <div
-                    className={"relative"}
+                    className={"relative h-full"}
                   >
                     <MdEditorEx
                       text={content}
@@ -411,7 +441,7 @@ export function WritingPage({ id }: { id?: number }) {
                 <div
                   className={"px-4 h-[600px] overflow-y-scroll " + (preview !== 'edit' ? "" : "hidden")}
                 >
-                  <Markdown content={content ? content : "> No content now. Write on the left side."} />
+                  <Markdown content={content ? content : "> No content now. Write on the left side."}/>
                 </div>
               </div>
             </div>
@@ -422,23 +452,7 @@ export function WritingPage({ id }: { id?: number }) {
               className="basis-1/2 text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
             >
               {publishing &&
-                <Loading type="spin" height={16} width={16} />
-              }
-              <span>
-                {t('publish.title')}
-              </span>
-            </Button>
-          </div>
-        </div>
-        <div className="hidden md:visible max-w-96 md:flex flex-col">
-          {MetaInput({ className: "bg-w rounded-2xl shadow-xl shadow-light p-4 mx-8" })}
-          <div className="flex flex-row justify-center mt-8">
-            <Button
-              onClick={publishButton}
-              className="basis-1/2 text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
-            >
-              {publishing &&
-                <Loading type="spin" height={16} width={16} />
+              <Loading type="spin" height={16} width={16}/>
               }
               <span>
                 {t('publish.title')}
@@ -447,9 +461,8 @@ export function WritingPage({ id }: { id?: number }) {
           </div>
         </div>
       </div>
-      <AlertUI />
+      <AlertUI/>
     </>
-
   );
 }
 
