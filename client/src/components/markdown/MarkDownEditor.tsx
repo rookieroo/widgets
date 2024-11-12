@@ -119,7 +119,7 @@ export default function MdEditorEx({text, theme, previewTheme, codeTheme, onCont
                 rej(error)
               }
               if (data) {
-                rev(res);
+                rev(data);
               }
             })
             .catch((e: any) => {
@@ -130,7 +130,7 @@ export default function MdEditorEx({text, theme, previewTheme, codeTheme, onCont
     );
 
     // Approach 1
-    callback(res.map((item) => item.data.url));
+    callback(res.map((item) => item));
     // Approach 2
     // callback(
     //   res.map((item: any) => ({

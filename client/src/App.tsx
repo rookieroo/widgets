@@ -176,7 +176,7 @@ function App() {
               {/* Default route in a switch */}
               <Route>404: No such page!</Route>
             </Switch>
-            <TailwindIndicator/>
+              <TailwindIndicator/>
           </CommandBar>
         </ProfileContext.Provider>
       </ClientConfigContext.Provider>
