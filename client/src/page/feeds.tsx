@@ -141,14 +141,14 @@ export function FeedsPage() {
             <div className="w-[80vw] flex flex-row items-center mt-4 ani-show">
               {page > 1 &&
               <Link href={`/?type=${listState}&page=${(page - 1)}`}
-                    className={`text-sm font-normal rounded-full px-4 py-2 text-white `}>
+                    className={`text-sm font-normal rounded-full px-4 py-2`}>
                 {t('previous')}
               </Link>
               }
               <div className="flex-1"/>
               {feeds[listState]?.hasNext &&
               <Link href={`/?type=${listState}&page=${(page + 1)}`}
-                    className={`text-sm font-normal rounded-full px-4 py-2 text-white `}>
+                    className={`text-sm font-normal rounded-full px-4 py-2`}>
                 {t('next')}
               </Link>
               }

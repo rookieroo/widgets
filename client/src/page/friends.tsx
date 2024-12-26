@@ -279,7 +279,7 @@ function Friend({ friend }: { friend: FriendItem }) {
                     <Input value={avatar} setValue={setAvatar} placeholder={t('avatar.url')} className="mt-2" />
                     <Input value={url} setValue={setUrl} placeholder={t('url')} className="my-2" />
                     <div className='flex flex-row justify-center space-x-2'>
-                        <Button onClick={deleteFriend} className="text-primary rounded-full  px-4 py-2 mt-2">{t('delete.title')}</Button>
+                        <Button onClick={deleteFriend} className="t-primary rounded-full  px-4 py-2 mt-2">{t('delete.title')}</Button>
                         <Button onClick={updateFriend} className="t-primary rounded-full  px-4 py-2 mt-2">{t('save')}</Button>
                     </div>
                 </div >
