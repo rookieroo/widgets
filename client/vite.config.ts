@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         // with options: http://localhost:5173/api/bar-> http://jsonplaceholder.typicode.com/bar
         '/api': {
-          target: 'https://trendingup.top/api',
+          target: 'https://usehooks.site/api',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },

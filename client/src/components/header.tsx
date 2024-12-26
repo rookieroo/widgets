@@ -15,7 +15,7 @@ import {useKBar} from "kbar";
 import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
 import * as React from "react";
 import { Drawer, DrawerContent, DrawerTrigger } from '@/ui/drawer'
-import {Paintbrush, SquareMousePointer, Link as LinkIcon} from "lucide-react";
+import {Paintbrush, SquareMousePointer, Link as LinkIcon, Github} from "lucide-react";
 import {cn} from "../utils/utils";
 import HideOnScroll from "./hide-on-scroll";
 
@@ -66,8 +66,8 @@ export function Header({children}: { children?: React.ReactNode }) {
                 </Card>
                 <div
                   className="ml-auto hidden opacity-0 md:opacity-100 duration-300 md:flex flex-row items-center space-x-2">
-                  <SearchButtonUseKBar/>
-                  <LanguageSwitch/>
+                  {/*<SearchButtonUseKBar/>*/}
+                  {/*<LanguageSwitch/>*/}
                   <UserAvatar profile={profile}/>
                   <CustomizerWrapper/>
                   <GithubSourceCodeUrl/>
@@ -132,8 +132,8 @@ function Menu() {
                   <Customizer />
                 </DrawerContent>
               </Drawer>
-              <SearchButtonUseKBar/>
-              <LanguageSwitch/>
+              {/*<SearchButtonUseKBar/>*/}
+              {/*<LanguageSwitch/>*/}
               <UserAvatar profile={profile}/>
               <GithubSourceCodeUrl />
             </div>
@@ -226,8 +226,14 @@ function SearchButtonUseKBar() {
 function GithubSourceCodeUrl() {
   return (
     <>
-      <Button onClick={() => window.location.href = "https://github.com/rookieroo/widgets"} variant="ghost" className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center t-primary bg-button">
-        <LinkIcon className="h-4 w-4 dark:text-white" />
+      <Button
+        variant="ghost"
+        className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center t-primary bg-button"
+        onClick={() =>
+          window.location.href = "https://github.com/rookieroo/prop-blog"
+        }
+      >
+        <Github className="h-4 w-4 dark:text-white" />
         <span className="sr-only">Github Source Code</span>
       </Button>
     </>
