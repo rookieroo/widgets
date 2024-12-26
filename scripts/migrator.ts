@@ -16,7 +16,7 @@ function env(name: string, defaultValue?: string, required = false) {
 const renv = (name: string, defaultValue?: string) => env(name, defaultValue, true)!
 
 const DB_NAME = renv("DB_NAME", 'prop')
-const WORKER_NAME = renv("WORKER_NAME", 'widgets')
+const WORKER_NAME = renv("WORKER_NAME", 'usehooks-worker')
 const FRONTEND_URL = env("FRONTEND_URL", "")
 
 const S3_ENDPOINT = env("S3_ENDPOINT", "")
