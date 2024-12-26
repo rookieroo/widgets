@@ -12,14 +12,6 @@ async function sendWebhook(url: string, data: any) {
 }
 
 export async function notify(webhook_url: string, message: string) {
-  if (!webhook_url) {
-    console.error('Please set WEBHOOK_URL')
-    return
-  }
-  return await sendWebhook(webhook_url, {content: message})
-}
-
-export async function notify(webhook_url: string, message: string) {
 
 // See: https://firebase.google.com/docs/web/learn-more#config-object
   const firebaseConfig = {
