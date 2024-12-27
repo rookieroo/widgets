@@ -25,12 +25,13 @@ interface Props extends CommomProps {
 const YOUTUBE_EMBED_HTML_WITH_VARIABLES = `
 <div style="display: flex; justify-content: center;">
     <iframe
-      style="aspect-ratio: 16 / 9; width: 100% !important;"
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerPolicy="strict-origin-when-cross-origin"
       allowFullScreen
       src="<%- src %>"
+      width="100%"
+      style="aspect-ratio: 16 / 9"
     ></iframe>
   </div>
 `
