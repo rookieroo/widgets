@@ -23,7 +23,7 @@ interface Props extends CommomProps {
 }
 
 const YOUTUBE_EMBED_HTML_WITH_VARIABLES = `
-<div style="display: flex; justify-content: center;">
+<div style="display: flex; justify-content: center; padding: 4vh 8vw;">
     <iframe
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
