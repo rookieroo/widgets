@@ -27,6 +27,7 @@
       "@/store/*": ["store/*"],
       "@/layouts/*": ["layouts/*"],
       "@/css/*": ["css/*"],
+      "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"],
       "@/types/*": ["types/*"],
       "@/lib/*": ["lib/*"],

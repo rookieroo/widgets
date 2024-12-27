@@ -1,6 +1,6 @@
-import {MdEditor} from "md-editor-rt";
+import {ExposeParam, MdEditor} from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {toolbars, codeThemeOptions, previewThemeOptions} from "./config";
 import {Emoji, ExportPDF, Mark} from "@vavt/rt-extension";
 import i18n from 'i18next';
@@ -10,6 +10,7 @@ import {useConfig} from "../../store/useConfig";
 import {TimeNow} from "../time-now";
 import {client} from "../../main";
 import {headersWithAuth} from "../../utils/auth";
+import useIsMobile from "../../hooks/use-is-mobile";
 
 interface IMdEditorState {
   lang?: string;
@@ -37,6 +38,8 @@ interface IMdEditorState {
 export default function MdEditorEx({text, theme, previewTheme, codeTheme, onContentChange}) {
   const [config] = useConfig();
   const {t, i18n} = useTranslation();
+  const editorRef = useRef<ExposeParam>();
+
   const initState = {
     lang: i18n.language as string,
     text: "",
@@ -144,7 +147,8 @@ export default function MdEditorEx({text, theme, previewTheme, codeTheme, onCont
   return (
     <div className="h-screen w-full relative z-1">
       <MdEditor
-        modelValue={text}
+        ref={editorRef}
+        value={text}
         theme={theme}
         onUploadImg={onUploadImg}
         onChange={onContentChange}
@@ -153,7 +157,7 @@ export default function MdEditorEx({text, theme, previewTheme, codeTheme, onCont
         codeTheme={codeTheme}
         toolbars={toolbars}
         defToolbars={[
-          <Emoji key={1}/>,
+          <Emoji theme={theme} key={1}/>,
           <Mark key={2}/>,
           <ExportPDF key={3} modelValue={text} height="100vh"/>,
           <CodeTheme key={4}/>,

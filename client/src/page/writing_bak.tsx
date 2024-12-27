@@ -20,6 +20,7 @@ import MdEditorEx from "../components/markdown/MarkDownEditor";
 import {useConfig} from "../store/useConfig";
 import {Button} from "../components/ui/button";
 import {Accordion, AccordionItem, AccordionTrigger, AccordionContent} from "../components/ui/accordion";
+import MdEditorExV5 from "../components/markdown/MarkDownEditorV5";
 
 async function publish({
   title,
@@ -426,11 +427,8 @@ export function WritingPage({ id }: { id?: number }) {
                   <div
                     className={"relative h-full"}
                   >
-                    <MdEditorEx
-                      text={content}
-                      theme={config?.mode || 'light'}
-                      previewTheme={"default"}
-                      codeTheme={"atom"}
+                    <MdEditorExV5
+                      mdText={content}
                       onContentChange={(data) => {
                         cache.set("content", data ?? "");
                         setContent(data ?? "");
