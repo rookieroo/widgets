@@ -11,6 +11,7 @@ import {headersWithAuth} from "../../utils/auth";
 import useIsMobile from "../../hooks/use-is-mobile";
 import {Helmet} from "react-helmet";
 import 'md-editor-rt/lib/style.css';
+import {YoutubeEmbed} from "./youtube-embed";
 
 interface IMdEditorState {
   lang?: string;
@@ -85,7 +86,7 @@ export default function MdEditorExV5({ mdText, onContentChange }: { mdText: stri
       setInputBoxWidth('50%');
       editorRef.current?.togglePreview(true);
     }
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     setState({
@@ -272,6 +273,7 @@ export default function MdEditorExV5({ mdText, onContentChange }: { mdText: stri
             onProgress={onProgress}
             onSuccess={onSuccess}
           />,
+          <YoutubeEmbed key="youtube-embed"/>,
           <CodeTheme key="code-theme"/>,
           <PreviewTheme key="preview-theme"/>,
         ]}
