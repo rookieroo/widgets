@@ -47,7 +47,7 @@ export function useLoginModal(onClose?: () => void) {
                 }}
                 onRequestClose={() => setIsOpened(false)}
             >
-                <div className="bg-w w-full flex flex-col items-center justify-between p-4 space-y-2 t-primary min-w-64">
+                <div className="bg-w w-full flex flex-col items-center justify-between p-4 space-y-2 text-primary min-w-64">
                     <p className="text-xl">{t('login.title')}</p>
                     {false && <>
                         <Input value={username} setValue={setUsername} placeholder={t('login.username.placeholder')}
@@ -70,7 +70,7 @@ export function useLoginModal(onClose?: () => void) {
                             <Button
                               variant="ghost"
                               onClick={() => {window.location.href = `${google_oauth_url}`}}
-                              className="flex rounded-full border dark:border-grey-600 px-2 aspect-[1] items-center justify-center t-primary bg-button"
+                              className="flex rounded-full border dark:border-grey-600 px-2 aspect-[1] items-center justify-center text-primary bg-button"
                             >
                                 <Chrome className="h-4 w-4 dark:text-white" />
                                 <span className="sr-only">Sign in with Google 🚀</span>

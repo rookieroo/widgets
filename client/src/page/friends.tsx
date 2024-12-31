@@ -100,15 +100,15 @@ export function FriendsPage() {
             <meta property="og:url" content={document.URL} />
         </Helmet>
         <Waiting for={friendsAvailable.length !== 0 || friendsUnavailable.length !== 0 || status === "idle"}>
-            <main className="w-full flex flex-col justify-center items-center mb-8 t-primary">
+            <main className="w-full flex flex-col justify-center items-center mb-8 text-primary">
                 <FriendList title={t('friends.title')} show={friendsAvailable.length > 0} friends={friendsAvailable} />
                 <FriendList title={t('friends.left')} show={friendsUnavailable.length > 0} friends={friendsUnavailable} />
                 <FriendList title={t('friends.review.waiting')} show={waitList.length > 0} friends={waitList} />
                 <FriendList title={t('friends.review.rejected')} show={refusedList.length > 0} friends={refusedList} />
                 <FriendList title={t('friends.my_apply')} show={profile?.permission !== true && apply !== undefined} friends={apply ? [apply] : []} />
                 {profile && (profile.permission || config.get("friend_apply_enable")) &&
-                    <div className="wauto t-primary flex text-start text-2xl font-bold mt-8 ani-show">
-                        <div className="md:basis-1/2 bg-w rounded-xl p-4">
+                    <div className="wauto text-primary flex text-start text-2xl font-bold mt-8 ani-show">
+                        <div className="md:basis-1/2 rounded-xl p-4">
                             <p>
                                 {profile.permission ? t('friends.create') : t('friends.apply')}
                             </p>
@@ -207,16 +207,16 @@ function Friend({ friend }: { friend: FriendItem }) {
     ]
     return (
         <>
-            <a title={friend.name} href={friend.url} target="_blank" className="w-full bg-w rounded-xl p-4 flex flex-col justify-center items-center relative ani-show">
+            <a title={friend.name} href={friend.url} target="_blank" className="w-full rounded-xl p-4 flex flex-col justify-center items-center relative ani-show">
                 <div className="w-16 h-16">
                     <img className={"rounded-full " + (friend.health.length > 0 ? "grayscale" : "")} src={friend.avatar} alt={friend.name} />
                 </div>
                 <p className="text-base text-center">{friend.name}</p>
                 {friend.health.length == 0 && <p className="text-sm text-neutral-500 text-center">{friend.desc}</p>}
-                {friend.accepted !== 1 && <p className={`${friend.accepted === 0 ? "t-primary" : "text-primary"}`}>{statusOption[friend.accepted + 1].label}</p>}
+                {friend.accepted !== 1 && <p className={`${friend.accepted === 0 ? "text-primary" : "text-primary"}`}>{statusOption[friend.accepted + 1].label}</p>}
                 {friend.health.length > 0 && <p className="text-sm text-gray-500 text-center">{errorHumanize(friend.health)}</p>}
                 {(profile?.permission || profile?.id === friend.uid) && <>
-                    <Button onClick={(e) => { e.preventDefault(); setIsOpen(true) }} className="absolute top-0 right-0 m-2 px-2 py-1 t-primary rounded-full">
+                    <Button onClick={(e) => { e.preventDefault(); setIsOpen(true) }} className="absolute top-0 right-0 m-2 px-2 py-1 text-primary rounded-full">
                         <i className="ri-settings-line"></i>
                     </Button></>}
             </a>
@@ -249,7 +249,7 @@ function Friend({ friend }: { friend: FriendItem }) {
                 onRequestClose={() => setIsOpen(false)}
                 contentLabel={t('update$sth', { sth: friend.name })}
             >
-                <div className="w-[80vw] sm:w-[60vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw] bg-w rounded-xl p-4 flex flex-col justify-start items-center relative">
+                <div className="w-[80vw] sm:w-[60vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw] rounded-xl p-4 flex flex-col justify-start items-center relative">
                     <div className="w-16 h-16">
                         <img className={"rounded-xl " + (friend.health.length > 0 ? "grayscale" : "")} src={friend.avatar} alt={friend.name} />
                     </div>
@@ -279,8 +279,8 @@ function Friend({ friend }: { friend: FriendItem }) {
                     <Input value={avatar} setValue={setAvatar} placeholder={t('avatar.url')} className="mt-2" />
                     <Input value={url} setValue={setUrl} placeholder={t('url')} className="my-2" />
                     <div className='flex flex-row justify-center space-x-2'>
-                        <Button onClick={deleteFriend} className="t-primary rounded-full  px-4 py-2 mt-2">{t('delete.title')}</Button>
-                        <Button onClick={updateFriend} className="t-primary rounded-full  px-4 py-2 mt-2">{t('save')}</Button>
+                        <Button onClick={deleteFriend} className="text-primary rounded-full  px-4 py-2 mt-2">{t('delete.title')}</Button>
+                        <Button onClick={updateFriend} className="text-primary rounded-full  px-4 py-2 mt-2">{t('save')}</Button>
                     </div>
                 </div >
             </Modal>

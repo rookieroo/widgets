@@ -145,7 +145,7 @@ export function Markdown({ content }: { content: string }) {
                 >
                   {String(children).replace(/\n$/, "")}
                 </SyntaxHighlighter>
-                <button className="absolute top-1 right-1 px-2 py-1 bg-w rounded-md text-sm bg-hover select-none invisible group-hover:visible"
+                <button className="absolute top-1 right-1 px-2 py-1 rounded-md text-sm bg-hover select-none invisible group-hover:visible"
                   onClick={() => {
                     navigator.clipboard.writeText(String(children));
                     setCopied(true);

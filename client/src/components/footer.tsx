@@ -30,7 +30,7 @@ function Footer() {
         <link rel="alternate" type="application/atom+xml" title={siteName} href="/sub/atom.xml"/>
         <link rel="alternate" type="application/json" title={siteName} href="/sub/rss.json"/>
       </Helmet>
-      <div className="flex flex-col mb-8 space-y-2 justify-center items-center t-primary ani-show">
+      <div className="flex flex-col mb-8 space-y-2 justify-center items-center text-primary ani-show">
         {footerHtml && <div dangerouslySetInnerHTML={{__html: footerHtml}}/>}
         <p className='text-sm text-neutral-500 font-normal link-line'>
                     <span>
@@ -48,7 +48,7 @@ function Footer() {
                    arrow={false}
                    closeOnDocumentClick>
               <div className="border-card">
-                <p className='font-bold t-primary'>
+                <p className='font-bold text-primary'>
                   {t('footer.rss')}
                 </p>
                 <p>

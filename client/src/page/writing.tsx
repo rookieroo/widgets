@@ -16,6 +16,10 @@ import { headersWithAuth } from "../utils/auth";
 import { Cache, useCache } from '../utils/cache';
 import { siteName } from "../utils/constants";
 import { useColorMode } from "../utils/darkModeUtils";
+import {useConfig} from "../store/useConfig";
+import {Button} from "../components/ui/button";
+import {Accordion, AccordionItem, AccordionTrigger, AccordionContent} from "../components/ui/accordion";
+import MdEditorExV5 from "../components/markdown/MarkDownEditorV5";
 
 async function publish({
   title,
@@ -155,6 +159,7 @@ function uploadImage(file: File, onSuccess: (url: string) => void, showAlert: Sh
 // 写作页面
 export function WritingPage({ id }: { id?: number }) {
   const { t } = useTranslation();
+  const [config] = useConfig();
   const colorMode = useColorMode();
   const cache = Cache.with(id);
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
@@ -221,69 +226,6 @@ export function WritingPage({ id }: { id?: number }) {
     }
   }
 
-
-  const handlePaste = async (event: React.ClipboardEvent<HTMLDivElement>) => {
-    // Access the clipboard data using event.clipboardData
-    const clipboardData = event.clipboardData;
-    // only if clipboard payload is file
-    if (clipboardData.files.length === 1) {
-      const editor = editorRef.current;
-      if (!editor) return;
-      editor.trigger(undefined, "undo", undefined);
-      setUploading(true)
-      const myfile = clipboardData.files[0] as File;
-      uploadImage(myfile, (url) => {
-        const selection = editor.getSelection();
-        if (!selection) return;
-        editor.executeEdits(undefined, [{
-          range: selection,
-          text: `![${myfile.name}](${url})\n`,
-        }]);
-        setUploading(false)
-      }, showAlert);
-    }
-  };
-
-  function UploadImageButton() {
-    const { showAlert, AlertUI } = useAlert();
-    const uploadRef = useRef<HTMLInputElement>(null);
-    const t = i18n.t
-    const upChange = (event: any) => {
-      for (let i = 0; i < event.currentTarget.files.length; i++) {
-        let file = event.currentTarget.files[i]; ///获得input的第一个图片
-        if (file.size > 5 * 1024000) {
-          showAlert(t("upload.failed$size", { size: 5 }))
-          uploadRef.current!.value = "";
-        } else {
-          const editor = editorRef.current;
-          if (!editor) return;
-          const selection = editor.getSelection();
-          if (!selection) return;
-          setUploading(true)
-          uploadImage(file, (url) => {
-            setUploading(false)
-            editor.executeEdits(undefined, [{
-              range: selection,
-              text: `![${file.name}](${url})\n`,
-            }]);
-          }, showAlert);
-        }
-      }
-    };
-    return (
-      <button onClick={() => uploadRef.current?.click()}>
-        <input
-          ref={uploadRef}
-          onChange={upChange}
-          className="hidden"
-          type="file"
-          accept="image/gif,image/jpeg,image/jpg,image/png"
-        />
-        <i className="ri-image-add-line" />
-        <AlertUI />
-      </button>
-    )
-  }
   useEffect(() => {
     if (id) {
       client
@@ -292,16 +234,16 @@ export function WritingPage({ id }: { id?: number }) {
           headers: headersWithAuth(),
         })
         .then(({ data }) => {
+          Cache.with(id).clear();
           if (data && typeof data !== "string") {
-            if (title == "" && data.title) setTitle(data.title);
-            if (tags == "" && data.hashtags)
-              setTags(data.hashtags.map(({ name }) => `#${name}`).join(" "));
-            if (alias == "" && data.alias) setAlias(data.alias);
-            if (content == "") setContent(data.content);
-            if (summary == "") setSummary(data.summary);
-            setListed(data.listed === 1);
-            setDraft(data.draft === 1);
-            setCreatedAt(new Date(data.createdAt));
+            setTitle(data.title);
+            setTags(data?.hashtags?.map(({ name }) => `#${name}`).join(" "));
+            setAlias(data?.alias);
+            setContent(data?.content);
+            setSummary(data?.summary);
+            setListed(data?.listed === 1);
+            setDraft(data?.draft === 1);
+            setCreatedAt(new Date(data?.createdAt));
           }
         });
     }
@@ -338,7 +280,7 @@ export function WritingPage({ id }: { id?: number }) {
             className="mt-4"
           />
           <div
-            className="select-none flex flex-row justify-between items-center mt-6 mb-2 px-4"
+            className="text-primary select-none flex flex-row justify-between items-center mt-6 mb-2 px-4"
             onClick={() => setDraft(!draft)}
           >
             <p>{t('visible.self_only')}</p>
@@ -350,7 +292,7 @@ export function WritingPage({ id }: { id?: number }) {
             />
           </div>
           <div
-            className="select-none flex flex-row justify-between items-center mt-6 mb-2 px-4"
+            className="text-primary select-none flex flex-row justify-between items-center mt-6 mb-2 px-4"
             onClick={() => setListed(!listed)}
           >
             <p>{t('listed')}</p>
@@ -361,7 +303,7 @@ export function WritingPage({ id }: { id?: number }) {
               placeholder={t('listed')}
             />
           </div>
-          <div className="select-none flex flex-row justify-between items-center mt-4 mb-2 pl-4">
+          <div className="text-primary select-none flex flex-row justify-between items-center mt-4 mb-2 pl-4">
             <p className="break-keep mr-2">
               {t('created_at')}
             </p>
@@ -376,77 +318,54 @@ export function WritingPage({ id }: { id?: number }) {
     <>
       <Helmet>
         <title>{`${t('writing')} - ${process.env.NAME}`}</title>
-        <meta property="og:site_name" content={siteName} />
-        <meta property="og:title" content={t('writing')} />
-        <meta property="og:image" content={process.env.AVATAR} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={document.URL} />
+        <meta property="og:site_name" content={siteName}/>
+        <meta property="og:title" content={t('writing')}/>
+        <meta property="og:image" content={process.env.AVATAR}/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:url" content={document.URL}/>
       </Helmet>
-      <div className="grid grid-cols-1 md:grid-cols-3 t-primary mt-2">
-        <div className="col-span-2 pb-8">
-          <div className="bg-w rounded-2xl shadow-xl shadow-light p-4">
-            {MetaInput({ className: "visible md:hidden mb-8" })}
-            <div className="flex flex-col mx-4 my-2 md:mx-0 md:my-0 gap-2">
-              <div className="flex flex-row space-x-2">
-                <button className={`${preview === 'edit' ? "text-primary" : ""}`} onClick={() => setPreview('edit')}> {t("edit")} </button>
-                <button className={`${preview === 'preview' ? "text-primary" : ""}`} onClick={() => setPreview('preview')}> {t("preview")} </button>
-                <button className={`${preview === 'comparison' ? "text-primary" : ""}`} onClick={() => setPreview('comparison')}> {t("comparison")} </button>
-                <div className="flex-grow" />
-                {uploading &&
-                  <div className="flex flex-row space-x-2 items-center">
-                    <Loading type="spin" color="#FC466B" height={16} width={16} />
-                    <span className="text-sm text-neutral-500">{t('uploading')}</span>
-                  </div>
-                }
+      <div>
+        <Accordion
+          type="single"
+          defaultValue="item-1"
+          collapsible
+          aria-orientation="vertical"
+        >
+          <AccordionItem
+            value="item-1"
+          >
+            <AccordionTrigger className="text-primary">{t('publish.title')}</AccordionTrigger>
+            <AccordionContent>
+              <div className="hidden md:visible max-w-96 md:flex flex-col">
+                {MetaInput({className: "rounded-2xl shadow-xl shadow-light p-4 mx-8 text-primary"})}
+                <div className="text-primary flex flex-row justify-center mt-8">
+                  <Button
+                    onClick={publishButton}
+                  >
+                    {publishing &&
+                    <Loading type="spin" height={16} width={16}/>
+                    }
+                      {t('publish.title')}
+                  </Button>
+                </div>
               </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <div className="col-span-2 pb-8">
+          <div className="rounded-2xl shadow-xl shadow-light p-4">
+            {MetaInput({className: "visible md:hidden mb-8 text-primary"})}
+            <div className="flex flex-col mx-4 my-2 md:mx-0 md:my-0 gap-2">
               <div className={`grid grid-cols-1 ${preview === 'comparison' ? "sm:grid-cols-2" : ""}`}>
                 <div className={"flex flex-col " + (preview === 'preview' ? "hidden" : "")}>
-                  <div className="flex flex-row justify-start mb-2">
-                    <UploadImageButton />
-                  </div>
                   <div
-                    className={"relative"}
-                    onDrop={(e) => {
-                      e.preventDefault();
-                      const editor = editorRef.current;
-                      if (!editor) return;
-                      for (let i = 0; i < e.dataTransfer.files.length; i++) {
-                        const selection = editor.getSelection();
-                        if (!selection) return;
-                        const file = e.dataTransfer.files[i];
-                        setUploading(true)
-                        uploadImage(file, (url) => {
-                          setUploading(false)
-                          editor.executeEdits(undefined, [{
-                            range: selection,
-                            text: `![${file.name}](${url})\n`,
-                          }]);
-                        }, showAlert);
-                      }
-                    }}
-                    onPaste={handlePaste}
+                    className={"relative h-full"}
                   >
-                    <Editor
-                      onMount={(editor, _) => {
-                        editorRef.current = editor
-                      }}
-                      height="600px"
-                      defaultLanguage="markdown"
-                      className=""
-                      value={content}
-                      // onPaste={handlePaste}
-                      onChange={(data, _) => {
+                    <MdEditorExV5
+                      mdText={content}
+                      onContentChange={(data) => {
                         cache.set("content", data ?? "");
                         setContent(data ?? "");
-                      }}
-                      theme={colorMode === "dark" ? "vs-dark" : "light"}
-                      options={{
-                        wordWrap: "on",
-                        fontSize: 14,
-                        fontFamily: "Fira Code",
-                        lineNumbers: "off",
-                        dragAndDrop: true,
-                        pasteAs: { enabled: false }
                       }}
                     />
                   </div>
@@ -454,45 +373,28 @@ export function WritingPage({ id }: { id?: number }) {
                 <div
                   className={"px-4 h-[600px] overflow-y-scroll " + (preview !== 'edit' ? "" : "hidden")}
                 >
-                  <Markdown content={content ? content : "> No content now. Write on the left side."} />
+                  <Markdown content={content ? content : "> No content now. Write on the left side."}/>
                 </div>
               </div>
             </div>
           </div>
           <div className="visible md:hidden flex flex-row justify-center mt-8">
-            <button
+            <Button
               onClick={publishButton}
-              className="basis-1/2  text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
+              className="w-full"
             >
               {publishing &&
-                <Loading type="spin" height={16} width={16} />
+              <Loading type="spin" height={16} width={16}/>
               }
               <span>
                 {t('publish.title')}
               </span>
-            </button>
-          </div>
-        </div>
-        <div className="hidden md:visible max-w-96 md:flex flex-col">
-          {MetaInput({ className: "bg-w rounded-2xl shadow-xl shadow-light p-4 mx-8" })}
-          <div className="flex flex-row justify-center mt-8">
-            <button
-              onClick={publishButton}
-              className="basis-1/2  text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
-            >
-              {publishing &&
-                <Loading type="spin" height={16} width={16} />
-              }
-              <span>
-                {t('publish.title')}
-              </span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>
-      <AlertUI />
+      <AlertUI/>
     </>
-
   );
 }
 

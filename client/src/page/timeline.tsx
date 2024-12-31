@@ -54,7 +54,7 @@ export function TimelinePage() {
                     {feeds && Object.keys(feeds).sort((a, b) => parseInt(b) - parseInt(a)).map(year => (
                         <div key={year} className="wauto flex flex-col justify-center items-start">
                             <h1 className="flex flex-row items-center space-x-2">
-                                <span className="text-2xl font-bold t-primary ">
+                                <span className="text-2xl font-bold text-primary ">
                                     {t('year$year', { year: year })}
                                 </span>
                                 <span className="text-sm t-secondary">

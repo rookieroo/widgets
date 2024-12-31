@@ -45,7 +45,7 @@ export function Header({children}: { children?: React.ReactNode }) {
                 <Card
                   className="w-full md:w-max transition-all duration-500 md:absolute md:left-1/2 md:translate-x-[-50%] flex-row justify-center items-center">
                   <div
-                    className="flex flex-row items-center t-primary px-2">
+                    className="flex flex-row items-center text-primary px-2">
                     <Link aria-label={t('home')} href="/"
                           className="visible opacity-100 md:hidden md:opacity-0 duration-300 mr-auto flex flex-row items-center py-2">
                       <img src={process.env.AVATAR} alt="Avatar"
@@ -112,7 +112,7 @@ function Menu() {
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="ghost"
-                  className="w-10 h-10 flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
+                  className="w-10 h-10 flex rounded-full border dark:border-neutral-600 px-2 aspect-[1] items-center justify-center text-primary bg-button">
             <i className="ri-menu-line ri-lg dark:text-white"/>
             {/*{!open && <SquareDashedMousePointer className="h-5 w-5" />}*/}
             <span className="sr-only">Customize</span>
@@ -123,7 +123,7 @@ function Menu() {
             <div className="flex flex-row justify-end space-x-2">
               <Drawer>
                 <DrawerTrigger asChild>
-                  <Button variant="ghost" className="w-10 h-10 flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
+                  <Button variant="ghost" className="w-10 h-10 flex rounded-full border dark:border-neutral-600 px-2 aspect-[1] items-center justify-center text-primary bg-button">
                     <Paintbrush className="h-4 w-4" />
                     <span className="sr-only">Customize</span>
                   </Button>
@@ -182,7 +182,7 @@ function LanguageSwitch({className}: { className?: string }) {
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="ghost"
-                  className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center t-primary bg-button">
+                  className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center text-primary bg-button">
             <i className="ri-translate-2 dark:text-white"></i>
             {/*{!open && <SquareDashedMousePointer className="h-5 w-5" />}*/}
             <span className="sr-only">{label}</span>
@@ -190,7 +190,7 @@ function LanguageSwitch({className}: { className?: string }) {
         </PopoverTrigger>
         <PopoverContent className="w-auto p-2">
           <div className="border-card flex flex-col items-center">
-            <p className='font-bold t-primary'>
+            <p className='font-bold text-primary'>
               Languages
             </p>
             {languages.map(({code, name}) => (
@@ -228,7 +228,7 @@ function GithubSourceCodeUrl() {
     <>
       <Button
         variant="ghost"
-        className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center t-primary bg-button"
+        className="flex rounded-full border dark:border-grey-600 px-2 bg-primary aspect-[1] items-center justify-center text-primary bg-button"
         onClick={() =>
           window.location.href = "https://github.com/rookieroo/prop-blog"
         }
@@ -259,7 +259,7 @@ function SearchButton({className, onClose}: { className?: string, onClose?: () =
   }
   return (<div className={className + " flex flex-row items-center"}>
       <Button onClick={() => query.toggle()} title={label} aria-label={label}
-              className="flex rounded-full border px-2 aspect-[1] items-center justify-center t-primary bg-button">
+              className="flex rounded-full border px-2 aspect-[1] items-center justify-center text-primary bg-button">
         <i className="ri-search-line dark:text-white"></i>
       </Button>
       <ReactModal

@@ -18,6 +18,16 @@ import {headersWithAuth} from "../utils/auth.ts";
 import '../utils/thumb.css';
 import {Switch} from "../components/ui/switch";
 import {Input} from "../components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "../components/ui/alert-dialog";
+import {Textarea} from "../components/ui/textarea";
 
 
 export function Settings() {
@@ -90,75 +100,116 @@ export function Settings() {
     <div className="flex flex-col justify-center items-center">
       <ServerConfigContext.Provider value={serverConfig}>
         <ClientConfigContext.Provider value={clientConfig}>
-          <main className="wauto rounded-2xl bg-w m-2 p-6" aria-label="正文">
+          <main className="w-3/5 rounded-2xl m-2 p-6" aria-label="正文">
             <div className="flex flex-row items-center space-x-2">
-              <h1 className="text-2xl font-bold t-primary">
+              <h1 className="text-2xl font-bold text-primary">
                 {t('settings.title')}
               </h1>
               {(clientLoading || serverLoading) && <ReactLoading width="1em" height="1em" type="spin" color="#FC466B"/>}
             </div>
             <div className="flex flex-col items-start space-y-2">
-              <ItemTitle title={t('settings.friend.title')}/>
-              <ItemSwitch title={t('settings.friend.apply.title')} description={t('settings.friend.apply.desc')}
-                          type="client" configKey="friend_apply_enable"/>
-              <ItemSwitch title={t('settings.friend.health.title')} description={t('settings.friend.health.desc')}
-                          type="server" configKey="friend_crontab"/>
-              <ItemInput title={t('settings.friend.health.ua.title')} description={t('settings.friend.health.ua.desc')}
-                         type="server" configKey="friend_ua" configKeyTitle="User-Agent"/>
-              <ItemTitle title={t('settings.other.title')}/>
-              <ItemSwitch title={t('settings.counter.enable.title')} description={t('settings.counter.enable.desc')}
-                          type="client" configKey="counter.enabled"/>
-              <ItemSwitch title={t('settings.rss.title')} description={t('settings.rss.desc')} type="client"
-                          configKey="rss"/>
-              <ItemInput title={t('settings.favicon.title')} description={t('settings.favicon.desc')} type="client"
-                         configKey="favicon" configKeyTitle="Favicon"/>
-              <ItemInput title={t('settings.footer.title')} description={t('settings.footer.desc')} type="client"
-                         configKey="footer" configKeyTitle="Footer HTML"/>
-              <ItemButton title={t('settings.cache.clear.title')} description={t('settings.cache.clear.desc')}
-                          buttonTitle={t('clear')} onConfirm={async () => {
-                await client.config.cache.delete(undefined, {
-                  headers: headersWithAuth()
-                })
-                  .then(({error}: { error: any }) => {
-                    if (error) {
-                      showAlert(t('settings.cache.clear_failed$message', {message: error.message}))
-                    }
-                  })
-              }} alertTitle={t('settings.cache.clear.confirm.title')}
-                          alertDescription={t('settings.cache.clear.confirm.desc')}/>
-              <ItemWithUpload title={t('settings.wordpress.title')} description={t('settings.wordpress.desc')}
-                              onFileChange={onFileChange}/>
+              <ItemTitle
+                title={t('settings.friend.title')}
+              />
+              <ItemSwitch
+                title={t('settings.friend.apply.title')}
+                description={t('settings.friend.apply.desc')}
+                type="client"
+                configKey="friend_apply_enable"
+              />
+              <ItemSwitch
+                title={t('settings.friend.health.title')}
+                description={t('settings.friend.health.desc')}
+                type="server" configKey="friend_crontab"
+              />
+              <ItemInput
+                title={t('settings.friend.health.ua.title')}
+                description={t('settings.friend.health.ua.desc')}
+                type="server"
+                configKey="friend_ua"
+                configKeyTitle="User-Agent"
+              />
+              <ItemTitle
+                title={t('settings.other.title')}/>
+              <ItemSwitch
+                title={t('settings.counter.enable.title')}
+                description={t('settings.counter.enable.desc')}
+                type="client"
+                configKey="counter.enabled"
+              />
+              <ItemSwitch
+                title={t('settings.rss.title')}
+                description={t('settings.rss.desc')}
+                type="client"
+                configKey="rss"
+              />
+              <ItemInput
+                title={t('settings.favicon.title')}
+                description={t('settings.favicon.desc')}
+                type="client"
+                configKey="favicon"
+                configKeyTitle="Favicon"
+              />
+              <ItemInput
+                title={t('settings.footer.title')}
+                description={t('settings.footer.desc')}
+                type="client"
+                configKey="footer"
+                configKeyTitle="Footer HTML"
+              />
+              <ItemButton
+                title={t('settings.cache.clear.title')}
+                description={t('settings.cache.clear.desc')}
+                buttonTitle={t('clear')}
+                onConfirm={
+                  async () => {
+                    await client.config.cache.delete(undefined, {
+                      headers: headersWithAuth()
+                    }).then(({error}: { error: any }) => {
+                      if (error) {
+                        showAlert(t('settings.cache.clear_failed$message', {message: error.message}))
+                      }
+                    })
+                  }}
+                alertTitle={t('settings.cache.clear.confirm.title')}
+                alertDescription={t('settings.cache.clear.confirm.desc')}
+              />
+              <ItemWithUpload
+                title={t('settings.wordpress.title')}
+                description={t('settings.wordpress.desc')}
+                onFileChange={onFileChange}
+              />
             </div>
           </main>
         </ClientConfigContext.Provider>
       </ServerConfigContext.Provider>
-      <Modal isOpen={isOpen}
-
-             style={{
-               content: {
-                 top: '50%',
-                 left: '50%',
-                 right: 'auto',
-                 bottom: 'auto',
-                 marginRight: '-50%',
-                 transform: 'translate(-50%, -50%)',
-                 padding: '0',
-                 border: 'none',
-                 borderRadius: '16px',
-                 display: 'flex',
-                 flexDirection: 'column',
-                 justifyContent: 'center',
-                 alignItems: 'center',
-                 background: 'transparent',
-               },
-               overlay: {
-                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                 zIndex: 1000
-               }
-             }}
+      <Modal
+        isOpen={isOpen}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            padding: '0',
+            border: 'none',
+            borderRadius: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'transparent',
+          },
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 1000
+          }
+        }}
       >
-        <div className="flex flex-col items-start p-4 bg-w">
-          <h1 className="text-2xl font-bold t-primary">
+        <div className="flex flex-col items-start p-4">
+          <h1 className="text-2xl font-bold text-primary">
             {t('settings.import_result')}
           </h1>
           <p className="text-base dark:text-white">
@@ -178,8 +229,6 @@ export function Settings() {
           </div>
           <div className="w-full flex flex-col items-center mt-4">
             <Button
-              variant="ghost"
-              className="rounded-xl px-8 py-2 h-min"
               onClick={() => {
                 setIsOpen(false);
               }}
@@ -196,18 +245,19 @@ export function Settings() {
 
 function ItemTitle({title}: { title: string }) {
   return (
-    <h1 className="text-sm t-primary pt-4">
+    <h1 className="text-sm text-primary pt-4">
       {title}
     </h1>
   );
 }
 
-function ItemSwitch({
-                      title,
-                      description,
-                      type,
-                      configKey
-                    }: { title: string, description: string, configKey: string, type: 'client' | 'server' }) {
+function ItemSwitch(
+  {
+    title,
+    description,
+    type,
+    configKey
+  }: { title: string, description: string, configKey: string, type: 'client' | 'server' }) {
   const config = type === 'client' ? useContext(ClientConfigContext) : useContext(ServerConfigContext);
   const defaultValue = config?.default<boolean>(configKey);
   const [checked, setChecked] = useState(defaultValue);
@@ -276,13 +326,14 @@ function ItemSwitch({
   );
 }
 
-function ItemInput({
-                     title,
-                     configKeyTitle,
-                     description,
-                     type,
-                     configKey
-                   }: { title: string, description: string, configKeyTitle: string, configKey: string, type: 'client' | 'server' }) {
+function ItemInput(
+  {
+    title,
+    configKeyTitle,
+    description,
+    type,
+    configKey
+  }: { title: string, description: string, configKeyTitle: string, configKey: string, type: 'client' | 'server' }) {
   const config = type === 'client' ? useContext(ClientConfigContext) : useContext(ServerConfigContext);
   const defaultValue = config?.default<string>(configKey);
   const [value, setValue] = useState("");
@@ -338,7 +389,6 @@ function ItemInput({
         <div className="flex flex-row items-center justify-center space-x-4">
           {loading && <ReactLoading width="1em" height="1em" type="spin" color="#FC466B"/>}
           <Button
-            variant="ghost"
             onClick={() => {
               setIsOpen(true);
             }}>
@@ -346,84 +396,64 @@ function ItemInput({
           </Button>
         </div>
       </div>
-      <Modal isOpen={isOpen}
-             shouldCloseOnOverlayClick={true}
-             shouldCloseOnEsc={true}
-             onRequestClose={() => {
-               setIsOpen(false);
-             }}
-             style={{
-               content: {
-                 top: '50%',
-                 left: '50%',
-                 right: 'auto',
-                 bottom: 'auto',
-                 marginRight: '-50%',
-                 transform: 'translate(-50%, -50%)',
-                 padding: '0',
-                 border: 'none',
-                 borderRadius: '16px',
-                 display: 'flex',
-                 flexDirection: 'column',
-                 justifyContent: 'center',
-                 alignItems: 'center',
-                 background: 'transparent',
-                 width: '80%',
-                 maxWidth: '40em'
-               },
-               overlay: {
-                 backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                 zIndex: 1000
-               }
-             }}
-      >
-        <div className="flex flex-col items-start p-4 bg-w space-y-4 w-full">
-          <h1 className="text-2xl font-bold t-primary">
-            {t('update$sth', {sth: configKeyTitle})}
-          </h1>
-          <textarea placeholder={defaultValue || configKeyTitle} value={value} onChange={(e) => {
-            setValue(e.target.value);
-          }} className="rounded-xl p-2 bg-secondary min-h-32 w-full t-primary"/>
-          <div className="w-full flex flex-row items-center justify-center space-x-2 mt-4">
-            <Button
-              onClick={() => {
-                setIsOpen(false);
-                updateConfig(type, configKey, value);
-              }}>
-              {t('confirm')}
-            </Button>
-            <Button
-              variant="ghost"
+      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('update$sth', {sth: configKeyTitle})}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              <Textarea
+                placeholder={defaultValue || configKeyTitle}
+                value={value}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                }}
+                className="rounded-xl p-2 bg-secondary min-h-32 w-full text-primary"
+              />
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
               onClick={() => {
                 setIsOpen(false);
               }}
             >
               {t('cancel')}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setIsOpen(false);
+                updateConfig(type, configKey, value);
+              }}
+            >
+              {t('confirm')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <AlertUI/>
     </div>
   );
 }
 
-function ItemButton({
-                      title,
-                      description,
-                      buttonTitle,
-                      onConfirm,
-                      alertTitle,
-                      alertDescription
-                    }:
-                      {
-                        title: string,
-                        description: string,
-                        buttonTitle: string,
-                        onConfirm: () => Promise<void>,
-                        alertTitle: string,
-                        alertDescription: string,
-                      }) {
+function ItemButton(
+  {
+    title,
+    description,
+    buttonTitle,
+    onConfirm,
+    alertTitle,
+    alertDescription
+  }:
+    {
+      title: string,
+      description: string,
+      buttonTitle: string,
+      onConfirm: () => Promise<void>,
+      alertTitle: string,
+      alertDescription: string,
+    }) {
   const {showConfirm, ConfirmUI} = useConfirm();
   return (
     <div className="flex flex-col w-full items-start">
@@ -438,10 +468,9 @@ function ItemButton({
         </div>
         <div className="flex flex-row items-center justify-center space-x-4">
           <Button
-            className="basis-1/2 text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
             onClick={() => {
               showConfirm(alertTitle, alertDescription, onConfirm);
-          }}>
+            }}>
             {buttonTitle}
           </Button>
         </div>
@@ -451,11 +480,12 @@ function ItemButton({
   );
 }
 
-function ItemWithUpload({
-                          title,
-                          description,
-                          onFileChange
-                        }: { title: string, description: string, onFileChange: (e: ChangeEvent<HTMLInputElement>) => void }) {
+function ItemWithUpload(
+  {
+    title,
+    description,
+    onFileChange
+  }: { title: string, description: string, onFileChange: (e: ChangeEvent<HTMLInputElement>) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const {t} = useTranslation();
   return (
@@ -469,10 +499,13 @@ function ItemWithUpload({
             {description}
           </p>
         </div>
-        <Input ref={inputRef} type="file" className="hidden" accept="application/xml"
-               onChange={onFileChange}/>
+        <Input
+          ref={inputRef} type="file"
+          className="hidden"
+          accept="application/xml"
+          onChange={onFileChange}
+        />
         <Button
-          className="basis-1/2 text-white py-4 rounded-full shadow-xl shadow-light flex flex-row justify-center items-center space-x-2"
           onClick={() => {
             inputRef.current?.click();
           }}>

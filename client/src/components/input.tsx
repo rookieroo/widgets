@@ -13,7 +13,7 @@ export function Input({ autofocus, value, setValue, className, placeholder, onSu
         onChange={(event) => {
             setValue(event.target.value)
         }}
-        className={'focus-visible:outline-none bg-secondary focus-visible:outline-theme w-full py-2 px-4 rounded-xl bg-w t-primary ' + className} />
+        className={'focus-visible:outline-none bg-secondary focus-visible:outline-theme w-full py-2 px-4 rounded-xl text-primary ' + className} />
     )
 }
 export function Checkbox({ value, setValue, className, placeholder }:

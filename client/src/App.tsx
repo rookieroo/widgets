@@ -15,7 +15,7 @@ import {HashtagPage} from './page/hashtag.tsx'
 import {HashtagsPage} from './page/hashtags.tsx'
 import {Settings} from "./page/settings.tsx"
 import {TimelinePage} from './page/timeline'
-import {WritingPage} from './page/writing_bak'
+import {WritingPage} from './page/writing'
 import {ClientConfigContext, ConfigWrapper, defaultClientConfig} from './state/config.tsx'
 import {Profile, ProfileContext} from './state/profile'
 import {headersWithAuth} from './utils/auth'
