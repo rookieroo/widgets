@@ -80,7 +80,7 @@ function InnerCommandBar() {
               value={config.search}
             />
 
-            <div className="mt-2 border-t border-neutral-200 dark:border-neutral-800 max-h-[60vh] overflow-y-scroll">
+            <div className="mt-2 border-t border-neutral-200 dark:border-neutral-800 h-[60vh] overflow-y-scroll">
               <Results />
             </div>
           </div>
