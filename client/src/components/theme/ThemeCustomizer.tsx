@@ -55,7 +55,7 @@ export function CustomizerWrapper() {
 export function Customizer() {
   const [mounted, setMounted] = React.useState(false)
   const [config, setConfig] = useConfig()
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
 
   useEffect(() => {
     setMounted(true)
@@ -132,6 +132,44 @@ export function Customizer() {
               >
                 <SunMoon className="mr-1 w-3 -translate-x-1" />
                 {t('customize.System')}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+            </>
+          )}
+        </div>
+      </div>
+      <div className="space-y-1.5">
+        <Label className="text-xs">{t('customize.Languages')}</Label>
+        <div className="grid grid-cols-3 gap-2">
+          {mounted ? (
+            <>
+              <Button
+                variant={'outline'}
+                size="sm"
+                onClick={() => i18n.changeLanguage("en")}
+                className={cn("en" === i18n.language && 'border-2 border-primary')}
+              >
+                {t('English')}
+              </Button>
+              <Button
+                variant={'outline'}
+                size="sm"
+                onClick={() => i18n.changeLanguage("zh")}
+                className={cn("zh" === i18n.language && 'border-2 border-primary')}
+              >
+                {t('中文')}
+              </Button>
+              <Button
+                variant={'outline'}
+                size="sm"
+                onClick={() => i18n.changeLanguage("ja")}
+                className={cn("ja" === i18n.language && 'border-2 border-primary')}
+              >
+                {t('日本語')}
               </Button>
             </>
           ) : (
