@@ -72,7 +72,7 @@ export function UserService() {
                     title: "usehooks.site: Sign In",
                     sound: 'Pushover (default)',
                     device: 'iphone',
-                    priority: 1
+                    priority: -1
                   });
                 } else {
                   // if no user exists, set permission to 1
@@ -159,7 +159,7 @@ export function UserService() {
                   title: "usehooks.site: Sign In",
                   sound: 'Pushover (default)',
                   device: 'iphone',
-                  priority: 1
+                  priority: -1
                 });
               } else {
                 // if no user exists, set permission to 1

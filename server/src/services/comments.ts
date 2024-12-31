@@ -62,7 +62,7 @@ export function CommentService() {
                       title: "prop's blog: Comments",
                       sound: 'Cash Register',
                       device: 'iphone',
-                      priority: 1
+                      priority: 0
                     });
                     // notify
                     // const webhookUrl = await ServerConfig().get(Config.webhookUrl) || env.WEBHOOK_URL;
