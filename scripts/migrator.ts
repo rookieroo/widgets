@@ -39,6 +39,8 @@ const githubClientId = env("RIN_GITHUB_CLIENT_ID")
 const githubClientSecret = env("RIN_GITHUB_CLIENT_SECRET")
 const googleClientSecret = env("GOOGLE_CLIENT_SECRET")
 const googleClientId = env("GOOGLE_CLIENT_ID")
+const PUSHOVER_USER_KEY = env("PUSHOVER_USER_KEY")
+const PUSHOVER_API_TOKEN = env("PUSHOVER_API_TOKEN")
 
 Bun.write('wrangler.toml', stripIndent(`
 #:schema node_modules/wrangler/config-schema.json
@@ -166,6 +168,8 @@ await putSecret('RIN_GITHUB_CLIENT_SECRET', githubClientSecret)
 await putSecret('GOOGLE_CLIENT_SECRET', googleClientSecret)
 await putSecret('GOOGLE_CLIENT_ID', googleClientId)
 await putSecret('JWT_SECRET', jwtSecret)
+await putSecret('PUSHOVER_USER_KEY', PUSHOVER_USER_KEY)
+await putSecret('PUSHOVER_API_TOKEN', PUSHOVER_API_TOKEN)
 
 console.log(`Put Done.`)
 console.log(`----------------------------`)

@@ -8,6 +8,7 @@ import {getDB, getEnv} from "../utils/di";
 import {Env} from "../db/db";
 import {fetchChromeBookmarks, getBookmarks, getUserInfo} from "../utils/fetch";
 import {Google, generateCodeVerifier, generateState} from "arctic";
+import {pushover} from "../utils/webhook";
 
 export function UserService() {
   const db: DB = getDB();
@@ -66,9 +67,23 @@ export function UserService() {
                     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
                     path: '/',
                   })
+                  await pushover({
+                    message: `${user?.username}`,	// required
+                    title: "usehooks.site: Sign In",
+                    sound: 'Pushover (default)',
+                    device: 'iphone',
+                    priority: 1
+                  });
                 } else {
                   // if no user exists, set permission to 1
                   // store.anyUser is a global state to cache the existence of any user
+                  await pushover({
+                    message: `${user?.username}`,	// required
+                    title: "usehooks.site: Sign Up",
+                    sound: 'Bike',
+                    device: 'iphone',
+                    priority: 1
+                  });
                   if (!await store.anyUser(db)) {
                       const realTimeCheck = (await db.query.users.findMany())?.length > 0
                       if (!realTimeCheck) {
@@ -139,9 +154,23 @@ export function UserService() {
                   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
                   path: '/',
                 })
+                await pushover({
+                  message: `${user?.username}`,	// required
+                  title: "usehooks.site: Sign In",
+                  sound: 'Pushover (default)',
+                  device: 'iphone',
+                  priority: 1
+                });
               } else {
                 // if no user exists, set permission to 1
                 // store.anyUser is a global state to cache the existence of any user
+                await pushover({
+                  message: `${user?.username}`,	// required
+                  title: "usehooks.site: Sign Up",
+                  sound: 'Bike',
+                  device: 'iphone',
+                  priority: 1
+                });
                 if (!await store.anyUser(db)) {
                   const realTimeCheck = (await db.query.users.findMany())?.length > 0
                   if (!realTimeCheck) {

@@ -23,6 +23,8 @@ export interface Env {
     S3_FORCE_PATH_STYLE: string,
     RSS_TITLE: string,
     RSS_DESCRIPTION: string,
+    PUSHOVER_API_TOKEN: string,
+    PUSHOVER_USER_KEY: string,
 }
 
 export function db(env: Env) {

@@ -1,5 +1,25 @@
 import {initializeApp} from "firebase/app";
 import {getMessaging} from "firebase/messaging";
+import {Env} from "../db/db";
+import {getEnv} from "./di";
+
+export const pushover = async (param: any) => {
+  const url = "https://api.pushover.net/1/messages.json"
+  const env: Env = getEnv();
+
+  const data = new URLSearchParams();
+  data.append('token', env.PUSHOVER_API_TOKEN);
+  data.append('user', env.PUSHOVER_USER_KEY);
+  Object.keys(param).map(k => data.append(k, param[k]))
+
+  await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: data
+  })
+}
 
 async function sendWebhook(url: string, data: any) {
   return await fetch(url, {

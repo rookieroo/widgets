@@ -7,7 +7,7 @@ import { setup } from "../setup";
 import { ServerConfig } from "../utils/cache";
 import { Config } from "../utils/config";
 import { getDB, getEnv } from "../utils/di";
-import { notify } from "../utils/webhook";
+import {notify, pushover} from "../utils/webhook";
 
 export function CommentService() {
     const db: DB = getDB();
@@ -57,10 +57,16 @@ export function CommentService() {
                         userId,
                         content
                     });
-
-                    const webhookUrl = await ServerConfig().get(Config.webhookUrl) || env.WEBHOOK_URL;
+                    await pushover({
+                      message: `${user.username}: ${exist.title}\n${content}`,	// required
+                      title: "prop's blog: Comments",
+                      sound: 'Cash Register',
+                      device: 'iphone',
+                      priority: 1
+                    });
                     // notify
-                    await notify(webhookUrl, `${env.FRONTEND_URL}/feed/${feedId}\n${user.username} 评论了: ${exist.title}\n${content}`);
+                    // const webhookUrl = await ServerConfig().get(Config.webhookUrl) || env.WEBHOOK_URL;
+                    // await notify(webhookUrl, `${env.FRONTEND_URL}/feed/${feedId}\n${user.username} 评论了: ${exist.title}\n${content}`);
                     return 'OK';
                 }, {
                     body: t.Object({
