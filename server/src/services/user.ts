@@ -1,21 +1,16 @@
 import {eq} from "drizzle-orm";
-import Elysia, {redirect, t} from "elysia";
+import Elysia, {t} from "elysia";
 import {URL} from "url";
 import type {DB} from "../_worker";
 import {users} from "../db/schema";
 import {setup} from "../setup";
 import {getDB, getEnv} from "../utils/di";
 import {Env} from "../db/db";
-import {fetchChromeBookmarks, getBookmarks, getUserInfo} from "../utils/fetch";
-import {Google, generateCodeVerifier, generateState} from "arctic";
 import {pushover} from "../utils/webhook";
 
 export function UserService() {
   const db: DB = getDB();
   const env: Env = getEnv();
-  const google = new Google(env.GOOGLE_CLIENT_ID, env.GOOGLE_CLIENT_SECRET,env.GOOGLE_AUTH_CALLBACK)
-  const state = generateState();
-  const codeVerifier = generateCodeVerifier();
 
   return new Elysia({aot: false})
     .use(setup())

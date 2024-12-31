@@ -11,6 +11,7 @@
 - [theme customize](https://ui.shadcn.com/themes)
 - [md-editor-rt](https://github.com/imzbf/md-editor-rt)
 - google acount login
+- [pushover](https://pushover.net/)
 
 ## info
 

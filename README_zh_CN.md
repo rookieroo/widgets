@@ -10,4 +10,5 @@
 - [shadcn/ui](https://ui.shadcn.com/) 组件
 - [theme customize](https://ui.shadcn.com/themes) 主题定制
 - [md-editor-rt](https://github.com/imzbf/md-editor-rt) md编辑器
+- [pushover](https://pushover.net/) 推送消息通知
 - 谷歌账号登录 （需要自己申请并配置）
