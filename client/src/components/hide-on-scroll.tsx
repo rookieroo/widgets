@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-const HideOnScroll = ({
+const HideOnScroll = (
+  {
                         children,
                         distance = 100,
                         direction = 'down',
@@ -46,7 +47,7 @@ const HideOnScroll = ({
   }, [distance, direction, lastScrollY, hideOnScroll, isStatic]);
 
   const positionClass = fixed ? 'fixed top-0 left-0 right-0' : '';
-  const visibilityClass = hideOnScroll ? (isVisible ? 'opacity-100' : 'opacity-0') : 'opacity-100';
+  const visibilityClass = hideOnScroll ? (isVisible ? 'opacity-100' : 'opacity-0 invisible') : 'opacity-100';
 
   return (
     <div className={`transition-opacity duration-300 ${visibilityClass} ${positionClass}`}>
